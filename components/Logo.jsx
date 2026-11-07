@@ -2,116 +2,115 @@
 
 import React from "react";
 
-export default function Logo({ size = "md", showText = true, className = "" }) {
+export default function Logo({ size = "md", showText = true, className = "", variant = "dark" }) {
   const emblemSizes = {
-    sm: "w-6 h-6 sm:w-7 sm:h-7",
-    md: "w-7 h-7 sm:w-9 sm:h-9",
-    lg: "w-10 h-10 sm:w-12 sm:h-12",
-    xl: "w-12 h-12 sm:w-16 sm:h-16"
+    sm: "w-7 h-7",
+    md: "w-9 h-9",
+    lg: "w-11 h-11",
+    xl: "w-14 h-14"
   };
 
   const titleSizes = {
-    sm: "text-[10px] sm:text-xs tracking-[0.16em] sm:tracking-[0.22em]",
-    md: "text-xs sm:text-sm tracking-[0.18em] sm:tracking-[0.26em]",
-    lg: "text-base sm:text-lg tracking-[0.22em] sm:tracking-[0.3em]",
-    xl: "text-lg sm:text-xl tracking-[0.26em] sm:tracking-[0.35em]"
+    sm: "text-xs tracking-[0.2em]",
+    md: "text-sm sm:text-base tracking-[0.22em]",
+    lg: "text-lg tracking-[0.26em]",
+    xl: "text-2xl tracking-[0.3em]"
   };
 
   const subtitleSizes = {
-    sm: "text-[6.5px] sm:text-[8px] tracking-[0.12em] sm:tracking-[0.16em]",
-    md: "text-[7px] sm:text-[8.5px] tracking-[0.12em] sm:tracking-[0.24em]",
-    lg: "text-[9px] sm:text-[11px] tracking-[0.18em] sm:tracking-[0.28em]",
-    xl: "text-[10px] sm:text-xs tracking-[0.22em] sm:tracking-[0.32em]"
+    sm: "text-[7px] tracking-[0.16em]",
+    md: "text-[8px] sm:text-[9px] tracking-[0.2em]",
+    lg: "text-[10px] tracking-[0.24em]",
+    xl: "text-xs tracking-[0.28em]"
   };
 
+  const isLight = variant === "light";
+
   return (
-    <div className={`flex items-center gap-2 sm:gap-3 select-none group cursor-pointer ${className}`}>
-      {/* Minimalist Architectural Geometric Crest */}
-      <div className={`relative ${emblemSizes[size]} flex items-center justify-center shrink-0`}>
+    <div className={`flex items-center gap-2.5 sm:gap-3.5 select-none group cursor-pointer ${className}`}>
+      {/* High-Contrast Architectural Emblem */}
+      <div
+        className={`relative ${emblemSizes[size]} rounded-xl flex items-center justify-center shrink-0 shadow-sm transition-transform duration-300 group-hover:scale-105 ${
+          isLight
+            ? "bg-[#FAF8F5] border border-[#C5A880]"
+            : "bg-[#0A192F] border border-[#C5A880]/60"
+        }`}
+      >
         <svg
           viewBox="0 0 100 100"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="w-full h-full relative z-10 transition-transform duration-300 group-hover:scale-105"
+          className="w-[70%] h-[70%]"
         >
-          {/* Outer Minimalist Geometric Frame */}
+          {/* Outer Octagon */}
           <polygon
-            points="50,6 90,26 90,74 50,94 10,74 10,26"
-            stroke="url(#minimalPlatinum)"
-            strokeWidth="1.8"
+            points="50,8 88,24 88,76 50,92 12,76 12,24"
+            stroke="#C5A880"
+            strokeWidth="3.5"
             strokeLinejoin="round"
-            className="transition-colors duration-300 group-hover:stroke-white"
           />
 
-          {/* Key Bow: Architectural Circle */}
+          {/* Key Circle Head */}
           <circle
             cx="50"
-            cy="34"
-            r="12"
-            stroke="url(#minimalPlatinum)"
-            strokeWidth="1.8"
-            fill="#08090C"
+            cy="36"
+            r="13"
+            stroke="#C5A880"
+            strokeWidth="3.5"
+            fill={isLight ? "#FAF8F5" : "#0A192F"}
           />
           <circle
             cx="50"
-            cy="34"
-            r="4.5"
-            stroke="#C8BCAC"
-            strokeWidth="1.2"
+            cy="36"
+            r="5"
+            fill="#C5A880"
           />
 
           {/* Key Stem */}
           <line
             x1="50"
-            y1="46"
+            y1="49"
             x2="50"
-            y2="82"
-            stroke="url(#minimalPlatinum)"
-            strokeWidth="2"
+            y2="78"
+            stroke="#C5A880"
+            strokeWidth="4"
             strokeLinecap="round"
           />
 
-          {/* Architectural Minimalist Teeth */}
+          {/* Key Teeth */}
           <line
             x1="50"
             y1="64"
-            x2="61"
+            x2="62"
             y2="64"
-            stroke="#C8BCAC"
-            strokeWidth="2"
+            stroke="#C5A880"
+            strokeWidth="3.5"
             strokeLinecap="square"
           />
           <line
             x1="50"
             y1="72"
-            x2="58"
+            x2="59"
             y2="72"
-            stroke="#C8BCAC"
-            strokeWidth="2"
+            stroke="#C5A880"
+            strokeWidth="3.5"
             strokeLinecap="square"
           />
-
-          {/* Subtle Sand/Platinum Gradient */}
-          <defs>
-            <linearGradient id="minimalPlatinum" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#FFFFFF" />
-              <stop offset="60%" stopColor="#D5CDC2" />
-              <stop offset="100%" stopColor="#A89B8A" />
-            </linearGradient>
-          </defs>
         </svg>
       </div>
 
-      {/* Typography */}
+      {/* Typography - Explicit High Contrast Deep Navy */}
       {showText && (
-        <div className="flex flex-col">
+        <div className="flex flex-col text-left">
           <span
-            className={`font-serif uppercase font-semibold text-white ${titleSizes[size]} transition-colors group-hover:text-stone-200`}
+            style={{ color: isLight ? "#FAF8F5" : "#0A192F" }}
+            className={`font-serif uppercase font-bold leading-tight ${titleSizes[size]} transition-colors`}
           >
             Sterling Key
           </span>
           <span
-            className={`font-sans uppercase text-stone-400 font-medium ${subtitleSizes[size]}`}
+            style={{ color: isLight ? "#C5A880" : "#4A5568" }}
+            className={`font-sans uppercase font-semibold leading-tight mt-0.5 ${subtitleSizes[size]}`}
           >
             Properties & Asset Management
           </span>

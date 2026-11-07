@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Lock, Unlock, Key, ShieldCheck, ArrowRight, FileCheck, Eye, EyeOff, Sparkles } from "lucide-react";
+import { Lock, Unlock, Key, ShieldCheck, ArrowRight } from "lucide-react";
 import { useToast } from "./Toast";
 import { useCurrency } from "./CurrencyContext";
 
@@ -62,7 +62,7 @@ export default function SovereignVault({ onScheduleTour }) {
       addToast("Biometric NDA Handshake Validated. Welcome to The Sovereign Vault.", "success", "Vault Decrypted");
     } else {
       setErrorShake(true);
-      addToast("Invalid authorization code. Try demo code 'STERLING' or 'VAULT2026'", "error", "Access Denied");
+      addToast("Invalid authorization code. Try demo code 'STERLING' or 'STERLING2026'", "error", "Access Denied");
       setTimeout(() => setErrorShake(false), 800);
     }
   };
@@ -74,36 +74,33 @@ export default function SovereignVault({ onScheduleTour }) {
   };
 
   return (
-    <section id="vault" className="py-14 sm:py-16 bg-[#060709] border-b border-white/[0.08] relative overflow-hidden">
-      {/* Decorative ambient subtle lines */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(255,255,255,0.03),transparent_70%)] pointer-events-none" />
-
-      <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-medium uppercase tracking-[0.24em] bg-white/[0.04] border border-white/10 text-stone-300 mb-3">
-            <ShieldCheck className="w-3.5 h-3.5 text-stone-300" /> Strict NDA Protocol
+    <section id="vault" className="py-16 sm:py-20 bg-[#FAF8F5] border-b border-[#E4DCD0] relative overflow-hidden text-[#1A1D20]">
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 relative z-10">
+        {/* Section Header in Deep Navy & Champagne Gold */}
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-14">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-[0.24em] bg-white border border-[#E4DCD0] text-[#0A192F] mb-3 shadow-2xs">
+            <ShieldCheck className="w-3.5 h-3.5 text-[#C5A880]" /> Strict NDA Protocol
           </div>
-          <h2 className="text-3xl sm:text-5xl font-serif tracking-tight text-white mb-3">
+          <h2 className="text-3xl sm:text-5xl font-serif tracking-tight text-[#0A192F] mb-3">
             The Sovereign Vault
           </h2>
-          <p className="text-neutral-400 text-xs sm:text-sm leading-relaxed max-w-xl mx-auto">
+          <p className="text-[#545B65] text-xs sm:text-sm leading-relaxed max-w-xl mx-auto">
             Discreet off-market pocket listings, sovereign private treaties, and unlisted mega-compounds represented outside public MLS registries.
           </p>
         </div>
 
         {!isUnlocked ? (
-          /* LOCKED VAULT VIEW */
-          <div className="max-w-xl mx-auto bg-[#0C0E14] border border-white/15 rounded-3xl p-8 sm:p-10 shadow-2xl relative">
-            <div className="w-16 h-16 rounded-2xl bg-white/[0.04] border border-white/10 flex items-center justify-center text-stone-300 mx-auto mb-6">
+          /* LOCKED VAULT VIEW - Warm Ivory & Deep Navy Card */
+          <div className="max-w-xl mx-auto bg-white border border-[#E4DCD0] rounded-3xl p-8 sm:p-10 shadow-xl relative">
+            <div className="w-16 h-16 rounded-2xl bg-[#0A192F] border border-[#C5A880]/50 flex items-center justify-center text-[#C5A880] mx-auto mb-6 shadow-md">
               <Lock className="w-7 h-7" />
             </div>
 
             <div className="text-center mb-6">
-              <h3 className="text-lg font-serif text-white font-medium">
+              <h3 className="text-lg font-serif text-[#0A192F] font-semibold">
                 Authorization Required
               </h3>
-              <p className="text-xs text-neutral-400 mt-1">
+              <p className="text-xs text-[#545B65] mt-1">
                 Enter your private family office code or request instant demonstration clearance.
               </p>
             </div>
@@ -115,39 +112,39 @@ export default function SovereignVault({ onScheduleTour }) {
                   placeholder="Enter Keycode (Demo: STERLING2026)"
                   value={passcode}
                   onChange={(e) => setPasscode(e.target.value)}
-                  className="w-full bg-[#07080A] border border-white/15 rounded-xl px-4 py-3 text-xs text-center font-mono tracking-widest text-white uppercase focus:outline-none focus:border-white/40 placeholder:normal-case placeholder:tracking-normal placeholder:text-neutral-500"
+                  className="w-full bg-[#FAF8F5] border border-[#E4DCD0] rounded-xl px-4 py-3 text-xs text-center font-mono tracking-widest text-[#0A192F] font-bold uppercase focus:outline-none focus:border-[#C5A880] focus:ring-1 focus:ring-[#C5A880]/30 placeholder:normal-case placeholder:tracking-normal placeholder:font-normal placeholder:text-[#8C95A0]"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-2.5">
                 <button
                   type="button"
                   onClick={handleQuickUnlock}
-                  className="py-2.5 px-3 rounded-xl bg-white/[0.05] hover:bg-white/10 text-stone-200 border border-white/10 text-xs font-medium uppercase tracking-wider transition-all"
+                  className="py-2.5 px-3 rounded-xl bg-[#F3EFEA] hover:bg-[#EAE3D9] text-[#0A192F] border border-[#E4DCD0] text-xs font-semibold uppercase tracking-wider transition-all"
                 >
                   Quick Demo Access
                 </button>
                 <button
                   type="submit"
-                  className="py-2.5 px-4 rounded-xl bg-white hover:bg-stone-200 text-neutral-950 font-semibold text-xs uppercase tracking-wider transition-all active:scale-95"
+                  className="py-2.5 px-4 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] font-semibold text-xs uppercase tracking-wider transition-all active:scale-95 shadow-sm"
                 >
                   Unlock Vault
                 </button>
               </div>
             </form>
 
-            <div className="mt-6 pt-4 border-t border-white/[0.06] flex items-center justify-between text-[11px] text-neutral-500">
-              <span>Encrypted SHA-256 Vault Protocol</span>
-              <span>Off-Market Holdings: $348,000,000+</span>
+            <div className="mt-6 pt-4 border-t border-[#E4DCD0] flex items-center justify-between text-[11px] text-[#747D88]">
+              <span>Encrypted SHA-256 Protocol</span>
+              <span className="text-[#C5A880] font-semibold">Off-Market: $348,000,000+</span>
             </div>
           </div>
         ) : (
           /* UNLOCKED VAULT LISTINGS */
           <div className="space-y-8 animate-fade-in">
             {/* Unlocked status bar */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-white/[0.03] border border-white/10">
-              <div className="flex items-center gap-2.5 text-xs text-stone-300">
-                <Unlock className="w-4 h-4 text-stone-200" />
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-white border border-[#E4DCD0] shadow-sm">
+              <div className="flex items-center gap-2.5 text-xs text-[#0A192F] font-medium">
+                <Unlock className="w-4 h-4 text-[#C5A880]" />
                 <span>Confidential Off-Market Dossiers Unlocked · Session Authenticated</span>
               </div>
               <button
@@ -155,75 +152,68 @@ export default function SovereignVault({ onScheduleTour }) {
                   setIsUnlocked(false);
                   addToast("Sovereign Vault re-locked", "info", "Security Secured");
                 }}
-                className="text-xs text-neutral-400 hover:text-white uppercase font-mono tracking-wider"
+                className="text-xs text-[#0A192F] hover:text-[#C5A880] uppercase font-mono tracking-wider transition-colors font-semibold"
               >
                 Re-Lock Vault
               </button>
             </div>
 
             {/* Off-Market Listings Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-7">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-7">
               {OFF_MARKET_PROPERTIES.map((prop) => (
                 <div
                   key={prop.id}
-                  className="bg-[#0C0E14] border border-white/15 hover:border-white/30 rounded-2xl overflow-hidden shadow-xl flex flex-col justify-between transition-all group"
+                  className="bg-white border border-[#E4DCD0] hover:border-[#C5A880] rounded-2xl overflow-hidden shadow-sm hover:shadow-xl flex flex-col justify-between transition-all group"
                 >
-                  <div>
-                    <div className="relative aspect-[16/10] overflow-hidden bg-neutral-950">
-                      <img
-                        src={prop.image}
-                        alt={prop.title}
-                        onError={(e) => {
-                          e.currentTarget.onerror = null;
-                          e.currentTarget.src = "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80";
-                        }}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 filter contrast-105"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30" />
-                      <div className="absolute top-3 left-3">
-                        <span className="px-2.5 py-1 rounded text-[10px] font-mono tracking-wider bg-black/70 backdrop-blur-md text-stone-300 border border-white/10">
-                          {prop.code}
-                        </span>
-                      </div>
-                      <div className="absolute top-3 right-3">
-                        <span className="px-2 py-0.5 rounded text-[9px] uppercase font-bold bg-white text-neutral-950">
-                          Private Treaty
-                        </span>
-                      </div>
+                  <div className="relative aspect-[16/10] overflow-hidden bg-neutral-900">
+                    <img
+                      src={prop.image}
+                      alt={prop.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
+                      <span className="px-2.5 py-1 rounded text-[10px] font-mono tracking-wider bg-[#0A192F]/85 backdrop-blur-md text-[#EADDC9] border border-[#C5A880]/40">
+                        {prop.code}
+                      </span>
+                      <span className="px-2.5 py-0.5 rounded text-[9px] uppercase font-bold bg-[#C5A880] text-[#0A192F]">
+                        Strict NDA
+                      </span>
                     </div>
+                  </div>
 
-                    <div className="p-5">
-                      <div className="text-[10px] text-stone-400 uppercase font-medium">
-                        {prop.location} · {prop.acreage}
+                  <div className="p-5 flex-1 flex flex-col justify-between">
+                    <div>
+                      <div className="text-[10px] font-mono uppercase tracking-widest text-[#C5A880] mb-1 font-semibold">
+                        {prop.location}
                       </div>
-                      <h3 className="text-base font-serif text-white font-medium mt-1 mb-2">
+                      <h4 className="text-lg font-serif text-[#0A192F] font-semibold mb-1">
                         {prop.title}
-                      </h3>
-                      <div className="text-xl font-serif font-semibold text-white mb-3">
-                        {formatRawPrice(prop.price)}
+                      </h4>
+                      <div className="text-xl font-serif text-[#0A192F] font-bold mb-2">
+                        {prop.priceFormatted}
                       </div>
 
-                      <div className="text-xs text-neutral-400 mb-4 pb-3 border-b border-white/[0.06]">
+                      <div className="text-xs text-[#545B65] pb-3 mb-3 border-b border-[#E4DCD0]">
                         {prop.specs}
                       </div>
 
-                      <div className="space-y-1.5 mb-2">
-                        {prop.features.map((feat, idx) => (
-                          <div key={idx} className="flex items-center gap-2 text-xs text-neutral-300">
-                            <span className="w-1.5 h-1.5 rounded-full bg-stone-400 shrink-0" />
+                      <div className="space-y-1.5 mb-5">
+                        {prop.features.map((feat, i) => (
+                          <div key={i} className="text-[11px] text-[#383E46] flex items-center gap-1.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#C5A880] shrink-0" />
                             <span>{feat}</span>
                           </div>
                         ))}
                       </div>
                     </div>
-                  </div>
 
-                  <div className="p-5 pt-0">
                     <button
-                      onClick={() => onScheduleTour({ title: `${prop.title} (Off-Market Vault)`, priceFormatted: prop.priceFormatted })}
-                      className="w-full py-2.5 rounded-xl bg-white hover:bg-stone-200 text-neutral-950 font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all"
+                      onClick={() => onScheduleTour && onScheduleTour(prop)}
+                      className="w-full py-2.5 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-sm active:scale-95"
                     >
-                      <FileCheck className="w-3.5 h-3.5" /> Request Offering Memorandum
+                      <span>Request NDA & Private Showing</span>
+                      <ArrowRight className="w-3.5 h-3.5 text-[#C5A880]" />
                     </button>
                   </div>
                 </div>

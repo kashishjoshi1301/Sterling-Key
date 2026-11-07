@@ -6,8 +6,7 @@ import HeroSection from "../components/HeroSection";
 import PropertyListings from "../components/PropertyListings";
 import SovereignVault from "../components/SovereignVault";
 import PropertyManagementSection from "../components/PropertyManagementSection";
-import EstateValuationTool from "../components/EstateValuationTool";
-import MortgageCalculator from "../components/MortgageCalculator";
+import FinancialSuite from "../components/FinancialSuite";
 import DestinationsSection from "../components/DestinationsSection";
 import AdvisorySection from "../components/AdvisorySection";
 import Footer from "../components/Footer";
@@ -36,14 +35,14 @@ function MainContent() {
   const [isSavedOpen, setIsSavedOpen] = useState(false);
   const [savedIds, setSavedIds] = useState([]);
 
-  // Comparison State - Starts empty so sticky comparison bar does not block mobile screen on load
+  // Comparison State
   const [compareIds, setCompareIds] = useState([]);
   const [isCompareModalOpen, setIsCompareModalOpen] = useState(false);
 
   // Virtual 360 Tour State
   const [virtualTourTitle, setVirtualTourTitle] = useState(null);
 
-  // Stat Card Modal State (Volume, Occupancy, Chambers, Placement)
+  // Stat Card Modal State
   const [statCardType, setStatCardType] = useState(null);
 
   const handleToggleSave = (id) => {
@@ -88,7 +87,7 @@ function MainContent() {
       filtered = filtered.filter((p) => p.category === "New Developments");
     }
 
-    if (filter.location.trim() !== "") {
+    if (filter.location && filter.location.trim() !== "") {
       const q = filter.location.toLowerCase();
       filtered = filtered.filter(
         (p) =>
@@ -99,7 +98,7 @@ function MainContent() {
       );
     }
 
-    if (filter.propertyType !== "all") {
+    if (filter.propertyType && filter.propertyType !== "all") {
       filtered = filtered.filter((p) => p.category === filter.propertyType);
     }
 
@@ -140,7 +139,7 @@ function MainContent() {
   };
 
   return (
-    <div className="min-h-screen bg-[#08090C] text-slate-100 flex flex-col font-sans selection:bg-white/20 selection:text-white">
+    <div className="min-h-screen bg-[#FAF8F5] text-[#1A1D20] flex flex-col font-sans selection:bg-[#C5A880]/30 selection:text-[#0A192F]">
       {/* Navigation Header */}
       <Navbar
         onOpenPortal={() => setIsPortalOpen(true)}
@@ -151,7 +150,7 @@ function MainContent() {
 
       {/* Main Page Content */}
       <main className="flex-1">
-        {/* Cinematic Auto-Playing Ken Burns Hero with Continuous Looping Architectural Video */}
+        {/* Cinematic Auto-Playing Ken Burns Hero with Continuous Architectural Video */}
         <HeroSection
           onSearchSubmit={handleSearchSubmit}
           onSelectTab={(tab) => {
@@ -162,7 +161,7 @@ function MainContent() {
           onOpenStatModal={(type) => setStatCardType(type)}
         />
 
-        {/* Featured Luxury Portfolio with Grid/Map Switcher & Compare checkboxes */}
+        {/* Featured Luxury Portfolio with Grid/Map Switcher */}
         <PropertyListings
           properties={properties}
           onSelectProperty={(prop) => setSelectedProperty(prop)}
@@ -184,22 +183,17 @@ function MainContent() {
           onOpenSchedule={handleOpenGeneralSchedule}
         />
 
-        {/* Instant Estate Valuation Tool (AVM / CMA Calculator) */}
-        <EstateValuationTool
+        {/* Unified Financial & Valuation Intelligence Suite */}
+        <FinancialSuite
           onOpenSchedule={handleOpenGeneralSchedule}
         />
 
-        {/* Financial & Mortgage Calculator (Redfin Inspired) */}
-        <MortgageCalculator
-          onOpenSchedule={handleOpenGeneralSchedule}
-        />
-
-        {/* Global Flagship Destinations (Douglas Elliman Inspired) */}
+        {/* Global Flagship Destinations */}
         <DestinationsSection
           onSelectCity={handleSelectCity}
         />
 
-        {/* Private Client Advisory (The Agency Inspired) */}
+        {/* Private Client Advisory */}
         <AdvisorySection
           onOpenSchedule={handleOpenGeneralSchedule}
         />
@@ -262,7 +256,7 @@ function MainContent() {
         propertyTitle={virtualTourTitle}
       />
 
-      {/* Stat Card In-Depth Transparency Modal */}
+      {/* Stat Card In-Depth Modal */}
       <StatCardModal
         statType={statCardType}
         onClose={() => setStatCardType(null)}

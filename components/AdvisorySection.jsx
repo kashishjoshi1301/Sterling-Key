@@ -1,78 +1,78 @@
 "use client";
 
 import React from "react";
-import { AGENTS_DATA, TESTIMONIALS_DATA, PRESS_ACCOLADES } from "../data/mockData";
-import { Phone, Mail, Award, Quote } from "lucide-react";
+import { AGENTS_DATA, PRESS_ACCOLADES } from "../data/mockData";
+import { Phone, Mail, Award } from "lucide-react";
 
 export default function AdvisorySection({ onOpenSchedule }) {
   return (
-    <section id="advisory" className="py-14 sm:py-16 bg-[#060709] text-white relative border-b border-white/[0.06]">
-      <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-12">
+    <section id="advisory" className="py-16 sm:py-20 bg-[#FAF8F5] text-[#1A1D20] relative border-b border-[#E4DCD0]">
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-medium uppercase tracking-[0.24em] bg-white/[0.04] border border-white/10 text-stone-300 mb-3">
-            <Award className="w-3 h-3 text-stone-400" /> The Agency Influence
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-[0.24em] bg-white border border-[#E4DCD0] text-[#0A192F] mb-3 shadow-2xs">
+            <Award className="w-3.5 h-3.5 text-[#C5A880]" /> The Agency Influence
           </div>
-          <h2 className="text-3xl sm:text-4xl font-serif tracking-tight text-white mb-3">
+          <h2 className="text-3xl sm:text-4xl font-serif tracking-tight text-[#0A192F] mb-3">
             Private Client Advisory
           </h2>
-          <p className="text-neutral-400 text-xs sm:text-sm leading-relaxed">
+          <p className="text-[#545B65] text-xs sm:text-sm leading-relaxed max-w-xl mx-auto">
             Representing the world’s most discerning families, institutions, and sovereign wealth entities with absolute confidentiality.
           </p>
         </div>
 
-        {/* Elite Agents Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+        {/* Elite Managing Partners Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           {AGENTS_DATA.map((agent) => (
             <div
               key={agent.id}
-              className="bg-[#0C0E13] border border-white/[0.07] rounded-2xl overflow-hidden hover:border-white/20 transition-all duration-300 group flex flex-col justify-between"
+              className="bg-white border border-[#E4DCD0] rounded-2xl overflow-hidden hover:border-[#C5A880] transition-all duration-300 group flex flex-col justify-between shadow-2xs hover:shadow-xl"
             >
               <div>
-                <div className="aspect-[4/5] relative overflow-hidden bg-neutral-950">
+                <div className="aspect-[4/5] relative overflow-hidden bg-neutral-900">
                   <img
                     src={agent.image}
                     alt={agent.name}
                     className="w-full h-full object-cover grayscale contrast-105 group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0C0E13] via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                   <div className="absolute bottom-3 left-4 right-4">
-                    <span className="px-2.5 py-1 rounded-md text-[10px] font-medium uppercase tracking-wider bg-black/60 backdrop-blur-md text-stone-200 border border-white/10 inline-block mb-1">
+                    <span className="px-2.5 py-1 rounded-md text-[10px] font-semibold uppercase tracking-wider bg-[#0A192F]/85 backdrop-blur-md text-[#EADDC9] border border-white/10 inline-block shadow-xs">
                       {agent.careerSales} Career Volume
                     </span>
                   </div>
                 </div>
 
                 <div className="p-4">
-                  <h3 className="text-base font-serif text-white font-medium group-hover:text-stone-300 transition-colors">
+                  <h3 className="text-base font-serif text-[#0A192F] font-semibold group-hover:text-[#183664] transition-colors">
                     {agent.name}
                   </h3>
-                  <div className="text-xs text-stone-300 font-medium mb-1">
+                  <div className="text-xs text-[#C5A880] font-semibold mb-1">
                     {agent.role}
                   </div>
-                  <div className="text-[11px] text-neutral-400 mb-2.5">
-                    Focus: {agent.region}
+                  <div className="text-[11px] text-[#747D88] mb-2">
+                    Region: {agent.region}
                   </div>
-                  <p className="text-xs text-neutral-400 leading-relaxed line-clamp-3">
+                  <p className="text-xs text-[#545B65] leading-relaxed line-clamp-2">
                     {agent.bio}
                   </p>
                 </div>
               </div>
 
               <div className="p-4 pt-0">
-                <div className="grid grid-cols-2 gap-2 pt-2.5 border-t border-white/[0.05]">
+                <div className="grid grid-cols-2 gap-2 pt-2.5 border-t border-[#E4DCD0]">
                   <a
                     href={`tel:${agent.phone}`}
-                    className="py-1.5 px-3 rounded-lg bg-white/[0.03] hover:bg-white/[0.07] text-neutral-300 hover:text-white text-xs font-medium uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all"
+                    className="py-1.5 px-3 rounded-lg bg-[#F3EFEA] hover:bg-[#EAE3D9] text-[#1A1D20] text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all border border-[#E4DCD0]"
                   >
-                    <Phone className="w-3 h-3 text-stone-400" />
+                    <Phone className="w-3 h-3 text-[#C5A880]" />
                     Call
                   </a>
                   <button
                     onClick={onOpenSchedule}
-                    className="py-1.5 px-3 rounded-lg bg-white/[0.06] hover:bg-white/10 text-stone-200 border border-white/10 text-xs font-medium uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all"
+                    className="py-1.5 px-3 rounded-lg bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-xs"
                   >
-                    <Mail className="w-3 h-3" />
+                    <Mail className="w-3 h-3 text-[#C5A880]" />
                     Inquire
                   </button>
                 </div>
@@ -81,51 +81,23 @@ export default function AdvisorySection({ onOpenSchedule }) {
           ))}
         </div>
 
-        {/* Press Accolades */}
-        <div className="bg-[#0C0E13] rounded-2xl border border-white/[0.06] p-7 mb-16">
-          <div className="text-center text-[10px] uppercase tracking-[0.24em] text-neutral-400 font-medium mb-6">
-            Recognized By
+        {/* Streamlined Press & Recognition Strip */}
+        <div className="bg-white rounded-3xl border border-[#E4DCD0] p-6 sm:p-8 shadow-2xs">
+          <div className="text-center text-[10px] uppercase tracking-[0.24em] text-[#C5A880] font-semibold mb-6">
+            Global Recognition & Media Authority
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 text-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
             {PRESS_ACCOLADES.map((item, idx) => (
-              <div key={idx} className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.04]">
-                <div className="font-serif text-base font-semibold text-white mb-1.5">
+              <div key={idx} className="p-4 rounded-xl bg-[#FAF8F5] border border-[#E4DCD0]">
+                <div className="font-serif text-sm font-semibold text-[#0A192F] mb-1">
                   {item.outlet}
                 </div>
-                <p className="text-xs text-neutral-400 italic">
+                <p className="text-xs text-[#545B65] italic">
                   "{item.quote}"
                 </p>
               </div>
             ))}
           </div>
-        </div>
-
-        {/* Client Testimonials */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {TESTIMONIALS_DATA.map((t, idx) => (
-            <div
-              key={idx}
-              className="bg-[#0C0E13] border border-white/[0.06] rounded-2xl p-6 flex flex-col justify-between"
-            >
-              <div>
-                <Quote className="w-6 h-6 text-stone-500 mb-3" />
-                <p className="text-xs text-neutral-300 leading-relaxed mb-5 italic">
-                  "{t.quote}"
-                </p>
-              </div>
-              <div className="pt-3 border-t border-white/[0.05]">
-                <div className="font-serif text-xs text-white font-medium">
-                  {t.author}
-                </div>
-                <div className="text-[11px] text-stone-400">
-                  {t.title}
-                </div>
-                <div className="text-[10px] text-neutral-500">
-                  {t.location}
-                </div>
-              </div>
-            </div>
-          ))}
         </div>
       </div>
     </section>

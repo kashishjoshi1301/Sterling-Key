@@ -2,14 +2,30 @@
 
 @layer base {
   :root {
-    --noir-950: #060709;
-    --noir-900: #0B0D12;
-    --noir-850: #101218;
-    --noir-800: #161822;
-    --sand-300: #DFD7CC;
-    --sand-400: #C8BCAC;
-    --sand-500: #B2A390;
-    --platinum: #EAEBED;
+    --navy-950: #060D18;
+    --navy-900: #0A192F;
+    --navy-850: #0F233F;
+    --navy-800: #142E54;
+    --navy-700: #1C3B68;
+
+    --gold-300: #EADDC9;
+    --gold-400: #D8BD99;
+    --gold-500: #C5A880;
+    --gold-600: #A88A62;
+    --gold-700: #8C714D;
+
+    --ivory-50: #FDFCFB;
+    --ivory-100: #FAF8F5;
+    --ivory-200: #F3EFEA;
+    --ivory-300: #EAE3D9;
+    --ivory-border: #E4DCD0;
+
+    --charcoal-900: #1A1D20;
+    --charcoal-800: #25292E;
+    --charcoal-700: #383E46;
+    --charcoal-600: #545B65;
+    --charcoal-500: #747D88;
+    --charcoal-400: #9BA3AE;
   }
 
   html {
@@ -17,9 +33,9 @@
   }
 
   body {
-    background-color: #060709;
-    color: #F1F3F5;
-    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #FAF8F5;
+    color: #1A1D20;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     overflow-x: hidden;
     letter-spacing: -0.01em;
   }
@@ -32,33 +48,33 @@
 
 /* Custom smooth minimalist scrollbar */
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #060709;
+  background: #FAF8F5;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1C1F28;
-  border-radius: 3px;
+  background: #C5A880;
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #2E3342;
+  background: #0A192F;
 }
 
 /* Slow, Cinematic Luxury Transitions */
 .transition-luxury {
-  transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .transition-silky {
-  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Slower Keyframe Animations */
-@keyframes fadeInSlow {
+/* Top-Level Keyframe Animations */
+@keyframes fadeInUpLuxury {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(18px);
   }
   to {
     opacity: 1;
@@ -66,27 +82,69 @@
   }
 }
 
-@keyframes pulseGently {
+@keyframes floatGentle {
   0%, 100% {
-    opacity: 0.3;
-    transform: scale(1);
+    transform: translateY(0);
   }
   50% {
-    opacity: 0.6;
-    transform: scale(1.03);
+    transform: translateY(-5px);
   }
 }
 
-.animate-fade-in {
-  animation: fadeInSlow 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+@keyframes pulseGoldRing {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(197, 168, 128, 0.5);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 8px rgba(197, 168, 128, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(197, 168, 128, 0);
+  }
 }
 
-.animate-fade-in-slow {
-  animation: fadeInSlow 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+.animate-fade-up {
+  animation: fadeInUpLuxury 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.animate-pulse-gentle {
-  animation: pulseGently 6s ease-in-out infinite;
+.animate-float-gentle {
+  animation: floatGentle 4s ease-in-out infinite;
+}
+
+.animate-pulse-gold {
+  animation: pulseGoldRing 2.5s infinite;
+}
+
+/* Top-Tier Luxury Card Hover Effect */
+.luxury-card-hover {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.luxury-card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 35px -10px rgba(10, 25, 47, 0.08), 0 0 1px rgba(197, 168, 128, 0.4);
+  border-color: #C5A880;
+}
+
+/* Button Shimmer Glaze on Hover */
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.btn-shimmer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-shimmer:hover::before {
+  transform: translateX(200%);
 }
 
 /* Hide scrollbar for pills */
