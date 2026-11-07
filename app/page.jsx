@@ -34,10 +34,10 @@ function MainContent() {
   const [scheduleTargetProperty, setScheduleTargetProperty] = useState(null);
   const [isPortalOpen, setIsPortalOpen] = useState(false);
   const [isSavedOpen, setIsSavedOpen] = useState(false);
-  const [savedIds, setSavedIds] = useState(["prop-1", "prop-3"]);
+  const [savedIds, setSavedIds] = useState([]);
 
-  // Comparison State
-  const [compareIds, setCompareIds] = useState(["prop-1", "prop-2"]);
+  // Comparison State - Starts empty so sticky comparison bar does not block mobile screen on load
+  const [compareIds, setCompareIds] = useState([]);
   const [isCompareModalOpen, setIsCompareModalOpen] = useState(false);
 
   // Virtual 360 Tour State
@@ -262,7 +262,7 @@ function MainContent() {
         propertyTitle={virtualTourTitle}
       />
 
-      {/* Stat Card In-Depth Transparency Modal (Video keeps looping in background) */}
+      {/* Stat Card In-Depth Transparency Modal */}
       <StatCardModal
         statType={statCardType}
         onClose={() => setStatCardType(null)}

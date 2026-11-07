@@ -4,28 +4,28 @@ import React from "react";
 
 export default function Logo({ size = "md", showText = true, className = "" }) {
   const emblemSizes = {
-    sm: "w-7 h-7",
-    md: "w-9 h-9",
-    lg: "w-12 h-12",
-    xl: "w-16 h-16"
+    sm: "w-6 h-6 sm:w-7 sm:h-7",
+    md: "w-7 h-7 sm:w-9 sm:h-9",
+    lg: "w-10 h-10 sm:w-12 sm:h-12",
+    xl: "w-12 h-12 sm:w-16 sm:h-16"
   };
 
   const titleSizes = {
-    sm: "text-xs tracking-[0.22em]",
-    md: "text-sm tracking-[0.26em]",
-    lg: "text-lg tracking-[0.3em]",
-    xl: "text-xl tracking-[0.35em]"
+    sm: "text-[10px] sm:text-xs tracking-[0.16em] sm:tracking-[0.22em]",
+    md: "text-xs sm:text-sm tracking-[0.18em] sm:tracking-[0.26em]",
+    lg: "text-base sm:text-lg tracking-[0.22em] sm:tracking-[0.3em]",
+    xl: "text-lg sm:text-xl tracking-[0.26em] sm:tracking-[0.35em]"
   };
 
   const subtitleSizes = {
-    sm: "text-[8px] tracking-[0.16em]",
-    md: "text-[8.5px] tracking-[0.2em] xl:tracking-[0.24em]",
-    lg: "text-[11px] tracking-[0.28em]",
-    xl: "text-xs tracking-[0.32em]"
+    sm: "text-[6.5px] sm:text-[8px] tracking-[0.12em] sm:tracking-[0.16em]",
+    md: "text-[7px] sm:text-[8.5px] tracking-[0.12em] sm:tracking-[0.24em]",
+    lg: "text-[9px] sm:text-[11px] tracking-[0.18em] sm:tracking-[0.28em]",
+    xl: "text-[10px] sm:text-xs tracking-[0.22em] sm:tracking-[0.32em]"
   };
 
   return (
-    <div className={`flex items-center gap-3 select-none group cursor-pointer ${className}`}>
+    <div className={`flex items-center gap-2 sm:gap-3 select-none group cursor-pointer ${className}`}>
       {/* Minimalist Architectural Geometric Crest */}
       <div className={`relative ${emblemSizes[size]} flex items-center justify-center shrink-0`}>
         <svg
