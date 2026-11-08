@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { 
   Search, 
   MapPin, 
@@ -13,9 +14,10 @@ import {
 import { useToast } from "./Toast";
 
 export default function HeroSection({ onSearchSubmit, onSelectTab, onOpenStatModal }) {
+  const router = useRouter();
   const { addToast } = useToast();
   const [activeTab, setActiveTab] = useState("buy");
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState("all");
   const [propertyType, setPropertyType] = useState("all");
   const [priceRange, setPriceRange] = useState("all");
 
@@ -89,12 +91,21 @@ export default function HeroSection({ onSearchSubmit, onSelectTab, onOpenStatMod
         propertyType,
         priceRange
       });
-      addToast(`Filtered collection for ${location || "Global Flagships"}`, "success", "Search Executed");
     }
+    
+    // Seamless Multipage Navigation: Transition directly to /collection with query parameters
+    const params = new URLSearchParams();
+    if (location && location !== "all") params.set("destination", location);
+    if (propertyType && propertyType !== "all") params.set("style", propertyType);
+    if (priceRange && priceRange !== "all") params.set("price", priceRange);
+    if (activeTab) params.set("tab", activeTab);
+
+    addToast(`Filtering flagship collection for ${location === "all" ? "Global Portfolios" : location}`, "success", "Search Executed");
+    router.push(`/collection?${params.toString()}`);
   };
 
   return (
-    <div className="relative min-h-[auto] sm:min-h-[85vh] flex items-center justify-center pt-8 sm:pt-12 pb-16 sm:pb-24 overflow-hidden">
+    <div className="relative min-h-[auto] flex items-center justify-center pt-3 sm:pt-5 lg:pt-6 pb-6 sm:pb-8 overflow-hidden">
       {/* Background Architectural Video - Continuously Looping High-Definition Real Estate Drone Footage */}
       <div 
         className="absolute inset-0 z-0 overflow-hidden pointer-events-none bg-cover bg-center"
@@ -120,38 +131,38 @@ export default function HeroSection({ onSearchSubmit, onSelectTab, onOpenStatMod
         <div className="absolute inset-0 bg-gradient-to-t from-[#FAF8F5] via-[#0A192F]/45 to-[#0A192F]/65 pointer-events-none" />
       </div>
 
-      {/* Main Centered Content Container */}
-      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center mt-2 sm:mt-4 w-full">
+      {/* Main Centered Content Container - Perfectly Proportioned so Bottom Metrics are 100% Visible */}
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center w-full">
         {/* Subtle Institutional Badge with Gentle Float */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0A192F]/85 border border-[#C5A880]/50 backdrop-blur-xl mb-4 sm:mb-5 shadow-md animate-float-gentle">
-          <span className="w-2 h-2 rounded-full bg-[#C5A880] animate-ping" />
-          <span className="text-[9px] sm:text-[10px] uppercase font-mono tracking-[0.22em] text-[#EADDC9] font-medium">
+        <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 rounded-full bg-[#0A192F]/90 border border-[#C5A880]/50 backdrop-blur-xl mb-2 sm:mb-2.5 shadow-md animate-float-gentle">
+          <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#C5A880] animate-ping" />
+          <span className="text-[9px] sm:text-[11px] uppercase font-mono tracking-[0.16em] sm:tracking-[0.2em] text-[#EADDC9] font-semibold">
             Real Estate & Institutional Asset Architecture
           </span>
         </div>
 
-        {/* Headline - Editorial Luxury Typography */}
-        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-normal tracking-tight text-[#FAF8F5] leading-[1.12] mb-3 sm:mb-4 drop-shadow-sm animate-fade-up">
-          Where Architectural Mastery <br />
-          <span className="italic font-light text-[#C5A880] underline decoration-[#C5A880]/30 underline-offset-8">
+        {/* Headline - Editorial Luxury Typography with Controlled Height */}
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-[44px] font-serif font-normal tracking-tight text-[#FAF8F5] leading-[1.12] mb-1.5 sm:mb-2.5 drop-shadow-md animate-fade-up">
+          Where Architectural Mastery <br className="hidden sm:inline" />
+          <span className="italic font-light text-[#C5A880] underline decoration-[#C5A880]/30 underline-offset-4 sm:underline-offset-6">
             Meets Unrivaled Living.
           </span>
         </h1>
 
-        {/* Subtitle */}
-        <p className="max-w-lg mx-auto text-xs sm:text-sm text-[#DDD4C6] font-sans font-normal leading-relaxed mb-6 sm:mb-8 text-balance animate-fade-up [animation-delay:150ms]">
+        {/* Subtitle with High-Contrast Typography & Balanced Line Length */}
+        <p className="max-w-xl mx-auto text-[11px] sm:text-xs lg:text-sm text-[#EAE3D9] font-sans font-normal leading-relaxed mb-3 sm:mb-4 text-balance animate-fade-up [animation-delay:150ms]">
           Curated private estates, visionary global penthouses, and institutional property management designed to compound generational wealth.
         </p>
 
         {/* Minimalist Search Engine Card with Frosted Depth */}
-        <div className="w-full bg-[#FAF8F5]/95 backdrop-blur-2xl border border-[#E4DCD0] rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-2xl shadow-[#0A192F]/20 text-[#1A1D20] transition-all duration-500 ease-out hover:shadow-3xl animate-fade-up [animation-delay:250ms]">
-          {/* Mode Switcher Tabs with Silky Transitions - Fully Responsive & Never Truncated */}
-          <div className="flex items-center gap-1.5 sm:gap-2 border-b border-[#E4DCD0] pb-3 mb-4 overflow-x-auto no-scrollbar flex-nowrap -mx-1 px-1">
+        <div className="w-full bg-[#FAF8F5]/98 backdrop-blur-2xl border border-[#E4DCD0] rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 lg:p-5 shadow-2xl shadow-[#0A192F]/20 text-[#1A1D20] transition-all duration-500 ease-out hover:shadow-3xl animate-fade-up [animation-delay:250ms]">
+          {/* Mode Switcher Tabs with Silky Transitions */}
+          <div className="flex items-center gap-1 sm:gap-2 border-b border-[#E4DCD0] pb-2 mb-2.5 sm:mb-3 overflow-x-auto no-scrollbar flex-nowrap -mx-1 px-1">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => handleTabChange(tab.id)}
-                className={`shrink-0 px-3.5 sm:px-4 py-2 rounded-xl text-xs font-semibold tracking-[0.06em] uppercase transition-all duration-300 whitespace-nowrap active:scale-95 cursor-pointer ${
+                className={`shrink-0 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold tracking-[0.06em] uppercase transition-all duration-300 whitespace-nowrap active:scale-95 cursor-pointer ${
                   activeTab === tab.id
                     ? "bg-[#0A192F] text-[#FAF8F5] shadow-sm scale-[1.02]"
                     : "text-[#545B65] hover:text-[#0A192F] hover:bg-[#F3EFEA]"
@@ -163,150 +174,166 @@ export default function HeroSection({ onSearchSubmit, onSelectTab, onOpenStatMod
             ))}
           </div>
 
-          {/* Search Inputs Form */}
-          <form onSubmit={handleSearch} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-left">
+          {/* Search Inputs Form: ALL 3 FIELDS ARE DROPDOWNS AS REQUESTED */}
+          <form onSubmit={handleSearch} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-2.5 text-left">
+            {/* Field 1: Destination Dropdown */}
             <div>
-              <label className="block text-[9px] sm:text-[10px] uppercase tracking-[0.14em] text-[#545B65] mb-1 font-semibold">
+              <label className="block text-[10px] sm:text-[11px] uppercase tracking-[0.12em] text-[#545B65] mb-1 font-bold">
                 Destination
               </label>
-              <div className="flex items-center bg-white border border-[#E4DCD0] rounded-xl px-3 py-2.5 focus-within:border-[#C5A880] focus-within:ring-2 focus-within:ring-[#C5A880]/20 transition-all shadow-2xs">
-                <MapPin className="w-3.5 h-3.5 text-[#C5A880] mr-2 shrink-0" />
-                <input
-                  type="text"
-                  placeholder="Bel-Air, Tribeca, London..."
+              <div className="flex items-center bg-white border border-[#E4DCD0] rounded-xl px-2.5 sm:px-3 py-1.5 sm:py-2 focus-within:border-[#C5A880] focus-within:ring-2 focus-within:ring-[#C5A880]/20 transition-all shadow-2xs">
+                <MapPin className="w-3.5 h-3.5 text-[#C5A880] mr-1.5 sm:mr-2 shrink-0" />
+                <select
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
-                  className="bg-transparent text-xs text-[#1A1D20] placeholder-[#8C95A0] focus:outline-none w-full"
-                />
+                  className="bg-transparent text-xs sm:text-sm font-medium text-[#1A1D20] focus:outline-none w-full cursor-pointer [&>option]:bg-white [&>option]:text-[#1A1D20]"
+                >
+                  <option value="all">All Global Destinations</option>
+                  <option value="Manhattan, New York">Manhattan, New York</option>
+                  <option value="Los Angeles, California">Los Angeles, California</option>
+                  <option value="Miami, Florida">Miami & Islands, Florida</option>
+                  <option value="London, United Kingdom">Central London, United Kingdom</option>
+                  <option value="Aspen, Colorado">Aspen & Snowmass, Colorado</option>
+                  <option value="Dubai, United Arab Emirates">Dubai, United Arab Emirates</option>
+                  <option value="Monaco">Monaco & French Riviera</option>
+                  <option value="Paris, France">Paris, France</option>
+                  <option value="Lake Como, Italy">Lake Como & Milan, Italy</option>
+                  <option value="Tokyo, Japan">Tokyo, Japan</option>
+                  <option value="Geneva, Switzerland">Geneva, Switzerland</option>
+                  <option value="Bahamas">Bahamas & Sovereign Cays</option>
+                </select>
               </div>
             </div>
 
+            {/* Field 2: Architectural Style Dropdown */}
             <div>
-              <label className="block text-[9px] sm:text-[10px] uppercase tracking-[0.14em] text-[#545B65] mb-1 font-semibold">
-                Style
+              <label className="block text-[10px] sm:text-[11px] uppercase tracking-[0.12em] text-[#545B65] mb-1 font-bold">
+                Architectural Style
               </label>
-              <div className="flex items-center bg-white border border-[#E4DCD0] rounded-xl px-3 py-2.5 focus-within:border-[#C5A880] focus-within:ring-2 focus-within:ring-[#C5A880]/20 transition-all shadow-2xs">
-                <Home className="w-3.5 h-3.5 text-[#C5A880] mr-2 shrink-0" />
+              <div className="flex items-center bg-white border border-[#E4DCD0] rounded-xl px-2.5 sm:px-3 py-1.5 sm:py-2 focus-within:border-[#C5A880] focus-within:ring-2 focus-within:ring-[#C5A880]/20 transition-all shadow-2xs">
+                <Home className="w-3.5 h-3.5 text-[#C5A880] mr-1.5 sm:mr-2 shrink-0" />
                 <select
                   value={propertyType}
                   onChange={(e) => setPropertyType(e.target.value)}
-                  className="bg-transparent text-xs text-[#1A1D20] focus:outline-none w-full cursor-pointer [&>option]:bg-white [&>option]:text-[#1A1D20]"
+                  className="bg-transparent text-xs sm:text-sm font-medium text-[#1A1D20] focus:outline-none w-full cursor-pointer [&>option]:bg-white [&>option]:text-[#1A1D20]"
                 >
                   <option value="all">All Architectural Styles</option>
-                  <option value="Penthouses">Penthouses</option>
-                  <option value="Waterfront">Waterfront & Coastal</option>
-                  <option value="Architectural">Modern Architectural</option>
-                  <option value="Historic">Historic & Listed</option>
+                  <option value="Penthouses">Modern Penthouses</option>
+                  <option value="Waterfront">Waterfront & Island Compounds</option>
+                  <option value="Architectural">Contemporary Villas</option>
+                  <option value="Historic">Historic & Listed Estates</option>
                   <option value="New Developments">New Developments</option>
                 </select>
               </div>
             </div>
 
+            {/* Field 3: Valuation Range Dropdown */}
             <div>
-              <label className="block text-[9px] sm:text-[10px] uppercase tracking-[0.14em] text-[#545B65] mb-1 font-semibold">
-                Price Bracket
+              <label className="block text-[10px] sm:text-[11px] uppercase tracking-[0.12em] text-[#545B65] mb-1 font-bold">
+                Valuation Bracket
               </label>
-              <div className="flex items-center bg-white border border-[#E4DCD0] rounded-xl px-3 py-2.5 focus-within:border-[#C5A880] focus-within:ring-2 focus-within:ring-[#C5A880]/20 transition-all shadow-2xs">
-                <DollarSign className="w-3.5 h-3.5 text-[#C5A880] mr-2 shrink-0" />
+              <div className="flex items-center bg-white border border-[#E4DCD0] rounded-xl px-2.5 sm:px-3 py-1.5 sm:py-2 focus-within:border-[#C5A880] focus-within:ring-2 focus-within:ring-[#C5A880]/20 transition-all shadow-2xs">
+                <DollarSign className="w-3.5 h-3.5 text-[#C5A880] mr-1.5 sm:mr-2 shrink-0" />
                 <select
                   value={priceRange}
                   onChange={(e) => setPriceRange(e.target.value)}
-                  className="bg-transparent text-xs text-[#1A1D20] focus:outline-none w-full cursor-pointer [&>option]:bg-white [&>option]:text-[#1A1D20]"
+                  className="bg-transparent text-xs sm:text-sm font-medium text-[#1A1D20] focus:outline-none w-full cursor-pointer [&>option]:bg-white [&>option]:text-[#1A1D20]"
                 >
-                  <option value="all">Any Valuation</option>
+                  <option value="all">Any Valuation Bracket</option>
                   <option value="under10">$5M – $10M</option>
                   <option value="10to25">$10M – $25M</option>
                   <option value="25to50">$25M – $50M</option>
-                  <option value="over50">$50M+ Trophy Assets</option>
+                  <option value="over50">$50M+ Trophy Sovereign Assets</option>
                 </select>
               </div>
             </div>
 
+            {/* Action Search Button */}
             <div className="flex items-end">
               <button
                 type="submit"
-                className="w-full py-2.5 px-5 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-xs font-semibold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 shadow-md hover:shadow-lg active:scale-98 cursor-pointer"
+                className="w-full py-2 sm:py-2.5 px-4 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-xs font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 shadow-md hover:shadow-lg active:scale-98 cursor-pointer group"
               >
-                <Search className="w-3.5 h-3.5 text-[#C5A880]" />
-                <span>Search</span>
+                <Search className="w-3.5 h-3.5 text-[#C5A880] transition-transform group-hover:scale-110" />
+                <span>Search Portfolio</span>
               </button>
             </div>
           </form>
 
-          {/* Clean Institutional Trust Line with subtle gold checks */}
-          <div className="mt-3.5 pt-3 border-t border-[#E4DCD0] flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-[10px] sm:text-[11px] text-[#545B65]">
-            <span className="flex items-center gap-1.5 hover:text-[#0A192F] transition-colors cursor-default">
+          {/* Institutional Trust Line */}
+          <div className="mt-2.5 pt-2 border-t border-[#E4DCD0] flex flex-wrap items-center justify-center gap-2.5 sm:gap-5 text-[9px] sm:text-[11px] text-[#545B65]">
+            <span className="flex items-center gap-1 font-medium hover:text-[#0A192F] transition-colors cursor-default">
               <Check className="w-3 h-3 text-[#C5A880]" /> Off-Market Pocket Access
             </span>
-            <span className="flex items-center gap-1.5 hover:text-[#0A192F] transition-colors cursor-default">
+            <span className="flex items-center gap-1 font-medium hover:text-[#0A192F] transition-colors cursor-default">
               <Check className="w-3 h-3 text-[#C5A880]" /> Greystar-Grade Care
             </span>
-            <span className="flex items-center gap-1.5 hover:text-[#0A192F] transition-colors cursor-default">
+            <span className="flex items-center gap-1 font-medium hover:text-[#0A192F] transition-colors cursor-default">
               <Check className="w-3 h-3 text-[#C5A880]" /> Institutional Protection
             </span>
           </div>
         </div>
 
-        {/* Minimalist Luxury Stat Cards with Lift & Arrow Glide */}
-        <div className="mt-6 sm:mt-8 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 border-t border-[#E4DCD0]/60 pt-5 sm:pt-7">
+        {/* Live Portfolio Metrics Strip - Fully Visible and Framed Above the Fold on Laptop Screens */}
+        <div className="mt-3.5 sm:mt-5 grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
           <button
             onClick={() => onOpenStatModal && onOpenStatModal("volume")}
-            className="luxury-card-hover p-3 sm:p-3.5 rounded-2xl bg-white/80 hover:bg-white border border-[#E4DCD0] text-left transition-all shadow-2xs group cursor-pointer"
+            className="p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl bg-[#FAF8F5]/95 border border-[#E4DCD0] shadow-sm backdrop-blur-md text-left transition-all hover:-translate-y-0.5 hover:border-[#C5A880] cursor-pointer group"
           >
             <div className="flex items-center justify-between">
-              <div className="text-xl sm:text-2xl font-serif font-bold text-[#0A192F] tracking-tight">
-                $5.2B<span className="text-[#C5A880] font-sans font-light text-sm sm:text-base">+</span>
-              </div>
-              <ArrowUpRight className="w-3.5 h-3.5 text-[#747D88] group-hover:text-[#C5A880] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+              <p className="text-lg sm:text-xl lg:text-2xl font-serif text-[#0A192F] font-bold tracking-tight">
+                $5.2B<span className="text-[#C5A880]">+</span>
+              </p>
+              <ArrowUpRight className="w-3.5 h-3.5 text-[#8F949B] group-hover:text-[#0A192F] transition-colors" />
             </div>
-            <div className="text-[9px] sm:text-[10px] uppercase tracking-[0.14em] text-[#545B65] mt-1 font-medium">
+            <p className="text-[9px] sm:text-[10px] font-mono tracking-wider uppercase text-[#545B65] mt-0.5 font-semibold">
               Volume Closed
-            </div>
+            </p>
           </button>
 
           <button
             onClick={() => onOpenStatModal && onOpenStatModal("occupancy")}
-            className="luxury-card-hover p-3 sm:p-3.5 rounded-2xl bg-white/80 hover:bg-white border border-[#E4DCD0] text-left transition-all shadow-2xs group cursor-pointer"
+            className="p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl bg-[#FAF8F5]/95 border border-[#E4DCD0] shadow-sm backdrop-blur-md text-left transition-all hover:-translate-y-0.5 hover:border-[#C5A880] cursor-pointer group"
           >
             <div className="flex items-center justify-between">
-              <div className="text-xl sm:text-2xl font-serif font-bold text-[#0A192F] tracking-tight">
-                99.4<span className="text-[#C5A880] font-sans font-light text-sm sm:text-base">%</span>
-              </div>
-              <ArrowUpRight className="w-3.5 h-3.5 text-[#747D88] group-hover:text-[#C5A880] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+              <p className="text-lg sm:text-xl lg:text-2xl font-serif text-[#0A192F] font-bold tracking-tight">
+                99.4<span className="text-[#C5A880]">%</span>
+              </p>
+              <ArrowUpRight className="w-3.5 h-3.5 text-[#8F949B] group-hover:text-[#0A192F] transition-colors" />
             </div>
-            <div className="text-[9px] sm:text-[10px] uppercase tracking-[0.14em] text-[#545B65] mt-1 font-medium">
+            <p className="text-[9px] sm:text-[10px] font-mono tracking-wider uppercase text-[#545B65] mt-0.5 font-semibold">
               Portfolio Occupancy
-            </div>
+            </p>
           </button>
 
           <button
-            onClick={() => onOpenStatModal && onOpenStatModal("offices")}
-            className="luxury-card-hover p-3 sm:p-3.5 rounded-2xl bg-white/80 hover:bg-white border border-[#E4DCD0] text-left transition-all shadow-2xs group cursor-pointer"
+            onClick={() => onOpenStatModal && onOpenStatModal("flagships")}
+            className="p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl bg-[#FAF8F5]/95 border border-[#E4DCD0] shadow-sm backdrop-blur-md text-left transition-all hover:-translate-y-0.5 hover:border-[#C5A880] cursor-pointer group"
           >
             <div className="flex items-center justify-between">
-              <div className="text-xl sm:text-2xl font-serif font-bold text-[#0A192F] tracking-tight">
+              <p className="text-lg sm:text-xl lg:text-2xl font-serif text-[#0A192F] font-bold tracking-tight">
                 14
-              </div>
-              <ArrowUpRight className="w-3.5 h-3.5 text-[#747D88] group-hover:text-[#C5A880] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+              </p>
+              <ArrowUpRight className="w-3.5 h-3.5 text-[#8F949B] group-hover:text-[#0A192F] transition-colors" />
             </div>
-            <div className="text-[9px] sm:text-[10px] uppercase tracking-[0.14em] text-[#545B65] mt-1 font-medium">
+            <p className="text-[9px] sm:text-[10px] font-mono tracking-wider uppercase text-[#545B65] mt-0.5 font-semibold">
               Flagship Chambers
-            </div>
+            </p>
           </button>
 
           <button
             onClick={() => onOpenStatModal && onOpenStatModal("placement")}
-            className="luxury-card-hover p-3 sm:p-3.5 rounded-2xl bg-white/80 hover:bg-white border border-[#E4DCD0] text-left transition-all shadow-2xs group cursor-pointer"
+            className="p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl bg-[#FAF8F5]/95 border border-[#E4DCD0] shadow-sm backdrop-blur-md text-left transition-all hover:-translate-y-0.5 hover:border-[#C5A880] cursor-pointer group"
           >
             <div className="flex items-center justify-between">
-              <div className="text-xl sm:text-2xl font-serif font-bold text-[#0A192F] tracking-tight">
-                18 <span className="text-[#C5A880] font-sans font-light text-xs">Days</span>
-              </div>
-              <ArrowUpRight className="w-3.5 h-3.5 text-[#747D88] group-hover:text-[#C5A880] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+              <p className="text-lg sm:text-xl lg:text-2xl font-serif text-[#0A192F] font-bold tracking-tight">
+                18 <span className="text-[11px] text-[#545B65] font-sans font-normal">Days</span>
+              </p>
+              <ArrowUpRight className="w-3.5 h-3.5 text-[#8F949B] group-hover:text-[#0A192F] transition-colors" />
             </div>
-            <div className="text-[9px] sm:text-[10px] uppercase tracking-[0.14em] text-[#545B65] mt-1 font-medium">
+            <p className="text-[9px] sm:text-[10px] font-mono tracking-wider uppercase text-[#545B65] mt-0.5 font-semibold">
               Avg. Placement
-            </div>
+            </p>
           </button>
         </div>
       </div>

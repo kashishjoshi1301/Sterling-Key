@@ -29,16 +29,16 @@ export function ToastProvider({ children }) {
         {toasts.map((toast) => (
           <div
             key={toast.id}
-            className="pointer-events-auto bg-[#0E1015]/95 backdrop-blur-xl border border-white/15 text-white p-3.5 rounded-2xl shadow-2xl shadow-black/80 flex items-start gap-3 animate-fade-in transition-all"
+            className="pointer-events-auto bg-[#0A192F]/95 backdrop-blur-xl border border-[#C5A880]/40 text-white p-3.5 rounded-2xl shadow-2xl shadow-[#060D18]/80 flex items-start gap-3 animate-fade-in transition-all"
           >
             <div className="shrink-0 mt-0.5">
               {toast.type === "success" && (
-                <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-stone-200">
+                <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-[#C5A880]">
                   <CheckCircle2 className="w-4 h-4" />
                 </div>
               )}
               {toast.type === "info" && (
-                <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-stone-200">
+                <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-[#C5A880]">
                   <Info className="w-4 h-4" />
                 </div>
               )}
@@ -51,18 +51,18 @@ export function ToastProvider({ children }) {
 
             <div className="flex-1 min-w-0">
               {toast.title && (
-                <div className="text-xs font-serif font-medium text-white line-clamp-1">
+                <div className="text-xs font-serif font-semibold text-[#EADDC9] line-clamp-1">
                   {toast.title}
                 </div>
               )}
-              <div className="text-[11px] text-neutral-300 leading-snug">
+              <div className="text-[11px] text-[#DDD4C6] leading-snug">
                 {toast.message}
               </div>
             </div>
 
             <button
               onClick={() => removeToast(toast.id)}
-              className="text-neutral-500 hover:text-white p-0.5"
+              className="text-[#A8B2C1] hover:text-white p-0.5"
             >
               <X className="w-3.5 h-3.5" />
             </button>

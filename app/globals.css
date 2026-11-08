@@ -91,6 +91,15 @@
   }
 }
 
+@keyframes shimmerGlow {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
 @keyframes pulseGoldRing {
   0% {
     transform: scale(0.95);

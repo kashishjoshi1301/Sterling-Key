@@ -8,17 +8,17 @@ import {
   Wrench, 
   FileText, 
   ArrowRight,
-  CheckCircle2
+  Sparkles
 } from "lucide-react";
 
 export default function PropertyManagementSection({ onOpenPortal, onOpenSchedule }) {
   return (
-    <section id="property-management" className="py-16 sm:py-20 bg-[#FAF8F5] text-[#1A1D20] relative border-b border-[#E4DCD0]">
+    <section id="property-management" className="py-16 sm:py-24 bg-[#FAF8F5] text-[#1A1D20] relative border-b border-[#E4DCD0]">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-[0.24em] bg-white border border-[#E4DCD0] text-[#0A192F] mb-3 shadow-2xs">
-            <Key className="w-3 h-3 text-[#C5A880]" /> Greystar-Caliber Asset Care
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-semibold uppercase tracking-[0.24em] bg-white border border-[#E4DCD0] text-[#0A192F] mb-3 shadow-2xs">
+            <Key className="w-3.5 h-3.5 text-[#C5A880]" /> Greystar-Caliber Asset Care
           </div>
           <h2 className="text-3xl sm:text-4xl font-serif tracking-tight text-[#0A192F] mb-3">
             Institutional Property Management
@@ -28,13 +28,13 @@ export default function PropertyManagementSection({ onOpenPortal, onOpenSchedule
           </p>
         </div>
 
-        {/* 4 Core Pillars Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
-          <div className="p-6 rounded-2xl bg-white border border-[#E4DCD0] hover:border-[#C5A880] shadow-2xs hover:shadow-md transition-all">
-            <div className="w-10 h-10 rounded-xl bg-[#F3EFEA] border border-[#E4DCD0] flex items-center justify-center text-[#C5A880] mb-4">
+        {/* 4 Core Pillars Grid with Smooth Lift */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-14">
+          <div className="luxury-card-hover p-6 rounded-2xl bg-white border border-[#E4DCD0] shadow-2xs transition-all group">
+            <div className="w-11 h-11 rounded-xl bg-[#F3EFEA] border border-[#E4DCD0] flex items-center justify-center text-[#C5A880] mb-4 group-hover:scale-110 group-hover:bg-[#0A192F] group-hover:text-[#FAF8F5] transition-all duration-300">
               <TrendingUp className="w-5 h-5" />
             </div>
-            <h3 className="text-base font-serif text-[#0A192F] font-semibold mb-1.5">
+            <h3 className="text-base font-serif text-[#0A192F] font-semibold mb-1.5 group-hover:text-[#183664] transition-colors">
               Yield Optimization
             </h3>
             <p className="text-xs text-[#545B65] leading-relaxed">
@@ -42,11 +42,11 @@ export default function PropertyManagementSection({ onOpenPortal, onOpenSchedule
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl bg-white border border-[#E4DCD0] hover:border-[#C5A880] shadow-2xs hover:shadow-md transition-all">
-            <div className="w-10 h-10 rounded-xl bg-[#F3EFEA] border border-[#E4DCD0] flex items-center justify-center text-[#C5A880] mb-4">
+          <div className="luxury-card-hover p-6 rounded-2xl bg-white border border-[#E4DCD0] shadow-2xs transition-all group">
+            <div className="w-11 h-11 rounded-xl bg-[#F3EFEA] border border-[#E4DCD0] flex items-center justify-center text-[#C5A880] mb-4 group-hover:scale-110 group-hover:bg-[#0A192F] group-hover:text-[#FAF8F5] transition-all duration-300">
               <ShieldCheck className="w-5 h-5" />
             </div>
-            <h3 className="text-base font-serif text-[#0A192F] font-semibold mb-1.5">
+            <h3 className="text-base font-serif text-[#0A192F] font-semibold mb-1.5 group-hover:text-[#183664] transition-colors">
               Tenant Curation
             </h3>
             <p className="text-xs text-[#545B65] leading-relaxed">
@@ -54,11 +54,11 @@ export default function PropertyManagementSection({ onOpenPortal, onOpenSchedule
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl bg-white border border-[#E4DCD0] hover:border-[#C5A880] shadow-2xs hover:shadow-md transition-all">
-            <div className="w-10 h-10 rounded-xl bg-[#F3EFEA] border border-[#E4DCD0] flex items-center justify-center text-[#C5A880] mb-4">
+          <div className="luxury-card-hover p-6 rounded-2xl bg-white border border-[#E4DCD0] shadow-2xs transition-all group">
+            <div className="w-11 h-11 rounded-xl bg-[#F3EFEA] border border-[#E4DCD0] flex items-center justify-center text-[#C5A880] mb-4 group-hover:scale-110 group-hover:bg-[#0A192F] group-hover:text-[#FAF8F5] transition-all duration-300">
               <Wrench className="w-5 h-5" />
             </div>
-            <h3 className="text-base font-serif text-[#0A192F] font-semibold mb-1.5">
+            <h3 className="text-base font-serif text-[#0A192F] font-semibold mb-1.5 group-hover:text-[#183664] transition-colors">
               Concierge Dispatch
             </h3>
             <p className="text-xs text-[#545B65] leading-relaxed">
@@ -66,11 +66,11 @@ export default function PropertyManagementSection({ onOpenPortal, onOpenSchedule
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl bg-white border border-[#E4DCD0] hover:border-[#C5A880] shadow-2xs hover:shadow-md transition-all">
-            <div className="w-10 h-10 rounded-xl bg-[#F3EFEA] border border-[#E4DCD0] flex items-center justify-center text-[#C5A880] mb-4">
+          <div className="luxury-card-hover p-6 rounded-2xl bg-white border border-[#E4DCD0] shadow-2xs transition-all group">
+            <div className="w-11 h-11 rounded-xl bg-[#F3EFEA] border border-[#E4DCD0] flex items-center justify-center text-[#C5A880] mb-4 group-hover:scale-110 group-hover:bg-[#0A192F] group-hover:text-[#FAF8F5] transition-all duration-300">
               <FileText className="w-5 h-5" />
             </div>
-            <h3 className="text-base font-serif text-[#0A192F] font-semibold mb-1.5">
+            <h3 className="text-base font-serif text-[#0A192F] font-semibold mb-1.5 group-hover:text-[#183664] transition-colors">
               Automated Distributions
             </h3>
             <p className="text-xs text-[#545B65] leading-relaxed">
@@ -80,12 +80,12 @@ export default function PropertyManagementSection({ onOpenPortal, onOpenSchedule
         </div>
 
         {/* Streamlined Institutional Performance Banner */}
-        <div className="bg-white border border-[#E4DCD0] rounded-3xl p-6 sm:p-10 shadow-sm relative overflow-hidden">
+        <div className="bg-white border border-[#E4DCD0] rounded-3xl p-6 sm:p-10 shadow-sm relative overflow-hidden transition-all duration-500 hover:shadow-lg">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* Left Narrative */}
             <div className="lg:col-span-6">
-              <span className="text-[10px] uppercase tracking-[0.2em] text-[#C5A880] font-semibold mb-2 block">
-                Portfolio Results
+              <span className="text-[10px] uppercase tracking-[0.2em] text-[#C5A880] font-semibold mb-2 flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-[#C5A880]" /> Portfolio Results
               </span>
               <h3 className="text-2xl sm:text-3xl font-serif text-[#0A192F] font-semibold mb-3">
                 Institutional Stewardship with Private Boutique Service
@@ -97,14 +97,14 @@ export default function PropertyManagementSection({ onOpenPortal, onOpenSchedule
               <div className="flex flex-wrap items-center gap-3">
                 <button
                   onClick={onOpenSchedule}
-                  className="py-2.5 px-5 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-all shadow-sm active:scale-95"
+                  className="btn-shimmer py-3 px-5 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-all shadow-md active:scale-95"
                 >
                   <span>Request Asset Consultation</span>
                   <ArrowRight className="w-3.5 h-3.5 text-[#C5A880]" />
                 </button>
                 <button
                   onClick={onOpenPortal}
-                  className="py-2.5 px-5 rounded-xl bg-[#F3EFEA] hover:bg-[#EAE3D9] border border-[#E4DCD0] text-[#0A192F] text-xs font-semibold uppercase tracking-wider transition-all"
+                  className="py-3 px-5 rounded-xl bg-[#F3EFEA] hover:bg-[#EAE3D9] border border-[#E4DCD0] text-[#0A192F] text-xs font-semibold uppercase tracking-wider transition-all duration-300"
                 >
                   Owner Portal Login
                 </button>
@@ -113,7 +113,7 @@ export default function PropertyManagementSection({ onOpenPortal, onOpenSchedule
 
             {/* Right Metrics Grid */}
             <div className="lg:col-span-6 grid grid-cols-2 gap-4">
-              <div className="p-4 sm:p-5 rounded-2xl bg-[#FAF8F5] border border-[#E4DCD0]">
+              <div className="luxury-card-hover p-4 sm:p-5 rounded-2xl bg-[#FAF8F5] border border-[#E4DCD0]">
                 <div className="text-2xl sm:text-3xl font-serif font-bold text-[#0A192F] mb-1">
                   +14<span className="text-[#C5A880]">%</span>
                 </div>
@@ -121,7 +121,7 @@ export default function PropertyManagementSection({ onOpenPortal, onOpenSchedule
                 <p className="text-[11px] text-[#747D88]">Through algorithmic dynamic pricing & vendor discounts</p>
               </div>
 
-              <div className="p-4 sm:p-5 rounded-2xl bg-[#FAF8F5] border border-[#E4DCD0]">
+              <div className="luxury-card-hover p-4 sm:p-5 rounded-2xl bg-[#FAF8F5] border border-[#E4DCD0]">
                 <div className="text-2xl sm:text-3xl font-serif font-bold text-[#0A192F] mb-1">
                   99.4<span className="text-[#C5A880]">%</span>
                 </div>
@@ -129,7 +129,7 @@ export default function PropertyManagementSection({ onOpenPortal, onOpenSchedule
                 <p className="text-[11px] text-[#747D88]">Pre-qualified sovereign & institutional tenant pipelines</p>
               </div>
 
-              <div className="p-4 sm:p-5 rounded-2xl bg-[#FAF8F5] border border-[#E4DCD0]">
+              <div className="luxury-card-hover p-4 sm:p-5 rounded-2xl bg-[#FAF8F5] border border-[#E4DCD0]">
                 <div className="text-2xl sm:text-3xl font-serif font-bold text-[#0A192F] mb-1">
                   0.2<span className="text-[#C5A880]">%</span>
                 </div>
@@ -137,7 +137,7 @@ export default function PropertyManagementSection({ onOpenPortal, onOpenSchedule
                 <p className="text-[11px] text-[#747D88]">Biometric vetting & corporate balance sheet security</p>
               </div>
 
-              <div className="p-4 sm:p-5 rounded-2xl bg-[#FAF8F5] border border-[#E4DCD0]">
+              <div className="luxury-card-hover p-4 sm:p-5 rounded-2xl bg-[#FAF8F5] border border-[#E4DCD0]">
                 <div className="text-2xl sm:text-3xl font-serif font-bold text-[#0A192F] mb-1">
                   By the 5th
                 </div>

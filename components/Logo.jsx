@@ -99,7 +99,7 @@ export default function Logo({ size = "md", showText = true, className = "", var
         </svg>
       </div>
 
-      {/* Typography - Explicit High Contrast Deep Navy */}
+      {/* Typography - Explicit Inline Colors for 100% Contrast & Visibility */}
       {showText && (
         <div className="flex flex-col text-left">
           <span

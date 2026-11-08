@@ -24,21 +24,21 @@ export function CurrencyProvider({ children }) {
       const millions = (converted / 1000000).toFixed(1);
       return `${symbol}${millions}M`;
     }
-    return `${symbol}${converted.toLocaleString()}`;
+    return `${symbol}${converted.toLocaleString("en-US")}`;
   };
 
   const formatRawPrice = (usdAmount) => {
     if (!usdAmount) return "Price Upon Request";
     const { symbol, rate } = RATES[currency];
     const converted = Math.round(usdAmount * rate);
-    return `${symbol}${converted.toLocaleString()}`;
+    return `${symbol}${converted.toLocaleString("en-US")}`;
   };
 
   const formatArea = (sqftVal, sqmVal) => {
     if (unit === "sqm") {
-      return `${(sqmVal || Math.round(sqftVal * 0.092903)).toLocaleString()} M²`;
+      return `${(sqmVal || Math.round(sqftVal * 0.092903)).toLocaleString("en-US")} M²`;
     }
-    return `${sqftVal.toLocaleString()} SF`;
+    return `${(sqftVal || 0).toLocaleString("en-US")} SF`;
   };
 
   return (

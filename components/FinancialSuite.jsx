@@ -7,7 +7,8 @@ import {
   ArrowRight, 
   Landmark, 
   Sliders, 
-  CheckCircle2 
+  CheckCircle2,
+  Sparkles
 } from "lucide-react";
 import { useCurrency } from "./CurrencyContext";
 import { useToast } from "./Toast";
@@ -65,11 +66,11 @@ export default function FinancialSuite({ onOpenSchedule }) {
   const totalMonthlyPayment = Math.round(monthlyPI + monthlyPropertyTax + monthlyInsurance);
 
   return (
-    <section id="financials" className="py-16 sm:py-20 bg-[#FAF8F5] border-b border-[#E4DCD0] relative">
+    <section id="financials" className="py-16 sm:py-24 bg-[#FAF8F5] border-b border-[#E4DCD0] relative">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-[0.24em] bg-white border border-[#E4DCD0] text-[#0A192F] mb-3 shadow-2xs">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-semibold uppercase tracking-[0.24em] bg-white border border-[#E4DCD0] text-[#0A192F] mb-3 shadow-2xs">
             <Calculator className="w-3.5 h-3.5 text-[#C5A880]" /> Advisory Intelligence Suite
           </div>
           <h2 className="text-3xl sm:text-4xl font-serif tracking-tight text-[#0A192F] mb-3">
@@ -79,14 +80,14 @@ export default function FinancialSuite({ onOpenSchedule }) {
             Algorithmic micro-market valuation models and private jumbo financing estimators unified into one executive advisory dashboard.
           </p>
 
-          {/* Tab Selector */}
-          <div className="inline-flex p-1 rounded-2xl bg-white border border-[#E4DCD0] mt-6 shadow-2xs">
+          {/* Luxury Tab Selector with Sliding Pill */}
+          <div className="inline-flex p-1.5 rounded-2xl bg-white border border-[#E4DCD0] mt-6 shadow-xs">
             <button
               onClick={() => setActiveTab("valuation")}
-              className={`px-5 py-2 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all flex items-center gap-2 ${
+              className={`px-5 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all duration-300 flex items-center gap-2 ${
                 activeTab === "valuation"
-                  ? "bg-[#0A192F] text-[#FAF8F5] shadow-xs"
-                  : "text-[#545B65] hover:text-[#0A192F]"
+                  ? "bg-[#0A192F] text-[#FAF8F5] shadow-sm scale-[1.02]"
+                  : "text-[#545B65] hover:text-[#0A192F] hover:bg-[#F3EFEA]"
               }`}
             >
               <TrendingUp className="w-3.5 h-3.5 text-[#C5A880]" />
@@ -94,10 +95,10 @@ export default function FinancialSuite({ onOpenSchedule }) {
             </button>
             <button
               onClick={() => setActiveTab("mortgage")}
-              className={`px-5 py-2 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all flex items-center gap-2 ${
+              className={`px-5 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all duration-300 flex items-center gap-2 ${
                 activeTab === "mortgage"
-                  ? "bg-[#0A192F] text-[#FAF8F5] shadow-xs"
-                  : "text-[#545B65] hover:text-[#0A192F]"
+                  ? "bg-[#0A192F] text-[#FAF8F5] shadow-sm scale-[1.02]"
+                  : "text-[#545B65] hover:text-[#0A192F] hover:bg-[#F3EFEA]"
               }`}
             >
               <Landmark className="w-3.5 h-3.5 text-[#C5A880]" />
@@ -108,19 +109,19 @@ export default function FinancialSuite({ onOpenSchedule }) {
 
         {/* Tab 1: Valuation Content */}
         {activeTab === "valuation" && (
-          <div className="bg-white border border-[#E4DCD0] rounded-3xl p-6 sm:p-10 shadow-sm animate-fade-in">
+          <div className="bg-white border border-[#E4DCD0] rounded-3xl p-6 sm:p-10 shadow-sm animate-fade-in transition-all">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               {/* Inputs */}
-              <div className="lg:col-span-7 space-y-5">
+              <div className="lg:col-span-7 space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[10px] uppercase tracking-[0.14em] text-[#545B65] mb-1.5 font-medium">
+                    <label className="block text-[10px] uppercase tracking-[0.14em] text-[#545B65] mb-1.5 font-semibold">
                       Flagship Market
                     </label>
                     <select
                       value={market}
                       onChange={(e) => setMarket(e.target.value)}
-                      className="w-full bg-[#FAF8F5] border border-[#E4DCD0] rounded-xl px-3.5 py-2.5 text-xs text-[#1A1D20] font-medium focus:outline-none focus:border-[#C5A880] cursor-pointer [&>option]:bg-white"
+                      className="w-full bg-[#FAF8F5] border border-[#E4DCD0] rounded-xl px-3.5 py-2.5 text-xs text-[#1A1D20] font-medium focus:outline-none focus:border-[#C5A880] focus:ring-2 focus:ring-[#C5A880]/20 transition-all cursor-pointer [&>option]:bg-white"
                     >
                       <option value="los-angeles">Los Angeles (Bel-Air / Beverly Hills)</option>
                       <option value="new-york">New York (Manhattan / Tribeca)</option>
@@ -131,13 +132,13 @@ export default function FinancialSuite({ onOpenSchedule }) {
                   </div>
 
                   <div>
-                    <label className="block text-[10px] uppercase tracking-[0.14em] text-[#545B65] mb-1.5 font-medium">
+                    <label className="block text-[10px] uppercase tracking-[0.14em] text-[#545B65] mb-1.5 font-semibold">
                       Typology
                     </label>
                     <select
                       value={propertyType}
                       onChange={(e) => setPropertyType(e.target.value)}
-                      className="w-full bg-[#FAF8F5] border border-[#E4DCD0] rounded-xl px-3.5 py-2.5 text-xs text-[#1A1D20] font-medium focus:outline-none focus:border-[#C5A880] cursor-pointer [&>option]:bg-white"
+                      className="w-full bg-[#FAF8F5] border border-[#E4DCD0] rounded-xl px-3.5 py-2.5 text-xs text-[#1A1D20] font-medium focus:outline-none focus:border-[#C5A880] focus:ring-2 focus:ring-[#C5A880]/20 transition-all cursor-pointer [&>option]:bg-white"
                     >
                       <option value="compound">Private Gated Estate</option>
                       <option value="penthouse">Full-Floor Sky Penthouse</option>
@@ -148,10 +149,10 @@ export default function FinancialSuite({ onOpenSchedule }) {
                 </div>
 
                 <div>
-                  <div className="flex justify-between items-center text-xs mb-1.5">
-                    <span className="text-[#383E46] font-medium">Interior Living Area</span>
-                    <span className="text-[#0A192F] font-mono font-bold text-sm">
-                      {sqft.toLocaleString()} SF
+                  <div className="flex justify-between items-center text-xs mb-2">
+                    <span className="text-[#383E46] font-semibold">Interior Living Area</span>
+                    <span className="text-[#0A192F] font-mono font-bold text-sm bg-[#FAF8F5] px-2.5 py-0.5 rounded-lg border border-[#E4DCD0]">
+                      {sqft.toLocaleString("en-US")} SF
                     </span>
                   </div>
                   <input
@@ -161,15 +162,15 @@ export default function FinancialSuite({ onOpenSchedule }) {
                     step="500"
                     value={sqft}
                     onChange={(e) => setSqft(Number(e.target.value))}
-                    className="w-full h-1.5 bg-[#EAE3D9] rounded-lg appearance-none cursor-pointer accent-[#0A192F]"
+                    className="w-full h-2 bg-[#EAE3D9] rounded-lg appearance-none cursor-pointer accent-[#0A192F] transition-all"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[10px] uppercase tracking-[0.14em] text-[#545B65] mb-1.5 font-medium">
+                  <label className="block text-[10px] uppercase tracking-[0.14em] text-[#545B65] mb-2 font-semibold">
                     Architectural Condition
                   </label>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-3 gap-2.5">
                     {[
                       { id: "museum", label: "Museum Grade" },
                       { id: "contemporary", label: "Turnkey Modern" },
@@ -179,10 +180,10 @@ export default function FinancialSuite({ onOpenSchedule }) {
                         key={cond.id}
                         type="button"
                         onClick={() => setCondition(cond.id)}
-                        className={`py-2 px-2.5 rounded-xl text-xs font-medium border text-center transition-all ${
+                        className={`py-2.5 px-3 rounded-xl text-xs font-semibold border text-center transition-all duration-300 ${
                           condition === cond.id
-                            ? "bg-[#0A192F] text-white border-[#0A192F]"
-                            : "bg-[#FAF8F5] text-[#545B65] border-[#E4DCD0] hover:border-[#C5A880]"
+                            ? "bg-[#0A192F] text-white border-[#0A192F] shadow-sm scale-[1.02]"
+                            : "bg-[#FAF8F5] text-[#545B65] border-[#E4DCD0] hover:border-[#C5A880] hover:text-[#0A192F]"
                         }`}
                       >
                         {cond.label}
@@ -192,36 +193,36 @@ export default function FinancialSuite({ onOpenSchedule }) {
                 </div>
               </div>
 
-              {/* Output Card */}
-              <div className="lg:col-span-5 bg-[#FAF8F5] border border-[#E4DCD0] rounded-2xl p-6 sm:p-7">
-                <div className="text-[10px] uppercase tracking-[0.2em] text-[#C5A880] font-semibold mb-1">
-                  Estimated Valuation Range
+              {/* Output Card with Luxury Depth */}
+              <div className="lg:col-span-5 bg-[#FAF8F5] border border-[#E4DCD0] rounded-2xl p-6 sm:p-8 shadow-xs">
+                <div className="text-[10px] uppercase tracking-[0.2em] text-[#C5A880] font-semibold mb-1 flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-[#C5A880]" /> Estimated Valuation Range
                 </div>
-                <div className="text-2xl sm:text-3xl font-serif text-[#0A192F] font-bold mb-1">
+                <div className="text-3xl sm:text-4xl font-serif text-[#0A192F] font-bold mb-1 tracking-tight">
                   ${(estimatedLow / 1000000).toFixed(1)}M – ${(estimatedHigh / 1000000).toFixed(1)}M
                 </div>
                 <div className="text-xs text-[#747D88] mb-6">
-                  ~${Math.round(basePpsf).toLocaleString()} / SF micro-market baseline
+                  ~${Math.round(basePpsf).toLocaleString("en-US")} / SF micro-market baseline
                 </div>
 
-                <div className="space-y-3 pt-4 border-t border-[#E4DCD0] text-xs">
-                  <div className="flex justify-between">
+                <div className="space-y-3 pt-5 border-t border-[#E4DCD0] text-xs">
+                  <div className="flex justify-between items-center">
                     <span className="text-[#545B65]">Projected Monthly Lease</span>
-                    <span className="text-[#0A192F] font-semibold font-mono">
-                      ${estimatedRentMonthly.toLocaleString()} / mo
+                    <span className="text-[#0A192F] font-semibold font-mono text-sm">
+                      ${estimatedRentMonthly.toLocaleString("en-US")} / mo
                     </span>
                   </div>
-                  <div className="flex justify-between">
+                  <div className="flex justify-between items-center">
                     <span className="text-[#545B65]">Estimated Net Operating Income</span>
-                    <span className="text-[#0A192F] font-semibold font-mono">
-                      ${estimatedNOIAnnual.toLocaleString()} / yr
+                    <span className="text-[#0A192F] font-semibold font-mono text-sm">
+                      ${estimatedNOIAnnual.toLocaleString("en-US")} / yr
                     </span>
                   </div>
                 </div>
 
                 <button
                   onClick={onOpenSchedule}
-                  className="w-full mt-6 py-2.5 px-4 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-sm"
+                  className="btn-shimmer w-full mt-6 py-3 px-4 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-md active:scale-95"
                 >
                   <span>Request Full Appraisal Report</span>
                   <ArrowRight className="w-3.5 h-3.5 text-[#C5A880]" />
@@ -233,15 +234,15 @@ export default function FinancialSuite({ onOpenSchedule }) {
 
         {/* Tab 2: Mortgage Content */}
         {activeTab === "mortgage" && (
-          <div className="bg-white border border-[#E4DCD0] rounded-3xl p-6 sm:p-10 shadow-sm animate-fade-in">
+          <div className="bg-white border border-[#E4DCD0] rounded-3xl p-6 sm:p-10 shadow-sm animate-fade-in transition-all">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               {/* Sliders */}
-              <div className="lg:col-span-7 space-y-5">
+              <div className="lg:col-span-7 space-y-6">
                 <div>
-                  <div className="flex justify-between items-center text-xs mb-1.5">
-                    <span className="text-[#383E46] font-medium">Acquisition Target Price</span>
-                    <span className="text-[#0A192F] font-mono font-bold text-sm">
-                      ${homePrice.toLocaleString()}
+                  <div className="flex justify-between items-center text-xs mb-2">
+                    <span className="text-[#383E46] font-semibold">Acquisition Target Price</span>
+                    <span className="text-[#0A192F] font-mono font-bold text-sm bg-[#FAF8F5] px-2.5 py-0.5 rounded-lg border border-[#E4DCD0]">
+                      ${homePrice.toLocaleString("en-US")}
                     </span>
                   </div>
                   <input
@@ -251,15 +252,15 @@ export default function FinancialSuite({ onOpenSchedule }) {
                     step="500000"
                     value={homePrice}
                     onChange={(e) => setHomePrice(Number(e.target.value))}
-                    className="w-full h-1.5 bg-[#EAE3D9] rounded-lg appearance-none cursor-pointer accent-[#0A192F]"
+                    className="w-full h-2 bg-[#EAE3D9] rounded-lg appearance-none cursor-pointer accent-[#0A192F] transition-all"
                   />
                 </div>
 
                 <div>
-                  <div className="flex justify-between items-center text-xs mb-1.5">
-                    <span className="text-[#383E46] font-medium">Down Payment ({downPaymentPercent}%)</span>
-                    <span className="text-[#0A192F] font-mono font-bold text-sm">
-                      ${downPaymentAmount.toLocaleString()}
+                  <div className="flex justify-between items-center text-xs mb-2">
+                    <span className="text-[#383E46] font-semibold">Down Payment ({downPaymentPercent}%)</span>
+                    <span className="text-[#0A192F] font-mono font-bold text-sm bg-[#FAF8F5] px-2.5 py-0.5 rounded-lg border border-[#E4DCD0]">
+                      ${downPaymentAmount.toLocaleString("en-US")}
                     </span>
                   </div>
                   <input
@@ -269,13 +270,13 @@ export default function FinancialSuite({ onOpenSchedule }) {
                     step="5"
                     value={downPaymentPercent}
                     onChange={(e) => setDownPaymentPercent(Number(e.target.value))}
-                    className="w-full h-1.5 bg-[#EAE3D9] rounded-lg appearance-none cursor-pointer accent-[#0A192F]"
+                    className="w-full h-2 bg-[#EAE3D9] rounded-lg appearance-none cursor-pointer accent-[#0A192F] transition-all"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[10px] uppercase tracking-[0.14em] text-[#545B65] mb-1.5 font-medium">
+                    <label className="block text-[10px] uppercase tracking-[0.14em] text-[#545B65] mb-1.5 font-semibold">
                       Interest Rate (%)
                     </label>
                     <input
@@ -283,18 +284,18 @@ export default function FinancialSuite({ onOpenSchedule }) {
                       step="0.1"
                       value={interestRate}
                       onChange={(e) => setInterestRate(Number(e.target.value))}
-                      className="w-full bg-[#FAF8F5] border border-[#E4DCD0] rounded-xl px-3.5 py-2 text-xs text-[#1A1D20] font-mono font-medium focus:outline-none focus:border-[#C5A880]"
+                      className="w-full bg-[#FAF8F5] border border-[#E4DCD0] rounded-xl px-3.5 py-2.5 text-xs text-[#1A1D20] font-mono font-medium focus:outline-none focus:border-[#C5A880] focus:ring-2 focus:ring-[#C5A880]/20 transition-all"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[10px] uppercase tracking-[0.14em] text-[#545B65] mb-1.5 font-medium">
+                    <label className="block text-[10px] uppercase tracking-[0.14em] text-[#545B65] mb-1.5 font-semibold">
                       Loan Term
                     </label>
                     <select
                       value={loanTerm}
                       onChange={(e) => setLoanTerm(Number(e.target.value))}
-                      className="w-full bg-[#FAF8F5] border border-[#E4DCD0] rounded-xl px-3.5 py-2 text-xs text-[#1A1D20] font-medium focus:outline-none focus:border-[#C5A880] cursor-pointer [&>option]:bg-white"
+                      className="w-full bg-[#FAF8F5] border border-[#E4DCD0] rounded-xl px-3.5 py-2.5 text-xs text-[#1A1D20] font-medium focus:outline-none focus:border-[#C5A880] focus:ring-2 focus:ring-[#C5A880]/20 transition-all cursor-pointer [&>option]:bg-white"
                     >
                       <option value="30">30 Years Fixed</option>
                       <option value="15">15 Years Fixed</option>
@@ -305,41 +306,41 @@ export default function FinancialSuite({ onOpenSchedule }) {
               </div>
 
               {/* Output Card */}
-              <div className="lg:col-span-5 bg-[#FAF8F5] border border-[#E4DCD0] rounded-2xl p-6 sm:p-7">
-                <div className="text-[10px] uppercase tracking-[0.2em] text-[#C5A880] font-semibold mb-1">
-                  Total Estimated Outlay
+              <div className="lg:col-span-5 bg-[#FAF8F5] border border-[#E4DCD0] rounded-2xl p-6 sm:p-8 shadow-xs">
+                <div className="text-[10px] uppercase tracking-[0.2em] text-[#C5A880] font-semibold mb-1 flex items-center gap-1.5">
+                  <Landmark className="w-3.5 h-3.5 text-[#C5A880]" /> Total Estimated Outlay
                 </div>
-                <div className="text-2xl sm:text-3xl font-serif text-[#0A192F] font-bold mb-1">
-                  ${totalMonthlyPayment.toLocaleString()}<span className="text-xs text-[#747D88] font-sans font-normal"> / month</span>
+                <div className="text-3xl sm:text-4xl font-serif text-[#0A192F] font-bold mb-1 tracking-tight">
+                  ${totalMonthlyPayment.toLocaleString("en-US")}<span className="text-xs text-[#747D88] font-sans font-normal"> / month</span>
                 </div>
                 <div className="text-xs text-[#747D88] mb-6">
-                  Financed Loan Balance: ${loanAmount.toLocaleString()}
+                  Financed Loan Balance: ${loanAmount.toLocaleString("en-US")}
                 </div>
 
-                <div className="space-y-3 pt-4 border-t border-[#E4DCD0] text-xs">
-                  <div className="flex justify-between">
+                <div className="space-y-3 pt-5 border-t border-[#E4DCD0] text-xs">
+                  <div className="flex justify-between items-center">
                     <span className="text-[#545B65]">Principal & Interest</span>
-                    <span className="text-[#0A192F] font-semibold font-mono">
-                      ${Math.round(monthlyPI).toLocaleString()}
+                    <span className="text-[#0A192F] font-semibold font-mono text-sm">
+                      ${Math.round(monthlyPI).toLocaleString("en-US")}
                     </span>
                   </div>
-                  <div className="flex justify-between">
+                  <div className="flex justify-between items-center">
                     <span className="text-[#545B65]">Property Taxes (Est.)</span>
-                    <span className="text-[#0A192F] font-semibold font-mono">
-                      ${monthlyPropertyTax.toLocaleString()}
+                    <span className="text-[#0A192F] font-semibold font-mono text-sm">
+                      ${monthlyPropertyTax.toLocaleString("en-US")}
                     </span>
                   </div>
-                  <div className="flex justify-between">
+                  <div className="flex justify-between items-center">
                     <span className="text-[#545B65]">Hazard & Flood Insurance</span>
-                    <span className="text-[#0A192F] font-semibold font-mono">
-                      ${monthlyInsurance.toLocaleString()}
+                    <span className="text-[#0A192F] font-semibold font-mono text-sm">
+                      ${monthlyInsurance.toLocaleString("en-US")}
                     </span>
                   </div>
                 </div>
 
                 <button
                   onClick={onOpenSchedule}
-                  className="w-full mt-6 py-2.5 px-4 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-sm"
+                  className="btn-shimmer w-full mt-6 py-3 px-4 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-md active:scale-95"
                 >
                   <span>Connect with Private Lending Desk</span>
                   <ArrowRight className="w-3.5 h-3.5 text-[#C5A880]" />

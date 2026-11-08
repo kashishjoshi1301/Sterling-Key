@@ -34,31 +34,31 @@ export default function MortgageCalculator({ onOpenSchedule }) {
   const hoaShare = totalMonthlyPayment > 0 ? (hoaMonthly / totalMonthlyPayment) * 100 : 0;
 
   return (
-    <section id="calculator" className="py-14 sm:py-16 bg-[#060709] border-b border-white/[0.06] relative">
+    <section id="calculator" className="py-14 sm:py-16 bg-[#FAF8F5] border-b border-[#E4DCD0] relative">
       <div className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-12">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-medium uppercase tracking-[0.24em] bg-white/[0.04] border border-white/10 text-stone-300 mb-3">
-            <Calculator className="w-3 h-3 text-stone-400" /> Redfin & Compass Standard
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-[0.24em] bg-white border border-[#E4DCD0] text-[#0A192F] mb-3 shadow-2xs">
+            <Calculator className="w-3 h-3 text-[#C5A880]" /> Redfin & Compass Standard
           </div>
-          <h2 className="text-3xl sm:text-4xl font-serif tracking-tight text-white mb-3">
+          <h2 className="text-3xl sm:text-4xl font-serif tracking-tight text-[#0A192F] mb-3">
             Mortgage & Capital Outlay Estimator
           </h2>
-          <p className="text-neutral-400 text-xs sm:text-sm leading-relaxed">
+          <p className="text-[#545B65] text-xs sm:text-sm leading-relaxed">
             Model structured jumbo mortgage payments, escrow allocations, and capital outlays with private banking clarity.
           </p>
         </div>
 
-        <div className="bg-[#0C0E13] border border-white/[0.08] rounded-3xl p-6 sm:p-9 shadow-xl">
+        <div className="bg-white border border-[#E4DCD0] rounded-3xl p-6 sm:p-9 shadow-md">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             {/* Input Controls */}
             <div className="lg:col-span-7 space-y-5">
               {/* Home Price */}
               <div>
                 <div className="flex justify-between items-center text-xs mb-1.5">
-                  <span className="text-neutral-300 font-medium">Acquisition Target Price</span>
-                  <span className="text-white font-mono font-semibold text-base">
-                    ${homePrice.toLocaleString()}
+                  <span className="text-[#383E46] font-medium">Acquisition Target Price</span>
+                  <span className="text-[#0A192F] font-mono font-bold text-base">
+                    ${homePrice.toLocaleString("en-US")}
                   </span>
                 </div>
                 <input
@@ -68,9 +68,9 @@ export default function MortgageCalculator({ onOpenSchedule }) {
                   step="250000"
                   value={homePrice}
                   onChange={(e) => setHomePrice(Number(e.target.value))}
-                  className="w-full h-1.5 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-stone-300"
+                  className="w-full h-1.5 bg-[#EAE3D9] rounded-lg appearance-none cursor-pointer accent-[#0A192F]"
                 />
-                <div className="flex justify-between text-[10px] text-neutral-500 mt-1">
+                <div className="flex justify-between text-[10px] text-[#747D88] mt-1 font-mono">
                   <span>$1,000,000</span>
                   <span>$30,000,000</span>
                   <span>$60,000,000+</span>
@@ -80,9 +80,9 @@ export default function MortgageCalculator({ onOpenSchedule }) {
               {/* Down Payment */}
               <div>
                 <div className="flex justify-between items-center text-xs mb-1.5">
-                  <span className="text-neutral-300 font-medium">Down Payment ({downPaymentPercent}%)</span>
-                  <span className="text-stone-300 font-mono font-semibold text-sm">
-                    ${downPaymentAmount.toLocaleString()}
+                  <span className="text-[#383E46] font-medium">Down Payment ({downPaymentPercent}%)</span>
+                  <span className="text-[#0A192F] font-mono font-bold text-sm">
+                    ${downPaymentAmount.toLocaleString("en-US")}
                   </span>
                 </div>
                 <input
@@ -92,9 +92,9 @@ export default function MortgageCalculator({ onOpenSchedule }) {
                   step="5"
                   value={downPaymentPercent}
                   onChange={(e) => setDownPaymentPercent(Number(e.target.value))}
-                  className="w-full h-1.5 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-stone-300"
+                  className="w-full h-1.5 bg-[#EAE3D9] rounded-lg appearance-none cursor-pointer accent-[#0A192F]"
                 />
-                <div className="flex justify-between text-[10px] text-neutral-500 mt-1">
+                <div className="flex justify-between text-[10px] text-[#747D88] mt-1 font-mono">
                   <span>10% ($1.2M)</span>
                   <span>25% Standard Jumbo</span>
                   <span>50%</span>
@@ -104,17 +104,17 @@ export default function MortgageCalculator({ onOpenSchedule }) {
               {/* Loan Term & Interest Rate */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[10px] uppercase tracking-[0.14em] text-neutral-400 mb-1.5 font-medium">
+                  <label className="block text-[10px] uppercase tracking-[0.14em] text-[#545B65] mb-1.5 font-medium">
                     Financing Term
                   </label>
                   <div className="grid grid-cols-2 gap-2">
                     <button
                       type="button"
                       onClick={() => setLoanTerm(30)}
-                      className={`py-2 rounded-xl border text-xs font-medium uppercase tracking-wider transition-all ${
+                      className={`py-2 rounded-xl border text-xs font-semibold uppercase tracking-wider transition-all ${
                         loanTerm === 30
-                          ? "bg-white/[0.08] border-white/30 text-white font-semibold"
-                          : "bg-white/[0.02] border-white/[0.06] text-neutral-400 hover:text-white"
+                          ? "bg-[#0A192F] border-[#0A192F] text-white shadow-xs"
+                          : "bg-[#F3EFEA] border-[#E4DCD0] text-[#545B65] hover:text-[#0A192F]"
                       }`}
                     >
                       30-Year
@@ -122,10 +122,10 @@ export default function MortgageCalculator({ onOpenSchedule }) {
                     <button
                       type="button"
                       onClick={() => setLoanTerm(15)}
-                      className={`py-2 rounded-xl border text-xs font-medium uppercase tracking-wider transition-all ${
+                      className={`py-2 rounded-xl border text-xs font-semibold uppercase tracking-wider transition-all ${
                         loanTerm === 15
-                          ? "bg-white/[0.08] border-white/30 text-white font-semibold"
-                          : "bg-white/[0.02] border-white/[0.06] text-neutral-400 hover:text-white"
+                          ? "bg-[#0A192F] border-[#0A192F] text-white shadow-xs"
+                          : "bg-[#F3EFEA] border-[#E4DCD0] text-[#545B65] hover:text-[#0A192F]"
                       }`}
                     >
                       15-Year
@@ -134,9 +134,9 @@ export default function MortgageCalculator({ onOpenSchedule }) {
                 </div>
 
                 <div>
-                  <div className="flex justify-between items-center text-[10px] uppercase tracking-[0.14em] text-neutral-400 mb-1.5 font-medium">
+                  <div className="flex justify-between items-center text-[10px] uppercase tracking-[0.14em] text-[#545B65] mb-1.5 font-medium">
                     <span>Interest Rate</span>
-                    <span className="text-white font-mono font-semibold text-xs">{interestRate}%</span>
+                    <span className="text-[#0A192F] font-mono font-bold text-xs">{interestRate}%</span>
                   </div>
                   <input
                     type="range"
@@ -145,9 +145,9 @@ export default function MortgageCalculator({ onOpenSchedule }) {
                     step="0.125"
                     value={interestRate}
                     onChange={(e) => setInterestRate(Number(e.target.value))}
-                    className="w-full h-1.5 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-stone-300"
+                    className="w-full h-1.5 bg-[#EAE3D9] rounded-lg appearance-none cursor-pointer accent-[#0A192F]"
                   />
-                  <div className="flex justify-between text-[10px] text-neutral-500 mt-1">
+                  <div className="flex justify-between text-[10px] text-[#747D88] mt-1 font-mono">
                     <span>4.0%</span>
                     <span>6.25% Current</span>
                     <span>9.0%</span>
@@ -158,8 +158,8 @@ export default function MortgageCalculator({ onOpenSchedule }) {
               {/* Property Tax & HOA inputs */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
                 <div>
-                  <label className="block text-[10px] uppercase tracking-[0.14em] text-neutral-400 mb-1 font-medium">
-                    Tax Rate: {propertyTaxRate}% (${monthlyPropertyTax.toLocaleString()}/mo)
+                  <label className="block text-[10px] uppercase tracking-[0.14em] text-[#545B65] mb-1 font-medium">
+                    Tax Rate: {propertyTaxRate}% (${monthlyPropertyTax.toLocaleString("en-US")}/mo)
                   </label>
                   <input
                     type="range"
@@ -168,94 +168,94 @@ export default function MortgageCalculator({ onOpenSchedule }) {
                     step="0.05"
                     value={propertyTaxRate}
                     onChange={(e) => setPropertyTaxRate(Number(e.target.value))}
-                    className="w-full h-1.5 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-stone-300"
+                    className="w-full h-1.5 bg-[#EAE3D9] rounded-lg appearance-none cursor-pointer accent-[#0A192F]"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[10px] uppercase tracking-[0.14em] text-neutral-400 mb-1 font-medium">
+                  <label className="block text-[10px] uppercase tracking-[0.14em] text-[#545B65] mb-1 font-medium">
                     Monthly HOA & Dues
                   </label>
                   <input
                     type="number"
                     value={hoaMonthly}
                     onChange={(e) => setHoaMonthly(Number(e.target.value))}
-                    className="w-full bg-[#08090C] border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-white/30"
+                    className="w-full bg-[#FAF8F5] border border-[#E4DCD0] rounded-xl px-3 py-1.5 text-xs text-[#1A1D20] font-mono focus:outline-none focus:border-[#C5A880]"
                   />
                 </div>
               </div>
             </div>
 
-            {/* Visual Minimalist Breakdown & Total Display */}
-            <div className="lg:col-span-5 bg-[#08090C] border border-white/[0.08] rounded-2xl p-6 sm:p-7 flex flex-col justify-between">
+            {/* Visual Minimalist Breakdown & Total Display in Deep Navy */}
+            <div className="lg:col-span-5 bg-[#0A192F] text-white border border-[#060D18] rounded-2xl p-6 sm:p-7 flex flex-col justify-between shadow-xl">
               <div>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-neutral-400 font-medium block mb-1">
+                <span className="text-[10px] uppercase tracking-[0.2em] text-[#C5A880] font-semibold block mb-1">
                   Estimated Total Outlay
                 </span>
-                <div className="text-3xl font-serif text-white font-semibold tracking-tight mb-5">
-                  ${totalMonthlyPayment.toLocaleString()}
-                  <span className="text-xs font-sans font-normal text-neutral-400 ml-1">/ month</span>
+                <div className="text-3xl font-serif text-[#EADDC9] font-semibold tracking-tight mb-5">
+                  ${totalMonthlyPayment.toLocaleString("en-US")}
+                  <span className="text-xs font-sans font-normal text-[#A8B2C1] ml-1">/ month</span>
                 </div>
 
-                {/* Minimalist segmented bar */}
-                <div className="w-full h-2 rounded-full bg-neutral-800 flex overflow-hidden mb-5">
-                  <div style={{ width: `${piShare}%` }} className="bg-white" title="Principal & Interest" />
-                  <div style={{ width: `${taxShare}%` }} className="bg-stone-300" title="Property Tax" />
-                  <div style={{ width: `${insShare}%` }} className="bg-neutral-400" title="Insurance" />
-                  <div style={{ width: `${hoaShare}%` }} className="bg-neutral-600" title="HOA Dues" />
+                {/* Segmented bar in champagne gold & complementary tones */}
+                <div className="w-full h-2 rounded-full bg-white/10 flex overflow-hidden mb-5">
+                  <div style={{ width: `${piShare}%` }} className="bg-[#C5A880]" title="Principal & Interest" />
+                  <div style={{ width: `${taxShare}%` }} className="bg-[#EADDC9]" title="Property Tax" />
+                  <div style={{ width: `${insShare}%` }} className="bg-[#9B7E48]" title="Insurance" />
+                  <div style={{ width: `${hoaShare}%` }} className="bg-white/40" title="HOA Dues" />
                 </div>
 
                 {/* Breakdown items */}
                 <div className="space-y-2.5 text-xs">
                   <div className="flex items-center justify-between">
-                    <span className="flex items-center gap-2 text-neutral-300">
-                      <span className="w-2 h-2 rounded-full bg-white" />
+                    <span className="flex items-center gap-2 text-[#EAE3D9]">
+                      <span className="w-2 h-2 rounded-full bg-[#C5A880]" />
                       Principal & Interest ({loanTerm}yr)
                     </span>
                     <span className="font-mono text-white font-medium">
-                      ${Math.round(monthlyPI).toLocaleString()}
+                      ${Math.round(monthlyPI).toLocaleString("en-US")}
                     </span>
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <span className="flex items-center gap-2 text-neutral-300">
-                      <span className="w-2 h-2 rounded-full bg-stone-300" />
+                    <span className="flex items-center gap-2 text-[#EAE3D9]">
+                      <span className="w-2 h-2 rounded-full bg-[#EADDC9]" />
                       Property Taxes (Escrow)
                     </span>
                     <span className="font-mono text-white font-medium">
-                      ${monthlyPropertyTax.toLocaleString()}
+                      ${monthlyPropertyTax.toLocaleString("en-US")}
                     </span>
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <span className="flex items-center gap-2 text-neutral-300">
-                      <span className="w-2 h-2 rounded-full bg-neutral-400" />
+                    <span className="flex items-center gap-2 text-[#EAE3D9]">
+                      <span className="w-2 h-2 rounded-full bg-[#9B7E48]" />
                       Hazard Insurance
                     </span>
                     <span className="font-mono text-white font-medium">
-                      ${monthlyInsurance.toLocaleString()}
+                      ${monthlyInsurance.toLocaleString("en-US")}
                     </span>
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <span className="flex items-center gap-2 text-neutral-300">
-                      <span className="w-2 h-2 rounded-full bg-neutral-600" />
+                    <span className="flex items-center gap-2 text-[#EAE3D9]">
+                      <span className="w-2 h-2 rounded-full bg-white/40" />
                       HOA & Reserve
                     </span>
                     <span className="font-mono text-white font-medium">
-                      ${hoaMonthly.toLocaleString()}
+                      ${hoaMonthly.toLocaleString("en-US")}
                     </span>
                   </div>
                 </div>
 
-                <div className="mt-5 pt-3 border-t border-white/[0.05] text-[11px] text-neutral-400 space-y-1">
+                <div className="mt-5 pt-3 border-t border-white/10 text-[11px] text-[#A8B2C1] space-y-1">
                   <div className="flex justify-between">
                     <span>Financed Principal:</span>
-                    <span className="font-mono text-neutral-200">${loanAmount.toLocaleString()}</span>
+                    <span className="font-mono text-white">${loanAmount.toLocaleString("en-US")}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Total Cash to Close:</span>
-                    <span className="font-mono text-stone-300 font-semibold">${downPaymentAmount.toLocaleString()}</span>
+                    <span className="font-mono text-[#C5A880] font-semibold">${downPaymentAmount.toLocaleString("en-US")}</span>
                   </div>
                 </div>
               </div>
@@ -263,7 +263,7 @@ export default function MortgageCalculator({ onOpenSchedule }) {
               <div className="mt-6 pt-3">
                 <button
                   onClick={onOpenSchedule}
-                  className="w-full py-2.5 rounded-xl bg-white hover:bg-stone-200 text-neutral-950 font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all active:scale-95"
+                  className="w-full py-2.5 rounded-xl bg-[#C5A880] hover:bg-[#D8BD99] text-[#0A192F] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all active:scale-95 shadow-sm"
                 >
                   <Landmark className="w-3.5 h-3.5" />
                   Consult Lending Desk <ArrowRight className="w-3.5 h-3.5" />

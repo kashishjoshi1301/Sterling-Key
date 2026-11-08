@@ -2,7 +2,7 @@
 
 import React from "react";
 import { AGENTS_DATA, PRESS_ACCOLADES } from "../data/mockData";
-import { Phone, Mail, Award } from "lucide-react";
+import { Phone, Mail, Award, Quote } from "lucide-react";
 
 export default function AdvisorySection({ onOpenSchedule }) {
   return (

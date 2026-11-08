@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import Logo from "./Logo";
 import { ArrowRight, Check } from "lucide-react";
 
@@ -24,46 +25,46 @@ export default function Footer({ onOpenPortal, onOpenSchedule }) {
   ];
 
   return (
-    <footer className="bg-[#07111E] text-[#A8B2C1] text-xs border-t border-[#0A192F] pt-12 pb-8">
+    <footer className="bg-[#FAF8F5] text-[#545B65] text-sm border-t border-[#E4DCD0] pt-16 pb-24 sm:pb-28">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12">
-        {/* Top Newsletter Banner */}
-        <div className="bg-[#0A192F] border border-[#C5A880]/30 rounded-3xl p-6 sm:p-8 mb-12 shadow-xl relative overflow-hidden text-white">
+        {/* Top Newsletter Banner in Deep Navy with Champagne Gold Accents */}
+        <div className="bg-[#0A192F] border border-[#C5A880]/40 rounded-3xl p-6 sm:p-10 mb-14 shadow-xl relative overflow-hidden text-white">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
             <div className="lg:col-span-7">
-              <span className="text-[10px] uppercase tracking-[0.22em] text-[#C5A880] font-semibold mb-1 block">
+              <span className="text-xs uppercase tracking-[0.22em] text-[#C5A880] font-semibold mb-1.5 block">
                 The Sovereign Wire · Private Dispatch
               </span>
-              <h3 className="text-xl sm:text-2xl font-serif text-[#FAF8F5] mb-1 font-semibold">
+              <h3 className="text-2xl sm:text-3xl font-serif text-[#FAF8F5] mb-2 font-semibold">
                 Receive Off-Market Pocket Offerings
               </h3>
-              <p className="text-[#A8B2C1] text-xs sm:text-sm">
+              <p className="text-[#DDD4C6] text-sm sm:text-base leading-relaxed">
                 Join 14,000+ family offices receiving our quarterly private intelligence dossier and unlisted off-market offerings.
               </p>
             </div>
 
             <div className="lg:col-span-5">
               {subscribed ? (
-                <div className="flex items-center gap-2 p-3.5 rounded-xl bg-white/10 border border-[#C5A880]/40 text-[#EADDC9]">
-                  <Check className="w-4 h-4 shrink-0 text-[#C5A880]" />
-                  <span className="text-xs font-medium">
+                <div className="flex items-center gap-2.5 p-4 rounded-xl bg-white/10 border border-[#C5A880]/40 text-[#EADDC9]">
+                  <Check className="w-5 h-5 shrink-0 text-[#C5A880]" />
+                  <span className="text-sm font-medium">
                     You have been subscribed to The Sovereign Wire.
                   </span>
                 </div>
               ) : (
-                <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-2">
+                <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-2.5">
                   <input
                     type="email"
                     required
                     placeholder="Enter private email..."
                     value={newsletterEmail}
                     onChange={(e) => setNewsletterEmail(e.target.value)}
-                    className="flex-1 bg-[#07111E] border border-[#C5A880]/30 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-[#747D88] focus:outline-none focus:border-[#C5A880]"
+                    className="flex-1 bg-[#060D18] border border-[#C5A880]/40 rounded-xl px-4 py-3 text-sm text-white placeholder-[#8F949B] focus:outline-none focus:border-[#C5A880]"
                   />
                   <button
                     type="submit"
-                    className="py-2.5 px-5 rounded-xl bg-[#C5A880] hover:bg-[#D8BD99] text-[#0A192F] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-sm shrink-0"
+                    className="py-3 px-6 rounded-xl bg-[#C5A880] hover:bg-[#D8BD99] text-[#0A192F] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-sm shrink-0 cursor-pointer"
                   >
-                    Subscribe <ArrowRight className="w-3 h-3" />
+                    <span>Subscribe</span> <ArrowRight className="w-4 h-4" />
                   </button>
                 </form>
               )}
@@ -71,69 +72,84 @@ export default function Footer({ onOpenPortal, onOpenSchedule }) {
           </div>
         </div>
 
-        {/* Global Flagship Locations - Streamlined Row */}
-        <div className="mb-12">
-          <div className="text-[10px] uppercase tracking-[0.22em] text-[#C5A880] font-semibold mb-4 text-center">
+        {/* Global Flagship Locations - Warm Ivory & White Cards */}
+        <div className="mb-14">
+          <div className="text-xs uppercase tracking-[0.22em] text-[#C5A880] font-semibold mb-5 text-center">
             Global Flagship Advisory Chambers
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
             {offices.map((office, i) => (
-              <div key={i} className="p-3 rounded-xl bg-[#0A192F]/80 border border-white/10">
-                <div className="text-white font-serif font-semibold text-xs mb-0.5">{office.city}</div>
-                <p className="text-[10px] text-[#A8B2C1] line-clamp-1">{office.address}</p>
-                <div className="text-[#C5A880] text-[10px] mt-1 font-mono">{office.phone}</div>
+              <div key={i} className="p-4 rounded-xl bg-white border border-[#E4DCD0] shadow-sm hover:border-[#C5A880] transition-colors">
+                <div className="text-[#0A192F] font-serif font-semibold text-sm mb-1">{office.city}</div>
+                <p className="text-xs text-[#747D88] line-clamp-1">{office.address}</p>
+                <div className="text-[#C5A880] text-xs mt-1.5 font-mono font-semibold">{office.phone}</div>
               </div>
             ))}
           </div>
         </div>
 
         {/* Footer Navigation Columns */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12 border-t border-white/10 pt-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-14 border-t border-[#E4DCD0] pt-12">
           <div>
-            <Logo size="md" variant="light" className="mb-3" />
-            <p className="text-[#A8B2C1] text-xs leading-relaxed max-w-xs">
+            <Logo size="md" variant="dark" className="mb-4" />
+            <p className="text-[#545B65] text-sm leading-relaxed max-w-xs">
               Sterling Key Properties represents architectural masterworks and institutional multi-family assets across resilient sovereign havens.
             </p>
           </div>
 
           <div>
-            <div className="text-white font-semibold text-xs uppercase tracking-wider mb-3">Portfolio</div>
-            <ul className="space-y-2 text-[#A8B2C1]">
-              <li><a href="#featured-listings" className="hover:text-white transition-colors">Featured Estates</a></li>
-              <li><a href="#vault" className="hover:text-white transition-colors">The Sovereign Vault</a></li>
-              <li><a href="#neighborhoods" className="hover:text-white transition-colors">Global Flagships</a></li>
-              <li><a href="#financials" className="hover:text-white transition-colors">Valuation Intelligence</a></li>
+            <div className="text-[#0A192F] font-semibold text-sm uppercase tracking-wider mb-4">Portfolio Pages</div>
+            <ul className="space-y-2.5 text-sm text-[#545B65]">
+              <li><Link href="/collection" className="hover:text-[#0A192F] transition-colors font-medium">Browse All Collections</Link></li>
+              <li><Link href="/vault" className="hover:text-[#0A192F] transition-colors font-medium">The Sovereign Vault</Link></li>
+              <li><Link href="/destinations" className="hover:text-[#0A192F] transition-colors font-medium">Global Flagships</Link></li>
+              <li><Link href="/financials" className="hover:text-[#0A192F] transition-colors font-medium">Valuation & Financials</Link></li>
             </ul>
           </div>
 
           <div>
-            <div className="text-white font-semibold text-xs uppercase tracking-wider mb-3">Institutional</div>
-            <ul className="space-y-2 text-[#A8B2C1]">
-              <li><a href="#property-management" className="hover:text-white transition-colors">Asset Management</a></li>
-              <li><button onClick={onOpenPortal} className="hover:text-white transition-colors">Client & Resident Portal</button></li>
-              <li><a href="#financials" className="hover:text-white transition-colors">Jumbo Lending Desk</a></li>
-              <li><button onClick={onOpenSchedule} className="hover:text-white transition-colors">Private Advisory Briefing</button></li>
+            <div className="text-[#0A192F] font-semibold text-sm uppercase tracking-wider mb-4">Institutional Services</div>
+            <ul className="space-y-2.5 text-sm text-[#545B65]">
+              <li><Link href="/management" className="hover:text-[#0A192F] transition-colors font-medium">Asset & Property Management</Link></li>
+              <li><Link href="/advisory" className="hover:text-[#0A192F] transition-colors font-medium">Private Advisory & Treaties</Link></li>
+              <li><button onClick={onOpenPortal} className="hover:text-[#0A192F] transition-colors font-medium cursor-pointer text-left">Client & Resident Portal</button></li>
+              <li><button onClick={onOpenSchedule} className="hover:text-[#0A192F] transition-colors font-medium cursor-pointer text-left">Private Advisory Briefing</button></li>
             </ul>
           </div>
 
           <div>
-            <div className="text-white font-semibold text-xs uppercase tracking-wider mb-3">Security & Compliance</div>
-            <p className="text-[#747D88] text-[11px] leading-relaxed mb-3">
+            <div className="text-[#0A192F] font-semibold text-sm uppercase tracking-wider mb-4">Security & Compliance</div>
+            <p className="text-[#747D88] text-xs leading-relaxed mb-4">
               Encrypted biometric vault access, SHA-256 NDA handshakes, and strict FINCEN anti-money laundering institutional screening protocols.
             </p>
-            <div className="text-[10px] text-[#C5A880] font-mono">
+            <div className="text-xs text-[#C5A880] font-mono font-semibold tracking-wider">
               EQUAL HOUSING OPPORTUNITY
             </div>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between text-[#747D88] text-[11px] gap-3">
-          <p>© {new Date().getFullYear()} Sterling Key Properties & Asset Management LLC. All rights reserved.</p>
-          <div className="flex gap-4">
-            <span className="hover:text-white cursor-pointer">Privacy Policy</span>
-            <span className="hover:text-white cursor-pointer">Terms of Service</span>
-            <span className="hover:text-white cursor-pointer">Regulatory Disclosures</span>
+        {/* Bottom Sub-Footer Bar - Two Stacked Centered Lines */}
+        <div className="border-t border-[#E4DCD0] pt-8 flex flex-col items-center justify-center text-center text-[#545B65] text-xs sm:text-sm gap-3">
+          {/* Line 1: Copyright & Legal Multipage Links (Centered) */}
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4">
+            <p>
+              © {new Date().getFullYear()} Sterling Key Properties & Asset Management LLC.
+            </p>
+            <span className="text-[#C5A880] hidden sm:inline">·</span>
+            <div className="flex items-center gap-3 text-xs font-semibold">
+              <Link href="/privacy" className="text-[#545B65] hover:text-[#0A192F] font-medium transition-colors underline-offset-4 hover:underline">
+                Privacy Policy
+              </Link>
+              <span className="text-[#C5A880]">·</span>
+              <Link href="/terms" className="text-[#545B65] hover:text-[#0A192F] font-medium transition-colors underline-offset-4 hover:underline">
+                Terms & Conditions
+              </Link>
+            </div>
+          </div>
+          
+          {/* Line 2: Developer Credit with Red Heart Love Sign (Centered on New Line) */}
+          <div className="font-medium text-[#1A1D20] text-xs sm:text-sm">
+            Developed with <span className="text-red-500 font-bold inline-block mx-1 animate-pulse" aria-label="love">❤️</span> by <span className="font-semibold text-[#0A192F]">Creyotech IT Services</span>
           </div>
         </div>
       </div>

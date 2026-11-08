@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { X, TrendingUp, ShieldCheck, MapPin, Clock, ArrowRight, CheckCircle2 } from "lucide-react";
+import { X, TrendingUp, ShieldCheck, MapPin, Clock, ArrowRight } from "lucide-react";
 
 export default function StatCardModal({ statType, onClose, onScheduleTour }) {
   if (!statType) return null;
@@ -66,17 +66,17 @@ export default function StatCardModal({ statType, onClose, onScheduleTour }) {
 
   return (
     <div 
-      className="fixed inset-0 z-50 overflow-y-auto bg-black/50 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 transition-all duration-700 ease-out animate-fade-in"
+      className="fixed inset-0 z-50 overflow-y-auto bg-black/65 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 transition-all duration-700 ease-out animate-fade-in text-[#1A1D20]"
       onClick={onClose}
     >
       <div 
-        className="relative w-full max-w-xl xl:max-w-2xl max-h-[90vh] overflow-y-auto bg-[#0B0D13]/95 backdrop-blur-2xl border border-white/20 rounded-2xl p-5 sm:p-7 shadow-2xl shadow-black/80 my-auto transition-all duration-500"
+        className="relative w-full max-w-xl xl:max-w-2xl max-h-[90vh] overflow-y-auto bg-[#FAF8F5] border border-[#E4DCD0] rounded-2xl p-5 sm:p-7 shadow-2xl my-auto transition-all duration-500"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 rounded-full bg-white/5 hover:bg-white/10 text-neutral-400 hover:text-white transition-colors"
+          className="absolute top-4 right-4 p-2 rounded-full bg-[#F3EFEA] hover:bg-[#EAE3D9] text-[#545B65] hover:text-[#0A192F] transition-colors"
           aria-label="Close"
         >
           <X className="w-4 h-4" />
@@ -84,38 +84,38 @@ export default function StatCardModal({ statType, onClose, onScheduleTour }) {
 
         {/* Modal Header */}
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center text-stone-200">
+          <div className="w-10 h-10 rounded-xl bg-[#0A192F] border border-[#C5A880]/30 flex items-center justify-center text-[#C5A880] shadow-sm">
             <IconComponent className="w-5 h-5" />
           </div>
           <div>
-            <span className="text-[10px] uppercase tracking-[0.2em] font-medium text-stone-400 block">
+            <span className="text-[10px] uppercase tracking-[0.2em] font-semibold text-[#C5A880] block">
               {current.badge}
             </span>
-            <h3 className="text-xl sm:text-2xl font-serif text-white font-medium">
+            <h3 className="text-xl sm:text-2xl font-serif text-[#0A192F] font-semibold">
               {current.title}
             </h3>
           </div>
         </div>
 
-        <p className="text-xs text-neutral-400 leading-relaxed mb-6">
+        <p className="text-xs text-[#545B65] leading-relaxed mb-6">
           {current.subtitle}
         </p>
 
         {/* 4 Metric Badges */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
           {current.metrics.map((m, idx) => (
-            <div key={idx} className="p-3.5 rounded-2xl bg-white/[0.04] border border-white/[0.08]">
-              <span className="text-[10px] text-neutral-400 uppercase tracking-wider block mb-1">
+            <div key={idx} className="p-3.5 rounded-2xl bg-white border border-[#E4DCD0] shadow-2xs">
+              <span className="text-[10px] text-[#747D88] uppercase tracking-wider block mb-1 font-semibold">
                 {m.label}
               </span>
-              <span className="text-sm font-serif font-semibold text-white">
+              <span className="text-sm font-serif font-bold text-[#0A192F]">
                 {m.value}
               </span>
             </div>
           ))}
         </div>
 
-        <p className="text-xs text-neutral-300 leading-relaxed p-4 rounded-2xl bg-white/[0.02] border border-white/[0.05] mb-6">
+        <p className="text-xs text-[#383E46] leading-relaxed p-4 rounded-2xl bg-white border border-[#E4DCD0] mb-6 shadow-2xs">
           {current.description}
         </p>
 
@@ -123,7 +123,7 @@ export default function StatCardModal({ statType, onClose, onScheduleTour }) {
         <div className="flex items-center justify-between gap-3 pt-2">
           <button
             onClick={onClose}
-            className="py-2.5 px-4 rounded-xl bg-white/[0.05] hover:bg-white/10 text-neutral-300 hover:text-white text-xs font-medium uppercase tracking-wider transition-colors"
+            className="py-2.5 px-4 rounded-xl bg-[#F3EFEA] hover:bg-[#EAE3D9] text-[#0A192F] text-xs font-semibold uppercase tracking-wider transition-colors border border-[#E4DCD0]"
           >
             Close Overview
           </button>
@@ -132,10 +132,10 @@ export default function StatCardModal({ statType, onClose, onScheduleTour }) {
               onClose();
               if (onScheduleTour) onScheduleTour({ title: `Institutional Consultation (${current.badge})` });
             }}
-            className="py-2.5 px-5 rounded-xl bg-white hover:bg-stone-200 text-neutral-950 font-semibold text-xs uppercase tracking-wider flex items-center gap-1.5 transition-all active:scale-95"
+            className="py-2.5 px-5 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] font-semibold text-xs uppercase tracking-wider flex items-center gap-1.5 transition-all active:scale-95 shadow-sm"
           >
             <span>Request Institutional Briefing</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <ArrowRight className="w-3.5 h-3.5 text-[#C5A880]" />
           </button>
         </div>
       </div>

@@ -98,24 +98,23 @@ export default function AmbientSoundToggle() {
       onClick={toggleSound}
       className={`p-1.5 rounded-lg border text-xs transition-all flex items-center gap-1.5 ${
         isPlaying
-          ? "bg-white text-neutral-950 border-white font-medium shadow-sm"
-          : "bg-white/[0.04] hover:bg-white/10 text-neutral-400 hover:text-white border-white/10"
+          ? "bg-[#C5A880] text-[#0A192F] border-[#C5A880] font-semibold shadow-xs"
+          : "bg-white/10 hover:bg-white/20 text-[#DDD4C6] hover:text-white border-white/15"
       }`}
       title={isPlaying ? "Mute Ambient Soundscape" : "Enable Ambient Soundscape"}
     >
       {isPlaying ? (
         <>
-          {/* Animated sound equalizer bars */}
           <div className="flex items-end gap-0.5 h-3 px-0.5">
-            <span className="w-0.5 h-2 bg-neutral-950 animate-pulse" />
-            <span className="w-0.5 h-3 bg-neutral-950 animate-bounce" />
-            <span className="w-0.5 h-1.5 bg-neutral-950 animate-pulse" />
+            <span className="w-0.5 h-2 bg-[#0A192F] animate-pulse" />
+            <span className="w-0.5 h-3 bg-[#0A192F] animate-bounce" />
+            <span className="w-0.5 h-1.5 bg-[#0A192F] animate-pulse" />
           </div>
-          <span className="text-[10px] uppercase font-mono tracking-wider">Atmosphere ON</span>
+          <span className="text-[10px] uppercase font-mono tracking-wider font-bold">Atmosphere ON</span>
         </>
       ) : (
         <>
-          <VolumeX className="w-3.5 h-3.5" />
+          <VolumeX className="w-3.5 h-3.5 text-[#C5A880]" />
           <span className="text-[10px] uppercase font-mono tracking-wider hidden sm:inline">Atmosphere</span>
         </>
       )}
