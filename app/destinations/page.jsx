@@ -8,6 +8,7 @@ import ConciergeChatWidget from "@/components/ConciergeChatWidget";
 import ScheduleModal from "@/components/ScheduleModal";
 import PortalModal from "@/components/PortalModal";
 import PropertyModal from "@/components/PropertyModal";
+import DestinationModal from "@/components/DestinationModal";
 import SavedDrawer from "@/components/SavedDrawer";
 import { 
   ArrowLeft, 
@@ -20,18 +21,43 @@ import {
   Bed, 
   Bath, 
   Maximize2, 
-  Heart,
-  SlidersHorizontal,
-  ChevronRight
+  Heart, 
+  ChevronRight,
+  Sparkles
 } from "lucide-react";
 import { PROPERTIES_DATA, NEIGHBORHOODS_DATA } from "@/data/mockData";
 import { useCurrency } from "@/components/CurrencyContext";
 import { useToast } from "@/components/Toast";
 
+// Helper to reliably match properties to any of the 12 destinations
+export const getDestinationProperties = (dest) => {
+  if (!dest) return [];
+  const id = (dest.id || "").toLowerCase();
+  return PROPERTIES_DATA.filter((p) => {
+    const pCity = (p.city || "").toLowerCase();
+    const pNeigh = (p.neighborhood || "").toLowerCase();
+    
+    if (id === "manhattan") return pCity.includes("new york") || pNeigh.includes("manhattan") || pNeigh.includes("tribeca") || pNeigh.includes("billionaires") || pNeigh.includes("village");
+    if (id === "los-angeles") return pCity.includes("los angeles") || pNeigh.includes("bel-air") || pNeigh.includes("beverly") || pNeigh.includes("malibu") || pNeigh.includes("brentwood");
+    if (id === "miami") return pCity.includes("miami");
+    if (id === "london") return pCity.includes("london") || pNeigh.includes("mayfair") || pNeigh.includes("belgravia");
+    if (id === "aspen") return pCity.includes("aspen");
+    if (id === "dubai") return pCity.includes("dubai");
+    if (id === "monaco") return pCity.includes("monaco") || pCity.includes("riviera");
+    if (id === "paris") return pCity.includes("paris") || pNeigh.includes("marais");
+    if (id === "lake-como") return pCity.includes("lake como") || pCity.includes("milan") || pNeigh.includes("bellagio");
+    if (id === "tokyo") return pCity.includes("tokyo") || pNeigh.includes("toranomon");
+    if (id === "geneva") return pCity.includes("geneva") || pCity.includes("swiss") || pNeigh.includes("cologny");
+    if (id === "bahamas") return pCity.includes("bahamas") || pNeigh.includes("lyford");
+    return false;
+  });
+};
+
 export default function DestinationsPage() {
   const { formatRawPrice, formatArea } = useCurrency();
   const { addToast } = useToast();
   const [selectedCityId, setSelectedCityId] = useState(NEIGHBORHOODS_DATA[0].id);
+  const [selectedDestination, setSelectedDestination] = useState(null);
   const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [portalOpen, setPortalOpen] = useState(false);
@@ -44,21 +70,7 @@ export default function DestinationsPage() {
 
   // Find properties matching the selected destination
   const destinationProperties = useMemo(() => {
-    const cityNameLower = activeDestination.name.toLowerCase().split(",")[0].trim();
-    return PROPERTIES_DATA.filter((p) => {
-      const pCity = p.city.toLowerCase();
-      const pNeigh = p.neighborhood.toLowerCase();
-      if (pCity.includes(cityNameLower) || pNeigh.includes(cityNameLower)) return true;
-      if (cityNameLower === "manhattan" && pCity.includes("new york")) return true;
-      if (cityNameLower === "miami" && pCity.includes("miami")) return true;
-      if (cityNameLower === "monaco" && (pCity.includes("monaco") || pCity.includes("french riviera"))) return true;
-      if (cityNameLower === "paris" && pCity.includes("paris")) return true;
-      if (cityNameLower === "lake como" && pCity.includes("lake como")) return true;
-      if (cityNameLower === "tokyo" && pCity.includes("tokyo")) return true;
-      if (cityNameLower === "geneva" && pCity.includes("geneva")) return true;
-      if (cityNameLower === "bahamas" && pCity.includes("bahamas")) return true;
-      return false;
-    });
+    return getDestinationProperties(activeDestination);
   }, [activeDestination]);
 
   const handleToggleSave = (id, title) => {
@@ -71,6 +83,11 @@ export default function DestinationsPage() {
         return [...prev, id];
       }
     });
+  };
+
+  const handleCardClick = (city) => {
+    setSelectedCityId(city.id);
+    setSelectedDestination(city);
   };
 
   return (
@@ -129,22 +146,25 @@ export default function DestinationsPage() {
               </h2>
             </div>
             <span className="text-xs text-[#545B65] font-mono">
-              Click any region to inspect active assets & market telemetry
+              Click any chamber card to open regional dossier & active residences
             </span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             {NEIGHBORHOODS_DATA.map((city) => {
               const isSelected = city.id === selectedCityId;
+              const matchingPropsCount = getDestinationProperties(city).length;
+
               return (
                 <div
                   key={city.id}
-                  onClick={() => setSelectedCityId(city.id)}
+                  onClick={() => handleCardClick(city)}
                   className={`group relative rounded-2xl overflow-hidden aspect-[4/3] cursor-pointer border transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1 ${
                     isSelected
                       ? "border-[#C5A880] ring-3 ring-[#C5A880]/50 scale-[1.02]"
                       : "border-[#E4DCD0] hover:border-[#C5A880]"
                   }`}
+                  title={`Open ${city.name} dossier`}
                 >
                   <img
                     src={city.image}
@@ -154,12 +174,12 @@ export default function DestinationsPage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/10 transition-opacity duration-300" />
 
                   {/* Badges on Top */}
-                  <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
+                  <div className="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-none">
                     <span className="px-2.5 py-0.5 rounded-md text-[10px] font-semibold uppercase tracking-wider bg-[#0A192F]/85 backdrop-blur-md text-[#EADDC9] border border-[#C5A880]/40 shadow-sm">
                       Avg Yield {city.avgYield}
                     </span>
                     <span className="text-[10px] font-semibold uppercase tracking-wider text-white bg-black/60 px-2 py-0.5 rounded-md backdrop-blur-md border border-white/10">
-                      {city.activeCount || "Active"}
+                      {city.activeCount || `${matchingPropsCount} Properties`}
                     </span>
                   </div>
 
@@ -169,11 +189,9 @@ export default function DestinationsPage() {
                       <span className="text-[10px] text-[#C5A880] font-medium truncate pr-2">
                         {city.tag}
                       </span>
-                      {isSelected ? (
-                        <span className="w-2 h-2 rounded-full bg-[#C5A880] animate-ping" />
-                      ) : (
-                        <ArrowUpRight className="w-3.5 h-3.5 text-white/70 group-hover:text-[#C5A880] transition-colors shrink-0" />
-                      )}
+                      <span className="p-1 rounded-full bg-white/20 backdrop-blur-xs group-hover:bg-[#C5A880] text-white transition-all shrink-0">
+                        <ArrowUpRight className="w-3.5 h-3.5" />
+                      </span>
                     </div>
                     <h3 className="text-lg sm:text-xl font-serif text-white font-bold leading-snug group-hover:text-[#EADDC9] transition-colors">
                       {city.name}
@@ -188,8 +206,8 @@ export default function DestinationsPage() {
           </div>
         </div>
 
-        {/* Selected Destination Spotlight & Active Properties */}
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 pt-4 pb-16">
+        {/* Selected Destination Spotlight & Active Properties On-Page */}
+        <div id="selected-destination" className="max-w-[1600px] mx-auto px-4 sm:px-8 pt-4 pb-16">
           <div className="p-6 sm:p-10 rounded-3xl bg-white border border-[#E4DCD0] shadow-sm mb-10">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-[#E4DCD0]">
               <div>
@@ -272,7 +290,7 @@ export default function DestinationsPage() {
                             e.stopPropagation();
                             handleToggleSave(prop.id, prop.title);
                           }}
-                          className="absolute top-3 right-3 p-2 rounded-full bg-white/85 backdrop-blur-md text-[#383E46] hover:text-red-500 transition-colors shadow-sm"
+                          className="absolute top-3 right-3 p-2 rounded-full bg-white/85 backdrop-blur-md text-[#383E46] hover:text-red-500 transition-colors shadow-sm cursor-pointer"
                         >
                           <Heart className={`w-3.5 h-3.5 ${savedIds.includes(prop.id) ? "fill-red-500 text-red-500" : ""}`} />
                         </button>
@@ -325,6 +343,20 @@ export default function DestinationsPage() {
         onOpenSchedule={() => setScheduleModalOpen(true)}
       />
 
+      {/* Destination Dossier Modal */}
+      {selectedDestination && (
+        <DestinationModal
+          destination={selectedDestination}
+          properties={getDestinationProperties(selectedDestination)}
+          onClose={() => setSelectedDestination(null)}
+          onSelectProperty={(prop) => {
+            setSelectedProperty(prop);
+          }}
+          onScheduleTour={() => setScheduleModalOpen(true)}
+        />
+      )}
+
+      {/* Property Details Modal */}
       {selectedProperty && (
         <PropertyModal
           property={selectedProperty}
