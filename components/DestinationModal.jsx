@@ -28,13 +28,21 @@ export default function DestinationModal({
   const { formatRawPrice, formatArea } = useCurrency();
   const scrollRef = useRef(null);
 
-  // Prevent background scroll when modal is active
+  // Prevent background scroll when modal is active (Bulletproof for iOS & Android)
   useEffect(() => {
     if (!destination) return;
-    const prevOverflow = document.body.style.overflow;
+    const prevBodyOverflow = document.body.style.overflow;
+    const prevHtmlOverflow = document.documentElement.style.overflow;
+    const prevTouchAction = document.body.style.touchAction;
+
     document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.touchAction = "none";
+
     return () => {
-      document.body.style.overflow = prevOverflow;
+      document.body.style.overflow = prevBodyOverflow;
+      document.documentElement.style.overflow = prevHtmlOverflow;
+      document.body.style.touchAction = prevTouchAction;
     };
   }, [destination]);
 
@@ -60,8 +68,11 @@ export default function DestinationModal({
 
   return (
     <div 
-      className="fixed inset-0 z-50 bg-[#0A192F]/50 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 md:p-6 animate-fade-in"
+      className="fixed inset-0 z-50 bg-[#0A192F]/50 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 md:p-6 animate-fade-in overscroll-contain touch-none"
       onClick={onClose}
+      onTouchMove={(e) => {
+        if (e.target === e.currentTarget) e.preventDefault();
+      }}
     >
       <div 
         className="relative w-full max-w-4xl lg:max-w-5xl max-h-[94vh] sm:max-h-[92vh] bg-[#FAF8F5] border border-[#E4DCD0] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl flex flex-col my-auto text-[#1A1D20]"
@@ -123,7 +134,7 @@ export default function DestinationModal({
         {/* Modal Scrollable Body */}
         <div 
           ref={scrollRef}
-          className="p-4 sm:p-7 space-y-6 overflow-y-auto flex-1 min-h-0 bg-[#FAF8F5]"
+          className="p-4 sm:p-7 space-y-6 overflow-y-auto flex-1 min-h-0 bg-[#FAF8F5] overscroll-contain touch-pan-y"
         >
           {/* Market & Investment Telemetry */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3.5">

@@ -33,13 +33,21 @@ export default function PropertyModal({
   const [activeImgIndex, setActiveImgIndex] = useState(0);
   const contentRef = useRef(null);
 
-  // Prevent background page scrolling when modal is open
+  // Prevent background page scrolling when modal is open (Bulletproof for iOS & Android)
   useEffect(() => {
     if (!property) return;
-    const prevOverflow = document.body.style.overflow;
+    const prevBodyOverflow = document.body.style.overflow;
+    const prevHtmlOverflow = document.documentElement.style.overflow;
+    const prevTouchAction = document.body.style.touchAction;
+
     document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.touchAction = "none";
+
     return () => {
-      document.body.style.overflow = prevOverflow;
+      document.body.style.overflow = prevBodyOverflow;
+      document.documentElement.style.overflow = prevHtmlOverflow;
+      document.body.style.touchAction = prevTouchAction;
     };
   }, [property]);
 
@@ -74,8 +82,13 @@ export default function PropertyModal({
 
   return (
     <div 
-      className="fixed inset-0 z-50 bg-[#0A192F]/50 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 md:p-6 animate-fade-in"
+      className="fixed inset-0 z-50 bg-[#0A192F]/50 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 md:p-6 animate-fade-in overscroll-contain touch-none"
       onClick={onClose}
+      onTouchMove={(e) => {
+        if (e.target === e.currentTarget) {
+          e.preventDefault();
+        }
+      }}
     >
       <div 
         className="relative w-full max-w-4xl lg:max-w-5xl max-h-[94vh] sm:max-h-[92vh] bg-[#FAF8F5] border border-[#E4DCD0] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl flex flex-col my-auto text-[#1A1D20]"
@@ -84,7 +97,7 @@ export default function PropertyModal({
         {/* Top Floating Controls - Clean Separation to Prevent Overlap */}
         {/* Top-Right: Action buttons + Close */}
         <div className="absolute top-2.5 right-2.5 sm:top-4 sm:right-4 z-30 flex items-center gap-1.5 sm:gap-2">
-          {/* Full Dossier Page link (desktop top-bar) */}
+          {/* Full Dossier Page link (visible on desktop in top-bar; on mobile shown under title) */}
           <Link
             href={`/properties/${property.id}`}
             className="hidden sm:inline-flex py-1.5 px-3 rounded-full bg-white/95 hover:bg-[#FAF8F5] text-[#0A192F] border border-[#E4DCD0] text-xs font-semibold uppercase tracking-wider items-center gap-1.5 transition-all shadow-sm"
@@ -192,7 +205,7 @@ export default function PropertyModal({
           )}
         </div>
 
-        {/* Modal Navigation Tabs - Horizontal Scrollable on Mobile */}
+        {/* Modal Navigation Tabs - Horizontal Scrollable & Safe on Mobile */}
         <div className="bg-white border-b border-[#E4DCD0] px-3 sm:px-8 flex items-center gap-2 sm:gap-6 shrink-0 overflow-x-auto no-scrollbar whitespace-nowrap">
           <button
             onClick={() => setActiveTab("overview")}
@@ -229,10 +242,10 @@ export default function PropertyModal({
           </button>
         </div>
 
-        {/* Modal Body - Always Starts at Top (contentRef) */}
+        {/* Modal Body - Always Starts at Top (contentRef) with Clear Typographic Hierarchy */}
         <div 
           ref={contentRef}
-          className="p-4 sm:p-7 space-y-4 sm:space-y-6 overflow-y-auto flex-1 min-h-0 bg-[#FAF8F5]"
+          className="p-4 sm:p-7 space-y-4 sm:space-y-6 overflow-y-auto flex-1 min-h-0 bg-[#FAF8F5] overscroll-contain touch-pan-y"
         >
           {/* Title, Address & Price Header */}
           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 border-b border-[#E4DCD0] pb-4">

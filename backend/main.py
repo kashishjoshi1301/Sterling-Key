@@ -221,6 +221,72 @@ async def ai_concierge_chat(request: ChatRequest):
 
     return ChatResponse(response=reply, provider_used="Sterling Key Sovereign AI Engine (Built-in Free LLM)")
 
+# ----------------- NEWSLETTER / INTELLIGENCE SUBSCRIPTION ENDPOINT -----------------
+
+@app.post("/api/newsletter", tags=["Newsletter"])
+@app.post("/api/subscribe", tags=["Newsletter"])
+def subscribe_newsletter(payload: dict):
+    """
+    Register family office private email and issue confidential Q1 2026 intelligence dossier.
+    """
+    email = payload.get("email", "").strip().lower()
+    if not email or "@" not in email or "." not in email:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="A valid private email address is required."
+        )
+
+    import random
+    dossier_id = f"SK-DOSSIER-2026-{random.randint(1000, 9999)}"
+    print(f"\n========================================================")
+    print(f"📬 [FASTAPI STERLING KEY] NEW PRIVATE INTELLIGENCE DISPATCH")
+    print(f"📧 Recipient: {email}")
+    print(f"📄 Dossier ID: {dossier_id}")
+    print(f"💼 Access Tier: Sovereign Family Office & Private Capital")
+    print(f"========================================================\n")
+
+    return {
+        "success": True,
+        "email": email,
+        "dossierId": dossier_id,
+        "message": f"Confidential Q1 2026 intelligence dossier generated for {email}.",
+        "deliveryStatus": "DISPATCHED_TO_PORTAL",
+        "dossier": {
+            "id": dossier_id,
+            "title": "Q1 2026 Sovereign Portfolio & Off-Market Pocket Intelligence",
+            "classification": "CONFIDENTIAL / SOVEREIGN FAMILY OFFICE TIER",
+            "issuedDate": "First Quarter 2026",
+            "recipient": email,
+            "executiveSummary": "Curated overview of off-market private treaty transactions, institutional yield metrics, and ultra-prime residential opportunities across London, New York, Dubai, Los Angeles, and the Swiss Alps.",
+            "featuredOfferings": [
+                {
+                    "title": "The Bel-Air Promontory Estate",
+                    "location": "Bel-Air, Los Angeles, California",
+                    "valuation": "$115,000,000",
+                    "capRate": "6.8% Projected",
+                    "specs": "8 Beds · 14 Baths · 24,000 SF",
+                    "status": "Off-Market Pocket Treaty"
+                },
+                {
+                    "title": "The Palm Crown Royal Villa",
+                    "location": "Palm Jumeirah, Dubai, UAE",
+                    "valuation": "$75,000,000 (AED 275M)",
+                    "capRate": "7.8% High-Yield",
+                    "specs": "7 Beds · 10 Baths · 18,500 SF",
+                    "status": "Sovereign Waterfront Compound"
+                },
+                {
+                    "title": "The Sky Penthouse at 111 West 57th",
+                    "location": "Billionaires' Row, Manhattan, New York",
+                    "valuation": "$49,000,000",
+                    "capRate": "4.9% Capital Preservation",
+                    "specs": "5 Beds · 6.5 Baths · 7,130 SF",
+                    "status": "Trophy Architectural Tower"
+                }
+            ]
+        }
+    }
+
 @app.get("/api/health", tags=["System"])
 def health_check(db: Session = Depends(get_db)):
     """

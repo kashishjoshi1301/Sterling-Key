@@ -71,10 +71,22 @@
       "namedRegex": "^/api/chat(?:/)?$"
     },
     {
+      "page": "/api/newsletter",
+      "regex": "^/api/newsletter(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/newsletter(?:/)?$"
+    },
+    {
       "page": "/api/properties",
       "regex": "^/api/properties(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/api/properties(?:/)?$"
+    },
+    {
+      "page": "/api/subscribe",
+      "regex": "^/api/subscribe(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/subscribe(?:/)?$"
     },
     {
       "page": "/collection",

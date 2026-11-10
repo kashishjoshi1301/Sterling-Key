@@ -1,3 +1,10 @@
 {
-  "/page": "app/page.js"
+  "/api/newsletter/route": "app/api/newsletter/route.js",
+  "/page": "app/page.js",
+  "/collection/page": "app/collection/page.js",
+  "/advisory/page": "app/advisory/page.js",
+  "/management/page": "app/management/page.js",
+  "/destinations/page": "app/destinations/page.js",
+  "/financials/page": "app/financials/page.js",
+  "/vault/page": "app/vault/page.js"
 }

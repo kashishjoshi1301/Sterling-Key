@@ -2,10 +2,12 @@
   "/_not-found/page": "/_not-found",
   "/_global-error/page": "/_global-error",
   "/api/chat/route": "/api/chat",
+  "/api/newsletter/route": "/api/newsletter",
+  "/api/subscribe/route": "/api/subscribe",
+  "/api/properties/[id]/route": "/api/properties/[id]",
   "/api/properties/route": "/api/properties",
   "/advisory/page": "/advisory",
   "/collection/page": "/collection",
-  "/destinations/page": "/destinations",
   "/financials/page": "/financials",
   "/management/page": "/management",
   "/page": "/",
@@ -13,5 +15,5 @@
   "/properties/[id]/page": "/properties/[id]",
   "/terms/page": "/terms",
   "/vault/page": "/vault",
-  "/api/properties/[id]/route": "/api/properties/[id]"
+  "/destinations/page": "/destinations"
 }

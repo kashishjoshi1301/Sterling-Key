@@ -99,7 +99,7 @@ export default function Logo({ size = "md", showText = true, className = "", var
         </svg>
       </div>
 
-      {/* Typography - Whitespace-nowrap without truncation */}
+      {/* Typography - Explicit Inline Colors for 100% Contrast & Visibility */}
       {showText && (
         <div className="flex flex-col text-left shrink-0">
           <span

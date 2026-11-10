@@ -2,10 +2,12 @@
   "/_not-found/page": "app/_not-found/page.js",
   "/_global-error/page": "app/_global-error/page.js",
   "/api/chat/route": "app/api/chat/route.js",
+  "/api/newsletter/route": "app/api/newsletter/route.js",
+  "/api/subscribe/route": "app/api/subscribe/route.js",
+  "/api/properties/[id]/route": "app/api/properties/[id]/route.js",
   "/api/properties/route": "app/api/properties/route.js",
   "/advisory/page": "app/advisory/page.js",
   "/collection/page": "app/collection/page.js",
-  "/destinations/page": "app/destinations/page.js",
   "/financials/page": "app/financials/page.js",
   "/management/page": "app/management/page.js",
   "/page": "app/page.js",
@@ -13,5 +15,5 @@
   "/properties/[id]/page": "app/properties/[id]/page.js",
   "/terms/page": "app/terms/page.js",
   "/vault/page": "app/vault/page.js",
-  "/api/properties/[id]/route": "app/api/properties/[id]/route.js"
+  "/destinations/page": "app/destinations/page.js"
 }

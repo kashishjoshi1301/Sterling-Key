@@ -149,71 +149,53 @@ function CollectionContent() {
   const toggleCompare = (id) => {
     if (compareIds.includes(id)) {
       setCompareIds(compareIds.filter((item) => item !== id));
-      addToast("Property removed from comparison dock", "info", "Dock Updated");
     } else {
       if (compareIds.length >= 4) {
         addToast("Comparison suite supports up to 4 assets concurrently", "warning", "Dock Full");
         return;
       }
       setCompareIds([...compareIds, id]);
-      addToast("Asset docked for side-by-side analysis", "success", "Added to Compare");
+      addToast("Added to comparative underwriting dock", "info", "Comparison Added");
     }
   };
 
   const toggleSave = (id, title) => {
     if (savedIds.includes(id)) {
       setSavedIds(savedIds.filter((item) => item !== id));
-      addToast(`${title} removed from saved vault`, "info", "Removed");
+      addToast(`Removed ${title} from saved`, "info", "Saved Updated");
     } else {
       setSavedIds([...savedIds, id]);
-      addToast(`${title} added to your private portfolio`, "success", "Saved Residence");
+      addToast(`Added ${title} to private saved portfolio`, "success", "Saved Portfolio");
     }
   };
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-[#1A1D20] flex flex-col font-sans selection:bg-[#C5A880]/30 selection:text-[#0A192F]">
-      {/* Navigation Header */}
       <Navbar
+        onOpenPortal={() => setPortalOpen(true)}
+        onOpenSchedule={() => setTourProperty(PROPERTIES_DATA[0])}
         savedCount={savedIds.length}
         onOpenSaved={() => setSavedDrawerOpen(true)}
-        onOpenPortal={() => setPortalOpen(true)}
-        onOpenSchedule={() => setTourProperty(filteredProperties[0])}
       />
 
-      <main className="flex-1 max-w-[1600px] w-full mx-auto px-4 sm:px-8 lg:px-12 py-8 sm:py-12">
-        {/* Header Breadcrumb & Title */}
-        <div className="mb-8 border-b border-[#E4DCD0] pb-6">
-          <div className="flex items-center gap-2 text-xs uppercase font-mono tracking-widest text-[#C5A880] font-bold mb-2">
-            <span>Portfolio</span>
-            <span>/</span>
-            <span>Flagship Collection</span>
+      <main className="flex-1 max-w-[1600px] w-full mx-auto px-4 sm:px-8 lg:px-12 py-10 sm:py-16">
+        {/* Page Header */}
+        <div className="mb-10 text-center max-w-3xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0A192F] text-[#FAF8F5] text-xs font-mono uppercase tracking-widest mb-4 shadow-sm">
+            <Building className="w-3.5 h-3.5 text-[#C5A880]" />
+            <span>Curated Sovereign Portfolio</span>
           </div>
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-            <div>
-              <h1 className="text-3xl sm:text-5xl font-serif text-[#0A192F] font-bold tracking-tight">
-                Global Property Collection
-              </h1>
-              <p className="text-sm text-[#545B65] mt-1.5 max-w-2xl leading-relaxed">
-                Explore our full institutional portfolio of 24 trophy residences across prime global destinations. All acquisitions settled with FDIC-insured escrow treaties.
-              </p>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => setCompareModalOpen(true)}
-                disabled={compareIds.length === 0}
-                className="py-2.5 px-4 rounded-xl border border-[#E4DCD0] bg-white hover:bg-[#FAF8F5] text-[#0A192F] text-xs font-semibold uppercase tracking-wider flex items-center gap-2 disabled:opacity-40 transition-all shadow-2xs"
-              >
-                <Layers className="w-4 h-4 text-[#C5A880]" />
-                <span>Compare ({compareIds.length})</span>
-              </button>
-            </div>
-          </div>
+          <h1 className="text-4xl sm:text-6xl font-serif text-[#0A192F] font-bold tracking-tight mb-4">
+            The Property Collection
+          </h1>
+          <p className="text-sm sm:text-base text-[#545B65] leading-relaxed">
+            Filter through private estates, iconic penthouses, and prime institutional multi-family holdings managed across sovereign havens.
+          </p>
         </div>
 
-        {/* SEARCH & FILTERS BAR - ALL 4 ARE FUNCTIONAL DROPDOWNS */}
-        <div className="bg-white border border-[#E4DCD0] rounded-3xl p-6 sm:p-8 mb-10 shadow-xs">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        {/* COMPREHENSIVE DROPDOWN FILTER ENGINE (ALL 4 FIELDS ARE RICH SELECTS) */}
+        <div className="bg-white border border-[#E4DCD0] rounded-3xl p-6 sm:p-8 shadow-sm mb-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6">
             {/* 1. Destination Dropdown */}
             <div>
               <label className="block text-xs uppercase tracking-wider text-[#545B65] mb-2 font-bold flex items-center gap-1.5">
@@ -226,14 +208,18 @@ function CollectionContent() {
                 className="w-full bg-[#FAF8F5] border border-[#E4DCD0] rounded-xl px-4 py-3 text-sm font-semibold text-[#0A192F] focus:outline-none focus:border-[#C5A880] focus:ring-1 focus:ring-[#C5A880] cursor-pointer"
               >
                 <option value="all">All Global Destinations</option>
-                <option value="New York">Manhattan, New York</option>
-                <option value="Los Angeles">Los Angeles, California</option>
-                <option value="Miami">Miami & Islands, Florida</option>
-                <option value="London">Central London, UK</option>
-                <option value="Aspen">Aspen, Colorado</option>
-                <option value="Dubai">Dubai, UAE</option>
-                <option value="Kyoto">Kyoto, Japan</option>
-                <option value="Zurich">Zurich, Switzerland</option>
+                <option value="Manhattan, New York">Manhattan, New York</option>
+                <option value="Los Angeles, California">Los Angeles, California</option>
+                <option value="Miami, Florida">Miami & Islands, Florida</option>
+                <option value="London, United Kingdom">Central London, United Kingdom</option>
+                <option value="Aspen, Colorado">Aspen & Snowmass, Colorado</option>
+                <option value="Dubai, United Arab Emirates">Dubai, United Arab Emirates</option>
+                <option value="Monaco">Monaco & French Riviera</option>
+                <option value="Paris, France">Paris, France</option>
+                <option value="Lake Como, Italy">Lake Como & Milan, Italy</option>
+                <option value="Tokyo, Japan">Tokyo, Japan</option>
+                <option value="Geneva, Switzerland">Geneva, Switzerland</option>
+                <option value="Bahamas">Bahamas & Sovereign Cays</option>
               </select>
             </div>
 
@@ -331,18 +317,30 @@ function CollectionContent() {
               </div>
 
               {/* View Switcher */}
-              <div className="flex items-center border border-[#E4DCD0] rounded-xl overflow-hidden bg-[#FAF8F5]">
+              <div className="flex items-center border border-[#E4DCD0] rounded-xl overflow-hidden bg-[#FAF8F5] shadow-xs">
                 <button
+                  type="button"
                   onClick={() => setViewMode("grid")}
-                  className={`p-2 transition-colors cursor-pointer ${viewMode === "grid" ? "bg-[#0A192F] text-white" : "text-[#545B65] hover:text-[#0A192F]"}`}
+                  className={`p-2.5 sm:p-2 transition-all cursor-pointer ${
+                    viewMode === "grid" 
+                      ? "bg-[#0A192F] text-white shadow-xs" 
+                      : "text-[#545B65] hover:text-[#0A192F] hover:bg-[#F3EFEA]"
+                  }`}
                   title="Grid View"
+                  aria-label="Grid View"
                 >
                   <Grid className="w-4 h-4" />
                 </button>
                 <button
+                  type="button"
                   onClick={() => setViewMode("list")}
-                  className={`p-2 transition-colors cursor-pointer ${viewMode === "list" ? "bg-[#0A192F] text-white" : "text-[#545B65] hover:text-[#0A192F]"}`}
+                  className={`p-2.5 sm:p-2 transition-all cursor-pointer ${
+                    viewMode === "list" 
+                      ? "bg-[#0A192F] text-white shadow-xs" 
+                      : "text-[#545B65] hover:text-[#0A192F] hover:bg-[#F3EFEA]"
+                  }`}
                   title="List View"
+                  aria-label="List View"
                 >
                   <List className="w-4 h-4" />
                 </button>
@@ -368,8 +366,11 @@ function CollectionContent() {
               Reset Search Filters
             </button>
           </div>
-        ) : (
-          <div className={viewMode === "grid" ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" : "space-y-6"}>
+        ) : viewMode === "list" ? (
+          /* ==============================================================
+             LIST VIEW (Clean Horizontal Rows for Both Mobile and Desktop)
+             ============================================================== */
+          <div className="space-y-4 sm:space-y-5">
             {filteredProperties.map((prop) => {
               const isCompared = compareIds.includes(prop.id);
               const isFav = savedIds.includes(prop.id);
@@ -378,14 +379,163 @@ function CollectionContent() {
                 <div
                   key={prop.id}
                   onClick={() => setSelectedProperty(prop)}
-                  className={`group rounded-3xl bg-white border border-[#E4DCD0] overflow-hidden shadow-xs hover:shadow-xl hover:border-[#C5A880] transition-all duration-300 flex flex-col cursor-pointer active:scale-[0.99] ${
-                    viewMode === "list" ? "sm:flex-row" : ""
-                  }`}
+                  className="group rounded-2xl sm:rounded-3xl bg-white border border-[#E4DCD0] overflow-hidden shadow-xs hover:shadow-xl hover:border-[#C5A880] transition-all duration-300 flex flex-row items-stretch cursor-pointer active:scale-[0.99] p-3 sm:p-5 gap-3.5 sm:gap-6"
+                >
+                  {/* Left: Thumbnail Image */}
+                  <div 
+                    onClick={() => setSelectedProperty(prop)}
+                    className="relative w-28 h-28 xs:w-36 xs:h-36 sm:w-64 sm:h-auto md:w-80 md:h-auto shrink-0 rounded-xl sm:rounded-2xl overflow-hidden bg-[#FAF8F5]"
+                  >
+                    <img
+                      src={prop.images[0]}
+                      alt={prop.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
+
+                    {/* Status Badge */}
+                    <div className="absolute top-2 left-2 flex items-center gap-1 sm:gap-1.5">
+                      <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-[#0A192F]/90 text-[#FAF8F5] border border-[#C5A880]/40 backdrop-blur-xs">
+                        {prop.status}
+                      </span>
+                    </div>
+
+                    {/* Quick Favorite on image */}
+                    <div className="absolute top-2 right-2 flex items-center gap-1 z-10">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleSave(prop.id, prop.title);
+                        }}
+                        className="p-1.5 rounded-full bg-[#0A192F]/80 hover:bg-[#0A192F] text-white transition-all backdrop-blur-md cursor-pointer"
+                        title="Save to Favorites"
+                      >
+                        <Heart className={`w-3 h-3 ${isFav ? "fill-[#C5A880] text-[#C5A880]" : ""}`} />
+                      </button>
+                    </div>
+
+                    {/* Cap rate tag on image bottom for mobile */}
+                    <div className="absolute bottom-1.5 left-2 right-2 sm:hidden flex justify-between items-center text-[10px] text-white font-mono">
+                      <span className="text-[#C5A880] font-bold">{prop.capRate || "5.8%"} Cap</span>
+                    </div>
+                  </div>
+
+                  {/* Right: Property Details & Actions */}
+                  <div className="flex-1 min-w-0 flex flex-col justify-between py-0.5">
+                    {/* Top Section: Location & Title */}
+                    <div>
+                      <div className="flex items-center text-[11px] sm:text-xs text-[#747D88] font-semibold mb-1 truncate">
+                        <MapPin className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1 text-[#C5A880] shrink-0" />
+                        <span className="truncate">{prop.neighborhood}, {prop.city}</span>
+                      </div>
+
+                      <Link 
+                        href={`/properties/${prop.id}`}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <h3 className="text-sm xs:text-base sm:text-xl lg:text-2xl font-serif text-[#0A192F] font-bold hover:text-[#C5A880] transition-colors leading-tight line-clamp-1 sm:line-clamp-2">
+                          {prop.title}
+                        </h3>
+                      </Link>
+
+                      {/* Description visible on md+ screens */}
+                      <p className="hidden md:block text-xs sm:text-sm text-[#545B65] line-clamp-2 mt-1.5 leading-relaxed">
+                        {prop.description}
+                      </p>
+                    </div>
+
+                    {/* Middle: Valuation & Specs */}
+                    <div className="my-1.5 sm:my-3">
+                      <div className="flex items-baseline gap-2">
+                        <div suppressHydrationWarning className="text-base xs:text-lg sm:text-2xl font-serif font-bold text-[#0A192F] tracking-tight">
+                          {formatRawPrice(prop.price)}
+                        </div>
+                        <span className="hidden sm:inline text-xs font-mono font-semibold text-[#C5A880]">
+                          • {prop.capRate || "5.8%"} Cap Rate
+                        </span>
+                      </div>
+
+                      {/* Compact Specs Row */}
+                      <div className="flex flex-wrap items-center gap-x-2 sm:gap-x-4 gap-y-0.5 text-[10px] sm:text-xs text-[#545B65] font-mono mt-1">
+                        <span className="font-semibold text-[#0A192F]">{prop.beds} Beds</span>
+                        <span>•</span>
+                        <span className="font-semibold text-[#0A192F]">{prop.baths} Baths</span>
+                        <span>•</span>
+                        <span suppressHydrationWarning className="font-semibold text-[#0A192F]">{formatArea(prop.sqft, prop.sqm)}</span>
+                        <span className="hidden lg:inline">•</span>
+                        <span className="hidden lg:inline text-[#747D88] truncate">{prop.lotSize}</span>
+                      </div>
+                    </div>
+
+                    {/* Bottom Actions */}
+                    <div className="flex items-center gap-2 pt-1 border-t border-[#E4DCD0]/70 sm:border-0">
+                      <Link
+                        href={`/properties/${prop.id}`}
+                        onClick={(e) => e.stopPropagation()}
+                        className="py-1.5 sm:py-2.5 px-3 sm:px-4 rounded-lg sm:rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1 sm:gap-1.5 shadow-sm active:scale-95"
+                      >
+                        <span>Full Dossier</span>
+                        <ExternalLink className="w-3 h-3 text-[#C5A880]" />
+                      </Link>
+
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedProperty(prop);
+                        }}
+                        className="py-1.5 sm:py-2.5 px-2.5 sm:px-3 rounded-lg sm:rounded-xl bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#0A192F] text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all border border-[#E4DCD0] shadow-2xs active:scale-95 cursor-pointer"
+                      >
+                        Preview
+                      </button>
+
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleCompare(prop.id);
+                        }}
+                        className={`hidden sm:inline-flex py-2 px-2.5 rounded-xl border border-[#E4DCD0] transition-all cursor-pointer ${
+                          isCompared ? "bg-[#C5A880] text-[#0A192F]" : "bg-[#FAF8F5] text-[#545B65] hover:text-[#0A192F]"
+                        }`}
+                        title="Compare Asset"
+                      >
+                        <Layers className="w-3.5 h-3.5" />
+                      </button>
+
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setTourProperty(prop);
+                        }}
+                        className="hidden sm:inline-flex py-2 px-2.5 rounded-xl bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#0A192F] transition-all border border-[#E4DCD0] shadow-2xs active:scale-95 cursor-pointer"
+                        title="Schedule Private Showing"
+                      >
+                        <Calendar className="w-3.5 h-3.5 text-[#C5A880]" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          /* ==============================================================
+             GRID VIEW (Visual Card Showcase: 1-col mobile, 2-col tablet, 3-col desktop)
+             ============================================================== */
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredProperties.map((prop) => {
+              const isCompared = compareIds.includes(prop.id);
+              const isFav = savedIds.includes(prop.id);
+
+              return (
+                <div
+                  key={prop.id}
+                  onClick={() => setSelectedProperty(prop)}
+                  className="group rounded-3xl bg-white border border-[#E4DCD0] overflow-hidden shadow-xs hover:shadow-xl hover:border-[#C5A880] transition-all duration-300 flex flex-col cursor-pointer active:scale-[0.99]"
                 >
                   {/* Image Container - Click to Open Quick Dossier Modal */}
                   <div 
                     onClick={() => setSelectedProperty(prop)}
-                    className={`relative overflow-hidden cursor-pointer ${viewMode === "list" ? "sm:w-2/5 aspect-[16/10] sm:aspect-auto" : "aspect-[16/10]"}`}
+                    className="relative aspect-[16/10] overflow-hidden cursor-pointer"
                   >
                     <img
                       src={prop.images[0]}
