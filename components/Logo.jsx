@@ -99,18 +99,18 @@ export default function Logo({ size = "md", showText = true, className = "", var
         </svg>
       </div>
 
-      {/* Typography - Explicit Inline Colors for 100% Contrast & Visibility */}
+      {/* Typography - Whitespace-nowrap without truncation */}
       {showText && (
-        <div className="flex flex-col text-left min-w-0">
+        <div className="flex flex-col text-left shrink-0">
           <span
             style={{ color: isLight ? "#FAF8F5" : "#0A192F" }}
-            className={`font-serif uppercase font-bold leading-tight ${titleSizes[size]} transition-colors truncate`}
+            className={`font-serif uppercase font-bold leading-tight ${titleSizes[size]} transition-colors whitespace-nowrap`}
           >
             Sterling Key
           </span>
           <span
             style={{ color: isLight ? "#C5A880" : "#4A5568" }}
-            className={`font-sans uppercase font-semibold leading-tight mt-0.5 ${subtitleSizes[size]} truncate hidden xs:inline-block sm:inline-block`}
+            className={`font-sans uppercase font-semibold leading-tight mt-0.5 ${subtitleSizes[size]} whitespace-nowrap hidden xs:inline-block sm:inline-block`}
           >
             Properties & Asset Management
           </span>

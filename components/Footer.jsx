@@ -1,21 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import Logo from "./Logo";
-import { ArrowRight, Check } from "lucide-react";
 
 export default function Footer({ onOpenPortal, onOpenSchedule }) {
-  const [newsletterEmail, setNewsletterEmail] = useState("");
-  const [subscribed, setSubscribed] = useState(false);
-
-  const handleSubscribe = (e) => {
-    e.preventDefault();
-    if (newsletterEmail) {
-      setSubscribed(true);
-    }
-  };
-
   const offices = [
     { city: "New York", address: "767 Fifth Avenue, PH 50", phone: "+1 (212) 791-8840" },
     { city: "Beverly Hills", address: "9601 Wilshire Boulevard", phone: "+1 (310) 849-2910" },
@@ -25,57 +14,52 @@ export default function Footer({ onOpenPortal, onOpenSchedule }) {
   ];
 
   return (
-    <footer className="bg-[#FAF8F5] text-[#545B65] text-sm border-t border-[#E4DCD0] pt-16 pb-24 sm:pb-28">
+    <footer className="bg-[#FAF8F5] border-t border-[#E4DCD0] text-[#1A1D20] pt-16 pb-12 font-sans selection:bg-[#C5A880]/30 selection:text-[#0A192F]">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12">
-        {/* Top Newsletter Banner in Deep Navy with Champagne Gold Accents */}
-        <div className="bg-[#0A192F] border border-[#C5A880]/40 rounded-3xl p-6 sm:p-10 mb-14 shadow-xl relative overflow-hidden text-white">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-            <div className="lg:col-span-7">
-              <span className="text-xs uppercase tracking-[0.22em] text-[#C5A880] font-semibold mb-1.5 block">
-                The Sovereign Wire · Private Dispatch
-              </span>
-              <h3 className="text-2xl sm:text-3xl font-serif text-[#FAF8F5] mb-2 font-semibold">
-                Receive Off-Market Pocket Offerings
-              </h3>
-              <p className="text-[#DDD4C6] text-sm sm:text-base leading-relaxed">
-                Join 14,000+ family offices receiving our quarterly private intelligence dossier and unlisted off-market offerings.
-              </p>
-            </div>
+        {/* Top Newsletter & Intelligence Sign-up - Warm Navy & Ivory Container */}
+        <div className="p-8 sm:p-12 rounded-3xl bg-[#0A192F] text-white border border-[#C5A880]/40 shadow-xl mb-16 relative overflow-hidden">
+          <div className="relative z-10 max-w-2xl">
+            <span className="text-[10px] uppercase font-mono tracking-widest text-[#C5A880] font-semibold block mb-2">
+              Private Treaty Intelligence
+            </span>
+            <h3 className="text-2xl sm:text-3xl font-serif font-bold text-[#FAF8F5] tracking-tight mb-2">
+              Receive Off-Market Pocket Offerings
+            </h3>
+            <p className="text-sm text-[#DDD4C6] leading-relaxed mb-6">
+              Join 14,000+ family offices receiving our quarterly private intelligence dossier and unlisted off-market offerings.
+            </p>
+            <form onSubmit={(e) => e.preventDefault()} className="flex flex-col sm:flex-row gap-3">
+              <input
+                type="email"
+                placeholder="Enter private email..."
+                className="bg-[#142E54]/60 border border-[#C5A880]/30 rounded-xl px-4 py-3 text-sm text-[#FAF8F5] placeholder-[#DDD4C6]/60 focus:outline-none focus:border-[#C5A880] flex-1 font-mono transition-colors"
+                required
+              />
+              <button
+                type="submit"
+                className="bg-[#C5A880] hover:bg-[#D5BC98] text-[#0A192F] px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap active:scale-95 shadow-md cursor-pointer"
+              >
+                Subscribe &rarr;
+              </button>
+            </form>
+          </div>
 
-            <div className="lg:col-span-5">
-              {subscribed ? (
-                <div className="flex items-center gap-2.5 p-4 rounded-xl bg-white/10 border border-[#C5A880]/40 text-[#EADDC9]">
-                  <Check className="w-5 h-5 shrink-0 text-[#C5A880]" />
-                  <span className="text-sm font-medium">
-                    You have been subscribed to The Sovereign Wire.
-                  </span>
-                </div>
-              ) : (
-                <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-2.5">
-                  <input
-                    type="email"
-                    required
-                    placeholder="Enter private email..."
-                    value={newsletterEmail}
-                    onChange={(e) => setNewsletterEmail(e.target.value)}
-                    className="flex-1 bg-[#060D18] border border-[#C5A880]/40 rounded-xl px-4 py-3 text-sm text-white placeholder-[#8F949B] focus:outline-none focus:border-[#C5A880]"
-                  />
-                  <button
-                    type="submit"
-                    className="py-3 px-6 rounded-xl bg-[#C5A880] hover:bg-[#D8BD99] text-[#0A192F] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-sm shrink-0 cursor-pointer"
-                  >
-                    <span>Subscribe</span> <ArrowRight className="w-4 h-4" />
-                  </button>
-                </form>
-              )}
-            </div>
+          {/* Decorative luxury key silhouette watermark */}
+          <div className="absolute right-0 top-0 bottom-0 opacity-5 pointer-events-none flex items-center pr-10 hidden md:flex">
+            <svg viewBox="0 0 100 100" fill="none" className="w-80 h-80 text-[#C5A880]">
+              <polygon points="50,8 88,24 88,76 50,92 12,76 12,24" stroke="currentColor" strokeWidth="2" />
+              <circle cx="50" cy="36" r="13" stroke="currentColor" strokeWidth="2" />
+              <line x1="50" y1="49" x2="50" y2="78" stroke="currentColor" strokeWidth="2" />
+            </svg>
           </div>
         </div>
 
-        {/* Global Flagship Locations - Warm Ivory & White Cards */}
-        <div className="mb-14">
-          <div className="text-xs uppercase tracking-[0.22em] text-[#C5A880] font-semibold mb-5 text-center">
-            Global Flagship Advisory Chambers
+        {/* Global Advisory Chambers / Physical Locations */}
+        <div className="mb-16">
+          <div className="text-center mb-6">
+            <span className="text-[10px] uppercase font-mono tracking-widest text-[#C5A880] font-bold">
+              Global Flagship Advisory Chambers
+            </span>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
             {offices.map((office, i) => (
@@ -88,11 +72,12 @@ export default function Footer({ onOpenPortal, onOpenSchedule }) {
           </div>
         </div>
 
-        {/* Footer Navigation Columns */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-14 border-t border-[#E4DCD0] pt-12">
-          <div>
+        {/* Footer Navigation Columns - Generous Brand Column Space */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-10 mb-14 border-t border-[#E4DCD0] pt-12">
+          {/* Brand Info Column (2-Span on tablet and desktop so logo NEVER truncates) */}
+          <div className="sm:col-span-2 lg:col-span-2">
             <Logo size="md" variant="dark" className="mb-4" />
-            <p className="text-[#545B65] text-sm leading-relaxed max-w-xs">
+            <p className="text-[#545B65] text-sm leading-relaxed max-w-sm">
               Sterling Key Properties represents architectural masterworks and institutional multi-family assets across resilient sovereign havens.
             </p>
           </div>
@@ -140,16 +125,18 @@ export default function Footer({ onOpenPortal, onOpenSchedule }) {
               <Link href="/privacy" className="text-[#545B65] hover:text-[#0A192F] font-medium transition-colors underline-offset-4 hover:underline">
                 Privacy Policy
               </Link>
-              <span className="text-[#C5A880]">·</span>
+              <span className="text-[#E4DCD0]">·</span>
               <Link href="/terms" className="text-[#545B65] hover:text-[#0A192F] font-medium transition-colors underline-offset-4 hover:underline">
                 Terms & Conditions
               </Link>
             </div>
           </div>
-          
-          {/* Line 2: Developer Credit with Red Heart Love Sign (Centered on New Line) */}
-          <div className="font-medium text-[#1A1D20] text-xs sm:text-sm">
-            Developed with <span className="text-red-500 font-bold inline-block mx-1 animate-pulse" aria-label="love">❤️</span> by <span className="font-semibold text-[#0A192F]">Creyotech IT Services</span>
+
+          {/* Line 2: Developer Credit (Centered on New Line) */}
+          <div className="flex items-center justify-center gap-1.5 text-xs text-[#545B65]">
+            <span>Developed with</span>
+            <span className="text-red-500 animate-pulse text-sm">❤️</span>
+            <span className="font-semibold text-[#1A1D20]">by Creyotech IT Services</span>
           </div>
         </div>
       </div>

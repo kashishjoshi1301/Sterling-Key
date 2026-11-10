@@ -1,10 +1,10 @@
-// File: /Users/kashish/Downloads/sterling-key-properties 5/app/advisory/page.jsx
-import * as entry from '../../../../../app/advisory/page.js'
+// File: /Users/kashish/Downloads/sterling-key-properties 5/app/page.jsx
+import * as entry from '../../../../app/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
 import type { InstantConfigForTypeCheckInternal, Prefetch, EnsureStatic } from 'next/dist/build/segment-config/app/app-segment-config.js'
 
-type TEntry = typeof import('../../../../../app/advisory/page.js')
+type TEntry = typeof import('../../../../app/page.js')
 
 type SegmentParams<T extends Object = any> = T extends Record<string, any>
   ? { [K in keyof T]: T[K] extends string ? string | string[] | undefined : never }
