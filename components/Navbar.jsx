@@ -63,14 +63,14 @@ export default function Navbar({
   return (
     <>
       {/* Top Deep Navy Ticker Bar - Strictly Single-Line & Fully Responsive */}
-      <div className="bg-[#0A192F] border-b border-[#060D18] py-1.5 sm:py-2 text-xs text-[#EAE3D9] font-sans tracking-wide">
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-3">
+      <div className="bg-[#0A192F] border-b border-[#060D18] py-1.5 sm:py-2 text-xs text-[#EAE3D9] font-sans tracking-wide w-full overflow-hidden">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-3 w-full overflow-hidden">
           {/* Left Ticker Teaser */}
-          <div className="flex items-center gap-2 sm:gap-3 overflow-hidden min-w-0">
+          <div className="flex items-center gap-2 sm:gap-3 overflow-hidden min-w-0 flex-1">
             <span className="inline-flex items-center px-2 py-0.5 rounded text-[9px] sm:text-[10px] font-semibold tracking-[0.14em] uppercase bg-[#C5A880]/20 text-[#EADDC9] border border-[#C5A880]/30 shrink-0">
               Private Market
             </span>
-            <p className="truncate text-[#DDD4C6] text-xs font-medium">
+            <p className="truncate text-[#DDD4C6] text-xs font-medium min-w-0">
               Exclusive: The Bel-Air Promontory Estate · Managing $4.8B+ in Institutional Assets
             </p>
           </div>
@@ -95,7 +95,7 @@ export default function Navbar({
 
               <button
                 onClick={handleUnitToggle}
-                className="px-1.5 py-0.5 rounded text-[9px] uppercase font-mono tracking-wider bg-white/10 hover:bg-white/20 text-[#FAF8F5] border border-white/20 transition-colors font-bold"
+                className="px-1.5 py-0.5 rounded text-[9px] uppercase font-mono tracking-wider bg-white/10 hover:bg-white/20 text-[#FAF8F5] border border-white/20 transition-colors font-bold cursor-pointer"
                 title="Toggle Area Units"
               >
                 {unit === "sqft" ? "SF" : "M²"}
@@ -122,15 +122,15 @@ export default function Navbar({
 
       {/* Main Sticky Navbar - Zero Overlap at ANY Screen Width */}
       <header
-        className={`sticky top-0 z-40 transition-all duration-300 ease-out ${
+        className={`sticky top-0 z-40 transition-all duration-300 ease-out w-full max-w-full overflow-hidden ${
           scrolled
             ? "bg-[#FAF8F5]/98 backdrop-blur-xl shadow-md border-b border-[#E4DCD0] py-2.5"
-            : "bg-[#FAF8F5]/95 backdrop-blur-md border-b border-[#EAE3D9] py-3.5"
+            : "bg-[#FAF8F5]/95 backdrop-blur-md border-b border-[#EAE3D9] py-3 sm:py-3.5"
         }`}
       >
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-3 lg:gap-4">
-          {/* Brand Logo - Fixed on left */}
-          <Link href="/" className="shrink-0 cursor-pointer transition-opacity hover:opacity-95 mr-2">
+        <div className="max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8 flex items-center justify-between gap-2 sm:gap-4 w-full">
+          {/* Brand Logo - Fixed on left, gracefully responsive */}
+          <Link href="/" className="shrink-0 cursor-pointer transition-opacity hover:opacity-95 mr-1 sm:mr-2 max-w-[65%] sm:max-w-none">
             <Logo size="md" variant="dark" />
           </Link>
 
@@ -155,12 +155,12 @@ export default function Navbar({
             })}
           </nav>
 
-          {/* Right Action CTAs - Guaranteed Clearance and Never Overlapping */}
-          <div className="flex items-center justify-end gap-2 sm:gap-2.5 shrink-0 ml-auto">
+          {/* Right Action CTAs - Responsive without any horizontal overflow */}
+          <div className="flex items-center justify-end gap-1.5 sm:gap-2.5 shrink-0 ml-auto">
             {/* Favorites Button */}
             <button
               onClick={onOpenSaved}
-              className="relative p-2 2xl:p-2.5 rounded-xl border border-[#E4DCD0] text-[#383E46] hover:text-[#0A192F] hover:border-[#C5A880] hover:bg-[#F3EFEA] transition-all cursor-pointer active:scale-95 shrink-0"
+              className="relative p-2 sm:p-2.5 rounded-xl border border-[#E4DCD0] text-[#383E46] hover:text-[#0A192F] hover:border-[#C5A880] hover:bg-[#F3EFEA] transition-all cursor-pointer active:scale-95 shrink-0"
               title="Saved Properties"
             >
               <Heart className={`w-4 h-4 ${savedCount > 0 ? "text-[#C5A880] fill-[#C5A880]" : ""}`} />
@@ -171,7 +171,7 @@ export default function Navbar({
               )}
             </button>
 
-            {/* Client Portal Button - "Portal" on xl, "Client Portal" on 2xl */}
+            {/* Client Portal Button - Shown on sm+ screens */}
             <button
               onClick={onOpenPortal}
               className="hidden sm:flex items-center gap-1.5 px-2.5 2xl:px-3.5 py-2 rounded-xl border border-[#0A192F]/20 bg-white hover:bg-[#F3EFEA] text-[#0A192F] text-xs font-semibold uppercase tracking-[0.08em] transition-all shadow-2xs hover:border-[#C5A880] cursor-pointer shrink-0"
@@ -181,18 +181,18 @@ export default function Navbar({
               <span>Portal</span>
             </button>
 
-            {/* Primary Action Button */}
+            {/* Primary Action Button - Hidden on mobile screens to prevent navbar overflow, prominently featured in Mobile Drawer */}
             <button
               onClick={onOpenSchedule}
-              className="btn-shimmer px-3 sm:px-3.5 2xl:px-4 py-2 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] font-semibold text-xs uppercase tracking-[0.08em] transition-all shadow-sm active:scale-95 cursor-pointer whitespace-nowrap shrink-0"
+              className="btn-shimmer hidden md:inline-flex px-3 sm:px-3.5 2xl:px-4 py-2 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] font-semibold text-xs uppercase tracking-[0.08em] transition-all shadow-sm active:scale-95 cursor-pointer whitespace-nowrap shrink-0"
             >
               Private Advisory
             </button>
 
-            {/* Mobile / Tablet Drawer Toggle - Visible on screens below xl (1200px) */}
+            {/* Mobile / Tablet Drawer Toggle - Always visible and perfectly fitted on mobile */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="xl:hidden p-2 rounded-xl bg-white border border-[#E4DCD0] text-[#0A192F] hover:border-[#C5A880] transition-colors cursor-pointer"
+              className="xl:hidden p-2 rounded-xl bg-white border border-[#E4DCD0] text-[#0A192F] hover:border-[#C5A880] transition-colors cursor-pointer shrink-0"
               aria-label="Toggle Navigation Menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5 text-[#C5A880]" /> : <Menu className="w-5 h-5" />}
@@ -277,7 +277,7 @@ export default function Navbar({
                 setMobileMenuOpen(false);
                 onOpenSchedule();
               }}
-              className="w-full py-3 rounded-xl bg-[#0A192F] text-[#FAF8F5] font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm cursor-pointer"
+              className="w-full py-3.5 rounded-xl bg-[#0A192F] text-[#FAF8F5] font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm cursor-pointer"
             >
               Schedule Advisory Consultation
             </button>

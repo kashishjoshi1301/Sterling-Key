@@ -73,8 +73,8 @@ export default function HeroSection({ onSearchSubmit, onSelectTab, onOpenStatMod
   const tabs = [
     { id: "buy", label: "Buy Collection", mobileLabel: "Buy" },
     { id: "rent", label: "Luxury Rentals", mobileLabel: "Rent" },
-    { id: "developments", label: "Developments", mobileLabel: "Developments" },
-    { id: "management", label: "Asset Management", mobileLabel: "Management" }
+    { id: "developments", label: "Developments", mobileLabel: "Develop" },
+    { id: "management", label: "Asset Management", mobileLabel: "Manage" }
   ];
 
   const handleTabChange = (tabId) => {
@@ -274,64 +274,64 @@ export default function HeroSection({ onSearchSubmit, onSelectTab, onOpenStatMod
           </div>
         </div>
 
-        {/* Live Portfolio Metrics Strip - Fully Visible and Framed Above the Fold on Laptop Screens */}
-        <div className="mt-3.5 sm:mt-5 grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
+        {/* Live Portfolio Metrics Strip - Perfectly Proportioned 2x2 Grid on Mobile, 4-Col Row on Desktop */}
+        <div className="mt-3.5 sm:mt-5 grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3.5 w-full max-w-full overflow-hidden">
           <button
             onClick={() => onOpenStatModal && onOpenStatModal("volume")}
-            className="p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl bg-[#FAF8F5]/95 border border-[#E4DCD0] shadow-sm backdrop-blur-md text-left transition-all hover:-translate-y-0.5 hover:border-[#C5A880] cursor-pointer group"
+            className="w-full min-w-0 min-h-[76px] sm:min-h-[86px] p-3 sm:p-4 rounded-2xl bg-[#FAF8F5]/98 border border-[#E4DCD0] shadow-sm backdrop-blur-md text-left transition-all hover:-translate-y-0.5 hover:border-[#C5A880] cursor-pointer group flex flex-col justify-between"
           >
-            <div className="flex items-center justify-between">
-              <p className="text-lg sm:text-xl lg:text-2xl font-serif text-[#0A192F] font-bold tracking-tight">
+            <div className="flex items-center justify-between w-full">
+              <p className="text-xl sm:text-2xl font-serif text-[#0A192F] font-bold tracking-tight">
                 $5.2B<span className="text-[#C5A880]">+</span>
               </p>
-              <ArrowUpRight className="w-3.5 h-3.5 text-[#8F949B] group-hover:text-[#0A192F] transition-colors" />
+              <ArrowUpRight className="w-4 h-4 text-[#8F949B] group-hover:text-[#C5A880] transition-colors shrink-0 ml-1" />
             </div>
-            <p className="text-[9px] sm:text-[10px] font-mono tracking-wider uppercase text-[#545B65] mt-0.5 font-semibold">
+            <p className="text-[10px] sm:text-xs font-mono tracking-wider uppercase text-[#545B65] mt-1 font-semibold truncate w-full">
               Volume Closed
             </p>
           </button>
 
           <button
             onClick={() => onOpenStatModal && onOpenStatModal("occupancy")}
-            className="p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl bg-[#FAF8F5]/95 border border-[#E4DCD0] shadow-sm backdrop-blur-md text-left transition-all hover:-translate-y-0.5 hover:border-[#C5A880] cursor-pointer group"
+            className="w-full min-w-0 min-h-[76px] sm:min-h-[86px] p-3 sm:p-4 rounded-2xl bg-[#FAF8F5]/98 border border-[#E4DCD0] shadow-sm backdrop-blur-md text-left transition-all hover:-translate-y-0.5 hover:border-[#C5A880] cursor-pointer group flex flex-col justify-between"
           >
-            <div className="flex items-center justify-between">
-              <p className="text-lg sm:text-xl lg:text-2xl font-serif text-[#0A192F] font-bold tracking-tight">
+            <div className="flex items-center justify-between w-full">
+              <p className="text-xl sm:text-2xl font-serif text-[#0A192F] font-bold tracking-tight">
                 99.4<span className="text-[#C5A880]">%</span>
               </p>
-              <ArrowUpRight className="w-3.5 h-3.5 text-[#8F949B] group-hover:text-[#0A192F] transition-colors" />
+              <ArrowUpRight className="w-4 h-4 text-[#8F949B] group-hover:text-[#C5A880] transition-colors shrink-0 ml-1" />
             </div>
-            <p className="text-[9px] sm:text-[10px] font-mono tracking-wider uppercase text-[#545B65] mt-0.5 font-semibold">
+            <p className="text-[10px] sm:text-xs font-mono tracking-wider uppercase text-[#545B65] mt-1 font-semibold truncate w-full">
               Portfolio Occupancy
             </p>
           </button>
 
           <button
             onClick={() => onOpenStatModal && onOpenStatModal("flagships")}
-            className="p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl bg-[#FAF8F5]/95 border border-[#E4DCD0] shadow-sm backdrop-blur-md text-left transition-all hover:-translate-y-0.5 hover:border-[#C5A880] cursor-pointer group"
+            className="w-full min-w-0 min-h-[76px] sm:min-h-[86px] p-3 sm:p-4 rounded-2xl bg-[#FAF8F5]/98 border border-[#E4DCD0] shadow-sm backdrop-blur-md text-left transition-all hover:-translate-y-0.5 hover:border-[#C5A880] cursor-pointer group flex flex-col justify-between"
           >
-            <div className="flex items-center justify-between">
-              <p className="text-lg sm:text-xl lg:text-2xl font-serif text-[#0A192F] font-bold tracking-tight">
+            <div className="flex items-center justify-between w-full">
+              <p className="text-xl sm:text-2xl font-serif text-[#0A192F] font-bold tracking-tight">
                 14
               </p>
-              <ArrowUpRight className="w-3.5 h-3.5 text-[#8F949B] group-hover:text-[#0A192F] transition-colors" />
+              <ArrowUpRight className="w-4 h-4 text-[#8F949B] group-hover:text-[#C5A880] transition-colors shrink-0 ml-1" />
             </div>
-            <p className="text-[9px] sm:text-[10px] font-mono tracking-wider uppercase text-[#545B65] mt-0.5 font-semibold">
+            <p className="text-[10px] sm:text-xs font-mono tracking-wider uppercase text-[#545B65] mt-1 font-semibold truncate w-full">
               Flagship Chambers
             </p>
           </button>
 
           <button
             onClick={() => onOpenStatModal && onOpenStatModal("placement")}
-            className="p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl bg-[#FAF8F5]/95 border border-[#E4DCD0] shadow-sm backdrop-blur-md text-left transition-all hover:-translate-y-0.5 hover:border-[#C5A880] cursor-pointer group"
+            className="w-full min-w-0 min-h-[76px] sm:min-h-[86px] p-3 sm:p-4 rounded-2xl bg-[#FAF8F5]/98 border border-[#E4DCD0] shadow-sm backdrop-blur-md text-left transition-all hover:-translate-y-0.5 hover:border-[#C5A880] cursor-pointer group flex flex-col justify-between"
           >
-            <div className="flex items-center justify-between">
-              <p className="text-lg sm:text-xl lg:text-2xl font-serif text-[#0A192F] font-bold tracking-tight">
-                18 <span className="text-[11px] text-[#545B65] font-sans font-normal">Days</span>
+            <div className="flex items-center justify-between w-full">
+              <p className="text-xl sm:text-2xl font-serif text-[#0A192F] font-bold tracking-tight">
+                18 <span className="text-xs sm:text-sm text-[#545B65] font-sans font-normal">Days</span>
               </p>
-              <ArrowUpRight className="w-3.5 h-3.5 text-[#8F949B] group-hover:text-[#0A192F] transition-colors" />
+              <ArrowUpRight className="w-4 h-4 text-[#8F949B] group-hover:text-[#C5A880] transition-colors shrink-0 ml-1" />
             </div>
-            <p className="text-[9px] sm:text-[10px] font-mono tracking-wider uppercase text-[#545B65] mt-0.5 font-semibold">
+            <p className="text-[10px] sm:text-xs font-mono tracking-wider uppercase text-[#545B65] mt-1 font-semibold truncate w-full">
               Avg. Placement
             </p>
           </button>

@@ -149,53 +149,71 @@ function CollectionContent() {
   const toggleCompare = (id) => {
     if (compareIds.includes(id)) {
       setCompareIds(compareIds.filter((item) => item !== id));
+      addToast("Property removed from comparison dock", "info", "Dock Updated");
     } else {
       if (compareIds.length >= 4) {
         addToast("Comparison suite supports up to 4 assets concurrently", "warning", "Dock Full");
         return;
       }
       setCompareIds([...compareIds, id]);
-      addToast("Added to comparative underwriting dock", "info", "Comparison Added");
+      addToast("Asset docked for side-by-side analysis", "success", "Added to Compare");
     }
   };
 
   const toggleSave = (id, title) => {
     if (savedIds.includes(id)) {
       setSavedIds(savedIds.filter((item) => item !== id));
-      addToast(`Removed ${title} from saved`, "info", "Saved Updated");
+      addToast(`${title} removed from saved vault`, "info", "Removed");
     } else {
       setSavedIds([...savedIds, id]);
-      addToast(`Added ${title} to private saved portfolio`, "success", "Saved Portfolio");
+      addToast(`${title} added to your private portfolio`, "success", "Saved Residence");
     }
   };
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-[#1A1D20] flex flex-col font-sans selection:bg-[#C5A880]/30 selection:text-[#0A192F]">
+      {/* Navigation Header */}
       <Navbar
-        onOpenPortal={() => setPortalOpen(true)}
-        onOpenSchedule={() => setTourProperty(PROPERTIES_DATA[0])}
         savedCount={savedIds.length}
         onOpenSaved={() => setSavedDrawerOpen(true)}
+        onOpenPortal={() => setPortalOpen(true)}
+        onOpenSchedule={() => setTourProperty(filteredProperties[0])}
       />
 
-      <main className="flex-1 max-w-[1600px] w-full mx-auto px-4 sm:px-8 lg:px-12 py-10 sm:py-16">
-        {/* Page Header */}
-        <div className="mb-10 text-center max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0A192F] text-[#FAF8F5] text-xs font-mono uppercase tracking-widest mb-4 shadow-sm">
-            <Building className="w-3.5 h-3.5 text-[#C5A880]" />
-            <span>Curated Sovereign Portfolio</span>
+      <main className="flex-1 max-w-[1600px] w-full mx-auto px-4 sm:px-8 lg:px-12 py-8 sm:py-12">
+        {/* Header Breadcrumb & Title */}
+        <div className="mb-8 border-b border-[#E4DCD0] pb-6">
+          <div className="flex items-center gap-2 text-xs uppercase font-mono tracking-widest text-[#C5A880] font-bold mb-2">
+            <span>Portfolio</span>
+            <span>/</span>
+            <span>Flagship Collection</span>
           </div>
-          <h1 className="text-4xl sm:text-6xl font-serif text-[#0A192F] font-bold tracking-tight mb-4">
-            The Property Collection
-          </h1>
-          <p className="text-sm sm:text-base text-[#545B65] leading-relaxed">
-            Filter through private estates, iconic penthouses, and prime institutional multi-family holdings managed across sovereign havens.
-          </p>
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div>
+              <h1 className="text-3xl sm:text-5xl font-serif text-[#0A192F] font-bold tracking-tight">
+                Global Property Collection
+              </h1>
+              <p className="text-sm text-[#545B65] mt-1.5 max-w-2xl leading-relaxed">
+                Explore our full institutional portfolio of 24 trophy residences across prime global destinations. All acquisitions settled with FDIC-insured escrow treaties.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setCompareModalOpen(true)}
+                disabled={compareIds.length === 0}
+                className="py-2.5 px-4 rounded-xl border border-[#E4DCD0] bg-white hover:bg-[#FAF8F5] text-[#0A192F] text-xs font-semibold uppercase tracking-wider flex items-center gap-2 disabled:opacity-40 transition-all shadow-2xs"
+              >
+                <Layers className="w-4 h-4 text-[#C5A880]" />
+                <span>Compare ({compareIds.length})</span>
+              </button>
+            </div>
+          </div>
         </div>
 
-        {/* COMPREHENSIVE DROPDOWN FILTER ENGINE (ALL 4 FIELDS ARE RICH SELECTS) */}
-        <div className="bg-white border border-[#E4DCD0] rounded-3xl p-6 sm:p-8 shadow-sm mb-10">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6">
+        {/* SEARCH & FILTERS BAR - ALL 4 ARE FUNCTIONAL DROPDOWNS */}
+        <div className="bg-white border border-[#E4DCD0] rounded-3xl p-6 sm:p-8 mb-10 shadow-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             {/* 1. Destination Dropdown */}
             <div>
               <label className="block text-xs uppercase tracking-wider text-[#545B65] mb-2 font-bold flex items-center gap-1.5">
@@ -208,18 +226,14 @@ function CollectionContent() {
                 className="w-full bg-[#FAF8F5] border border-[#E4DCD0] rounded-xl px-4 py-3 text-sm font-semibold text-[#0A192F] focus:outline-none focus:border-[#C5A880] focus:ring-1 focus:ring-[#C5A880] cursor-pointer"
               >
                 <option value="all">All Global Destinations</option>
-                <option value="Manhattan, New York">Manhattan, New York</option>
-                <option value="Los Angeles, California">Los Angeles, California</option>
-                <option value="Miami, Florida">Miami & Islands, Florida</option>
-                <option value="London, United Kingdom">Central London, United Kingdom</option>
-                <option value="Aspen, Colorado">Aspen & Snowmass, Colorado</option>
-                <option value="Dubai, United Arab Emirates">Dubai, United Arab Emirates</option>
-                <option value="Monaco">Monaco & French Riviera</option>
-                <option value="Paris, France">Paris, France</option>
-                <option value="Lake Como, Italy">Lake Como & Milan, Italy</option>
-                <option value="Tokyo, Japan">Tokyo, Japan</option>
-                <option value="Geneva, Switzerland">Geneva, Switzerland</option>
-                <option value="Bahamas">Bahamas & Sovereign Cays</option>
+                <option value="New York">Manhattan, New York</option>
+                <option value="Los Angeles">Los Angeles, California</option>
+                <option value="Miami">Miami & Islands, Florida</option>
+                <option value="London">Central London, UK</option>
+                <option value="Aspen">Aspen, Colorado</option>
+                <option value="Dubai">Dubai, UAE</option>
+                <option value="Kyoto">Kyoto, Japan</option>
+                <option value="Zurich">Zurich, Switzerland</option>
               </select>
             </div>
 
@@ -320,14 +334,14 @@ function CollectionContent() {
               <div className="flex items-center border border-[#E4DCD0] rounded-xl overflow-hidden bg-[#FAF8F5]">
                 <button
                   onClick={() => setViewMode("grid")}
-                  className={`p-2 transition-colors ${viewMode === "grid" ? "bg-[#0A192F] text-white" : "text-[#545B65] hover:text-[#0A192F]"}`}
+                  className={`p-2 transition-colors cursor-pointer ${viewMode === "grid" ? "bg-[#0A192F] text-white" : "text-[#545B65] hover:text-[#0A192F]"}`}
                   title="Grid View"
                 >
                   <Grid className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => setViewMode("list")}
-                  className={`p-2 transition-colors ${viewMode === "list" ? "bg-[#0A192F] text-white" : "text-[#545B65] hover:text-[#0A192F]"}`}
+                  className={`p-2 transition-colors cursor-pointer ${viewMode === "list" ? "bg-[#0A192F] text-white" : "text-[#545B65] hover:text-[#0A192F]"}`}
                   title="List View"
                 >
                   <List className="w-4 h-4" />
@@ -363,12 +377,16 @@ function CollectionContent() {
               return (
                 <div
                   key={prop.id}
-                  className={`group rounded-3xl bg-white border border-[#E4DCD0] overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col ${
+                  onClick={() => setSelectedProperty(prop)}
+                  className={`group rounded-3xl bg-white border border-[#E4DCD0] overflow-hidden shadow-xs hover:shadow-xl hover:border-[#C5A880] transition-all duration-300 flex flex-col cursor-pointer active:scale-[0.99] ${
                     viewMode === "list" ? "sm:flex-row" : ""
                   }`}
                 >
-                  {/* Image Container */}
-                  <div className={`relative overflow-hidden ${viewMode === "list" ? "sm:w-2/5 aspect-[16/10] sm:aspect-auto" : "aspect-[16/10]"}`}>
+                  {/* Image Container - Click to Open Quick Dossier Modal */}
+                  <div 
+                    onClick={() => setSelectedProperty(prop)}
+                    className={`relative overflow-hidden cursor-pointer ${viewMode === "list" ? "sm:w-2/5 aspect-[16/10] sm:aspect-auto" : "aspect-[16/10]"}`}
+                  >
                     <img
                       src={prop.images[0]}
                       alt={prop.title}
@@ -389,13 +407,13 @@ function CollectionContent() {
                     </div>
 
                     {/* Top Right Save & Compare Buttons */}
-                    <div className="absolute top-4 right-4 flex items-center gap-1.5">
+                    <div className="absolute top-4 right-4 flex items-center gap-1.5 z-10">
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           toggleCompare(prop.id);
                         }}
-                        className={`p-2 rounded-full backdrop-blur-md transition-all ${
+                        className={`p-2 rounded-full backdrop-blur-md transition-all cursor-pointer ${
                           isCompared ? "bg-[#C5A880] text-[#0A192F]" : "bg-[#0A192F]/80 hover:bg-[#0A192F] text-white"
                         }`}
                         title="Compare Asset"
@@ -407,7 +425,7 @@ function CollectionContent() {
                           e.stopPropagation();
                           toggleSave(prop.id, prop.title);
                         }}
-                        className="p-2 rounded-full bg-[#0A192F]/80 hover:bg-[#0A192F] text-white transition-all backdrop-blur-md"
+                        className="p-2 rounded-full bg-[#0A192F]/80 hover:bg-[#0A192F] text-white transition-all backdrop-blur-md cursor-pointer"
                         title="Save to Favorites"
                       >
                         <Heart className={`w-3.5 h-3.5 ${isFav ? "fill-[#C5A880] text-[#C5A880]" : ""}`} />
@@ -434,7 +452,10 @@ function CollectionContent() {
                         <MapPin className="w-3.5 h-3.5 mr-1 text-[#C5A880] shrink-0" />
                         <span>{prop.neighborhood}, {prop.city}</span>
                       </div>
-                      <Link href={`/properties/${prop.id}`}>
+                      <Link 
+                        href={`/properties/${prop.id}`}
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         <h3 className="text-xl sm:text-2xl font-serif text-[#0A192F] font-bold hover:text-[#C5A880] transition-colors leading-tight">
                           {prop.title}
                         </h3>
@@ -464,21 +485,28 @@ function CollectionContent() {
                     <div className="flex items-center gap-2.5 pt-1">
                       <Link
                         href={`/properties/${prop.id}`}
-                        className="flex-1 py-3 px-4 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-xs font-bold uppercase tracking-wider transition-all text-center flex items-center justify-center gap-1.5 shadow-sm"
+                        onClick={(e) => e.stopPropagation()}
+                        className="flex-1 py-3 px-4 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-xs font-bold uppercase tracking-wider transition-all text-center flex items-center justify-center gap-1.5 shadow-sm active:scale-95"
                       >
                         <span>Full Dossier</span>
                         <ExternalLink className="w-3.5 h-3.5 text-[#C5A880]" />
                       </Link>
                       <button
-                        onClick={() => setSelectedProperty(prop)}
-                        className="py-3 px-3 rounded-xl bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#0A192F] text-xs font-bold uppercase tracking-wider transition-all border border-[#E4DCD0] shadow-2xs"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedProperty(prop);
+                        }}
+                        className="py-3 px-3 rounded-xl bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#0A192F] text-xs font-bold uppercase tracking-wider transition-all border border-[#E4DCD0] shadow-2xs active:scale-95 cursor-pointer"
                         title="Quick View"
                       >
                         Preview
                       </button>
                       <button
-                        onClick={() => setTourProperty(prop)}
-                        className="py-3 px-3 rounded-xl bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#0A192F] transition-all border border-[#E4DCD0] shadow-2xs"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setTourProperty(prop);
+                        }}
+                        className="py-3 px-3 rounded-xl bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#0A192F] transition-all border border-[#E4DCD0] shadow-2xs active:scale-95 cursor-pointer"
                         title="Schedule Private Showing"
                       >
                         <Calendar className="w-4 h-4 text-[#C5A880]" />

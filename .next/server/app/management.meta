@@ -1,0 +1,34 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/management/layout,_N_T_/management/page,_N_T_/management"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/management/__PAGE__"
+  ],
+  "prefetchHints": {
+    "hints": 64,
+    "slots": {
+      "children": {
+        "hints": 96,
+        "slots": {
+          "children": {
+            "hints": 160,
+            "slots": null
+          }
+        }
+      }
+    }
+  },
+  "routeCache": {
+    "key": "/route-cache/APP_PAGE/2fe81e1bb8b13ba5b5e2c9710e5bddf319a119712d09c97ad8b3651aa6f48a71/$/management",
+    "owner": {
+      "kind": "APP_PAGE",
+      "sourceRoute": "/management/page"
+    },
+    "isFallback": false
+  }
+}

@@ -1,5 +1,17 @@
 {
   "/_not-found/page": "/_not-found",
   "/_global-error/page": "/_global-error",
-  "/page": "/"
+  "/api/chat/route": "/api/chat",
+  "/api/properties/route": "/api/properties",
+  "/advisory/page": "/advisory",
+  "/collection/page": "/collection",
+  "/destinations/page": "/destinations",
+  "/financials/page": "/financials",
+  "/management/page": "/management",
+  "/page": "/",
+  "/privacy/page": "/privacy",
+  "/properties/[id]/page": "/properties/[id]",
+  "/terms/page": "/terms",
+  "/vault/page": "/vault",
+  "/api/properties/[id]/route": "/api/properties/[id]"
 }
