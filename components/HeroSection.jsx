@@ -77,12 +77,32 @@ export default function HeroSection({ onSearchSubmit, onSelectTab, onOpenStatMod
   ];
 
   const handleTabChange = (tabId) => {
+    if (tabId === "management") {
+      addToast("Opening Institutional Asset & Property Management Suite", "info", "Asset Management");
+      router.push("/management");
+      return;
+    }
     setActiveTab(tabId);
+    setPriceRange("all");
+    if (tabId === "developments") {
+      setPropertyType("New Developments");
+      addToast("Switched to Visionary Developments Search", "info", "Developments Mode");
+    } else if (tabId === "rent") {
+      if (propertyType === "New Developments") setPropertyType("all");
+      addToast("Switched to Luxury Rentals Search", "info", "Rentals Mode");
+    } else {
+      if (propertyType === "New Developments") setPropertyType("all");
+      addToast("Switched to Flagship Portfolio Acquisition", "info", "Buy Mode");
+    }
     if (onSelectTab) onSelectTab(tabId);
   };
 
   const handleSearch = (e) => {
     e.preventDefault();
+    if (activeTab === "management") {
+      router.push("/management");
+      return;
+    }
     if (onSearchSubmit) {
       onSearchSubmit({
         tab: activeTab,
@@ -96,9 +116,17 @@ export default function HeroSection({ onSearchSubmit, onSelectTab, onOpenStatMod
     if (location && location !== "all") params.set("destination", location);
     if (propertyType && propertyType !== "all") params.set("style", propertyType);
     if (priceRange && priceRange !== "all") params.set("price", priceRange);
-    if (activeTab) params.set("tab", activeTab);
+    params.set("tab", activeTab);
 
-    addToast(`Filtering flagship collection for ${location === "all" ? "Global Portfolios" : location}`, "success", "Search Executed");
+    addToast(
+      activeTab === "rent"
+        ? `Filtering luxury rental collection for ${location === "all" ? "Global Portfolios" : location}`
+        : activeTab === "developments"
+        ? `Filtering new developments for ${location === "all" ? "Global Portfolios" : location}`
+        : `Filtering flagship collection for ${location === "all" ? "Global Portfolios" : location}`,
+      "success",
+      "Search Executed"
+    );
     router.push(`/collection?${params.toString()}`);
   };
 
@@ -230,10 +258,10 @@ export default function HeroSection({ onSearchSubmit, onSelectTab, onOpenStatMod
               </div>
             </div>
 
-            {/* Field 3: Valuation Range Dropdown */}
+            {/* Field 3: Valuation / Lease Range Dropdown */}
             <div>
               <label className="block text-[11px] sm:text-xs uppercase tracking-[0.12em] text-[#545B65] mb-1.5 font-bold">
-                Valuation Bracket
+                {activeTab === "rent" ? "Monthly Lease Bracket" : "Valuation Bracket"}
               </label>
               <div className="flex items-center justify-between bg-white border border-[#E4DCD0] rounded-xl px-3 py-2.5 sm:py-3 focus-within:border-[#C5A880] focus-within:ring-2 focus-within:ring-[#C5A880]/20 transition-all shadow-2xs relative">
                 <div className="flex items-center min-w-0 flex-1 mr-1">
@@ -243,11 +271,22 @@ export default function HeroSection({ onSearchSubmit, onSelectTab, onOpenStatMod
                     onChange={(e) => setPriceRange(e.target.value)}
                     className="bg-transparent text-xs sm:text-[13px] font-medium text-[#1A1D20] focus:outline-none w-full cursor-pointer appearance-none truncate pr-1 [&>option]:bg-white [&>option]:text-[#1A1D20]"
                   >
-                    <option value="all">Any Valuation</option>
-                    <option value="under10">$5M – $10M</option>
-                    <option value="10to25">$10M – $25M</option>
-                    <option value="25to50">$25M – $50M</option>
-                    <option value="over50">$50M+ Trophy Assets</option>
+                    {activeTab === "rent" ? (
+                      <>
+                        <option value="all">Any Monthly Lease</option>
+                        <option value="under50">Under $50,000 / mo</option>
+                        <option value="50to100">$50,000 – $100,000 / mo</option>
+                        <option value="over100">$100,000+ / mo Ultra-Luxury</option>
+                      </>
+                    ) : (
+                      <>
+                        <option value="all">Any Valuation</option>
+                        <option value="under10">$5M – $10M</option>
+                        <option value="10to25">$10M – $25M</option>
+                        <option value="25to50">$25M – $50M</option>
+                        <option value="over50">$50M+ Trophy Assets</option>
+                      </>
+                    )}
                   </select>
                 </div>
                 <ChevronDown className="w-3.5 h-3.5 text-[#747D88] shrink-0 pointer-events-none" />
@@ -261,7 +300,9 @@ export default function HeroSection({ onSearchSubmit, onSelectTab, onOpenStatMod
                 className="w-full py-2.5 sm:py-3 px-6 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-xs font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 shadow-md hover:shadow-lg active:scale-98 cursor-pointer group whitespace-nowrap"
               >
                 <Search className="w-4 h-4 text-[#C5A880] transition-transform group-hover:scale-110" />
-                <span>Search Portfolio</span>
+                <span>
+                  {activeTab === "rent" ? "Search Rentals" : activeTab === "developments" ? "Explore Developments" : "Search Portfolio"}
+                </span>
               </button>
             </div>
           </form>

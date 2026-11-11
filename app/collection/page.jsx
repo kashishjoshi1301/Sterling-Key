@@ -33,8 +33,16 @@ import {
   Sparkles,
   ExternalLink,
   Calendar,
-  Building
+  Building,
+  KeyRound,
+  History
 } from "lucide-react";
+
+function parseRentalMonthly(rentalPriceStr) {
+  if (!rentalPriceStr) return 0;
+  const num = parseInt(rentalPriceStr.replace(/[^0-9]/g, ""), 10);
+  return isNaN(num) ? 0 : num;
+}
 
 function CollectionContent() {
   const searchParams = useSearchParams();
@@ -46,15 +54,17 @@ function CollectionContent() {
   const initialDestination = searchParams.get("destination") || "all";
   const initialStyle = searchParams.get("style") || "all";
   const initialPrice = searchParams.get("price") || "all";
-  const initialTab = searchParams.get("tab") || "all";
+  const rawTab = searchParams.get("tab");
+  const initialTab = rawTab === "rent" ? "rent" : rawTab === "developments" ? "developments" : "buy";
 
-  // Filter States - ALL DROPDOWNS
+  // Filter States - ALL DROPDOWNS & TABS
+  const [activeTab, setActiveTab] = useState(initialTab); // 'buy' | 'rent' | 'developments'
   const [destination, setDestination] = useState(initialDestination);
   const [style, setStyle] = useState(initialStyle);
   const [priceBracket, setPriceBracket] = useState(initialPrice);
   const [bedrooms, setBedrooms] = useState("all");
   const [sortBy, setSortBy] = useState("curated");
-  const [viewMode, setViewMode] = useState("grid"); // 'grid' | 'list'
+  const [viewMode, setViewMode] = useState("list"); // List view is spacious and accessible
 
   // Modals & Drawers
   const [selectedProperty, setSelectedProperty] = useState(null);
@@ -66,16 +76,71 @@ function CollectionContent() {
   const [savedDrawerOpen, setSavedDrawerOpen] = useState(false);
   const [portalOpen, setPortalOpen] = useState(false);
 
+  // Recently Viewed State (Persisted in localStorage)
+  const [recentlyViewedIds, setRecentlyViewedIds] = useState([]);
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem("sk_recently_viewed_portfolio");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed)) {
+          setRecentlyViewedIds(parsed);
+        }
+      }
+    } catch (e) {
+      // ignore
+    }
+  }, []);
+
+  const trackViewedProperty = (id) => {
+    try {
+      const updated = [id, ...recentlyViewedIds.filter((item) => item !== id)].slice(0, 6);
+      setRecentlyViewedIds(updated);
+      localStorage.setItem("sk_recently_viewed_portfolio", JSON.stringify(updated));
+    } catch (e) {
+      // ignore
+    }
+  };
+
   // Sync state if URL params change
   useEffect(() => {
+    const tabParam = searchParams.get("tab");
+    if (tabParam === "rent" || tabParam === "developments" || tabParam === "buy") {
+      setActiveTab(tabParam);
+    }
     if (searchParams.get("destination")) setDestination(searchParams.get("destination"));
     if (searchParams.get("style")) setStyle(searchParams.get("style"));
     if (searchParams.get("price")) setPriceBracket(searchParams.get("price"));
   }, [searchParams]);
 
+  // Tab switcher handler
+  const handleTabSwitch = (newTab) => {
+    setActiveTab(newTab);
+    setPriceBracket("all");
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("tab", newTab);
+    router.replace(`/collection?${params.toString()}`, { scroll: false });
+
+    if (newTab === "rent") {
+      addToast("Browsing Sterling Key Luxury Rental Portfolios", "info", "Rentals Active");
+    } else if (newTab === "developments") {
+      addToast("Browsing Visionary High-Rise & Architectural Developments", "info", "Developments Active");
+    } else {
+      addToast("Browsing Flagship Acquisition Portfolio", "info", "Buy Portfolio Active");
+    }
+  };
+
   // Filtering Logic
   const filteredProperties = useMemo(() => {
     return PROPERTIES_DATA.filter((prop) => {
+      // Mode Tab filter
+      if (activeTab === "rent") {
+        if (!prop.rentalPrice) return false;
+      } else if (activeTab === "developments") {
+        if (prop.category !== "New Developments") return false;
+      }
+
       // 1. Destination
       if (destination !== "all") {
         const destLower = destination.toLowerCase();
@@ -83,7 +148,6 @@ function CollectionContent() {
         const stateMatch = prop.state && prop.state.toLowerCase().includes(destLower);
         const neighMatch = prop.neighborhood.toLowerCase().includes(destLower);
         if (!cityMatch && !stateMatch && !neighMatch) {
-          // Check common mappings
           if (destLower.includes("manhattan") && !prop.city.toLowerCase().includes("new york")) return false;
           if (destLower.includes("los angeles") && !prop.city.toLowerCase().includes("los angeles")) return false;
           if (destLower.includes("miami") && !prop.city.toLowerCase().includes("miami")) return false;
@@ -107,16 +171,23 @@ function CollectionContent() {
         }
       }
 
-      // 3. Price Bracket
+      // 3. Price Bracket (Adaptive to Tab)
       if (priceBracket !== "all") {
-        if (priceBracket === "under10" || priceBracket === "5-15") {
-          if (prop.price > 15000000) return false;
-        } else if (priceBracket === "10to25" || priceBracket === "15-30") {
-          if (prop.price < 15000000 || prop.price > 30000000) return false;
-        } else if (priceBracket === "25to50" || priceBracket === "30-60") {
-          if (prop.price < 30000000 || prop.price > 60000000) return false;
-        } else if (priceBracket === "over50" || priceBracket === "60+") {
-          if (prop.price < 50000000) return false;
+        if (activeTab === "rent") {
+          const monthly = parseRentalMonthly(prop.rentalPrice);
+          if (priceBracket === "under50" && monthly >= 50000) return false;
+          if (priceBracket === "50to100" && (monthly < 50000 || monthly > 100000)) return false;
+          if (priceBracket === "over100" && monthly <= 100000) return false;
+        } else {
+          if (priceBracket === "under10" || priceBracket === "5-15") {
+            if (prop.price > 15000000) return false;
+          } else if (priceBracket === "10to25" || priceBracket === "15-30") {
+            if (prop.price < 15000000 || prop.price > 30000000) return false;
+          } else if (priceBracket === "25to50" || priceBracket === "30-60") {
+            if (prop.price < 30000000 || prop.price > 60000000) return false;
+          } else if (priceBracket === "over50" || priceBracket === "60+") {
+            if (prop.price < 50000000) return false;
+          }
         }
       }
 
@@ -128,12 +199,22 @@ function CollectionContent() {
 
       return true;
     }).sort((a, b) => {
-      if (sortBy === "price-desc") return b.price - a.price;
-      if (sortBy === "price-asc") return a.price - b.price;
+      if (sortBy === "price-desc") {
+        if (activeTab === "rent") {
+          return parseRentalMonthly(b.rentalPrice) - parseRentalMonthly(a.rentalPrice);
+        }
+        return b.price - a.price;
+      }
+      if (sortBy === "price-asc") {
+        if (activeTab === "rent") {
+          return parseRentalMonthly(a.rentalPrice) - parseRentalMonthly(b.rentalPrice);
+        }
+        return a.price - b.price;
+      }
       if (sortBy === "sqft-desc") return b.sqft - a.sqft;
       return 0; // curated priority
     });
-  }, [destination, style, priceBracket, bedrooms, sortBy]);
+  }, [activeTab, destination, style, priceBracket, bedrooms, sortBy]);
 
   const hasActiveFilters = destination !== "all" || style !== "all" || priceBracket !== "all" || bedrooms !== "all";
 
@@ -169,6 +250,16 @@ function CollectionContent() {
     }
   };
 
+  const openPropertyPreview = (prop) => {
+    trackViewedProperty(prop.id);
+    setSelectedProperty(prop);
+  };
+
+  // Compute counts
+  const rentCount = PROPERTIES_DATA.filter((p) => p.rentalPrice).length;
+  const devCount = PROPERTIES_DATA.filter((p) => p.category === "New Developments").length;
+  const buyCount = PROPERTIES_DATA.length;
+
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-[#1A1D20] flex flex-col font-sans selection:bg-[#C5A880]/30 selection:text-[#0A192F]">
       <Navbar
@@ -178,23 +269,62 @@ function CollectionContent() {
         onOpenSaved={() => setSavedDrawerOpen(true)}
       />
 
-      <main className="flex-1 max-w-[1600px] w-full mx-auto px-4 sm:px-8 lg:px-12 py-10 sm:py-16">
+      <main className="flex-1 max-w-[1600px] w-full mx-auto px-4 sm:px-8 lg:px-12 py-8 sm:py-14">
         {/* Page Header */}
-        <div className="mb-10 text-center max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0A192F] text-[#FAF8F5] text-xs font-mono uppercase tracking-widest mb-4 shadow-sm">
+        <div className="mb-8 sm:mb-12 text-center max-w-3xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0A192F] text-[#FAF8F5] text-xs font-mono uppercase tracking-widest mb-3.5 shadow-sm">
             <Building className="w-3.5 h-3.5 text-[#C5A880]" />
             <span>Curated Sovereign Portfolio</span>
           </div>
-          <h1 className="text-4xl sm:text-6xl font-serif text-[#0A192F] font-bold tracking-tight mb-4">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif text-[#0A192F] font-bold tracking-tight mb-3">
             The Property Collection
           </h1>
-          <p className="text-sm sm:text-base text-[#545B65] leading-relaxed">
-            Filter through private estates, iconic penthouses, and prime institutional multi-family holdings managed across sovereign havens.
+          <p className="text-xs sm:text-sm lg:text-base text-[#545B65] leading-relaxed max-w-2xl mx-auto">
+            Explore curated private estates, visionary penthouses, and institutional rental holdings across prime global havens.
           </p>
+
+          {/* Top Primary Segmented Control: BUY | RENT | DEVELOPMENTS */}
+          <div className="flex items-center justify-center mt-6 sm:mt-8">
+            <div className="inline-flex p-1.5 rounded-2xl bg-[#0A192F]/5 border border-[#E4DCD0] shadow-2xs gap-1 sm:gap-2">
+              <button
+                type="button"
+                onClick={() => handleTabSwitch("buy")}
+                className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
+                  activeTab === "buy"
+                    ? "bg-[#0A192F] text-[#FAF8F5] shadow-md scale-[1.01]"
+                    : "text-[#545B65] hover:text-[#0A192F] hover:bg-white/80"
+                }`}
+              >
+                Buy Portfolio <span className="opacity-70 font-mono text-[11px] sm:text-xs">({buyCount})</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleTabSwitch("rent")}
+                className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
+                  activeTab === "rent"
+                    ? "bg-[#0A192F] text-[#FAF8F5] shadow-md scale-[1.01]"
+                    : "text-[#545B65] hover:text-[#0A192F] hover:bg-white/80"
+                }`}
+              >
+                Luxury Rentals <span className="opacity-70 font-mono text-[11px] sm:text-xs">({rentCount})</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleTabSwitch("developments")}
+                className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
+                  activeTab === "developments"
+                    ? "bg-[#0A192F] text-[#FAF8F5] shadow-md scale-[1.01]"
+                    : "text-[#545B65] hover:text-[#0A192F] hover:bg-white/80"
+                }`}
+              >
+                Developments <span className="opacity-70 font-mono text-[11px] sm:text-xs">({devCount})</span>
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* COMPREHENSIVE DROPDOWN FILTER ENGINE (ALL 4 FIELDS ARE RICH SELECTS) */}
-        <div className="bg-white border border-[#E4DCD0] rounded-3xl p-6 sm:p-8 shadow-sm mb-10">
+        <div className="bg-white border border-[#E4DCD0] rounded-3xl p-6 sm:p-8 shadow-xs mb-10 sm:mb-12">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6">
             {/* 1. Destination Dropdown */}
             <div>
@@ -243,59 +373,70 @@ function CollectionContent() {
               </select>
             </div>
 
-            {/* 3. Valuation Bracket Dropdown */}
+            {/* 3. Valuation / Lease Bracket Dropdown (ADAPTIVE) */}
             <div>
               <label className="block text-xs uppercase tracking-wider text-[#545B65] mb-2 font-bold flex items-center gap-1.5">
                 <DollarSign className="w-4 h-4 text-[#C5A880]" />
-                <span>Valuation Bracket</span>
+                <span>{activeTab === "rent" ? "Monthly Lease Bracket" : "Valuation Bracket"}</span>
               </label>
               <select
                 value={priceBracket}
                 onChange={(e) => setPriceBracket(e.target.value)}
                 className="w-full bg-[#FAF8F5] border border-[#E4DCD0] rounded-xl px-4 py-3 text-sm font-semibold text-[#0A192F] focus:outline-none focus:border-[#C5A880] focus:ring-1 focus:ring-[#C5A880] cursor-pointer"
               >
-                <option value="all">Any Valuation Bracket</option>
-                <option value="under10">$5M – $15M</option>
-                <option value="10to25">$15M – $30M</option>
-                <option value="25to50">$30M – $60M</option>
-                <option value="over50">$60M+ Trophy Sovereign Assets</option>
+                {activeTab === "rent" ? (
+                  <>
+                    <option value="all">All Monthly Lease Brackets</option>
+                    <option value="under50">Under $50,000 / month</option>
+                    <option value="50to100">$50,000 – $100,000 / month</option>
+                    <option value="over100">$100,000+ / month (Ultra-Luxury)</option>
+                  </>
+                ) : (
+                  <>
+                    <option value="all">All Valuation Brackets</option>
+                    <option value="under10">$5,000,000 – $15,000,000</option>
+                    <option value="10to25">$15,000,000 – $30,000,000</option>
+                    <option value="25to50">$30,000,000 – $60,000,000</option>
+                    <option value="over50">$60,000,000+ (Ultra-Prime)</option>
+                  </>
+                )}
               </select>
             </div>
 
-            {/* 4. Bedrooms Dropdown */}
+            {/* 4. Minimum Bedrooms Dropdown */}
             <div>
               <label className="block text-xs uppercase tracking-wider text-[#545B65] mb-2 font-bold flex items-center gap-1.5">
                 <SlidersHorizontal className="w-4 h-4 text-[#C5A880]" />
-                <span>Bedrooms</span>
+                <span>Minimum Suites / Beds</span>
               </label>
               <select
                 value={bedrooms}
                 onChange={(e) => setBedrooms(e.target.value)}
                 className="w-full bg-[#FAF8F5] border border-[#E4DCD0] rounded-xl px-4 py-3 text-sm font-semibold text-[#0A192F] focus:outline-none focus:border-[#C5A880] focus:ring-1 focus:ring-[#C5A880] cursor-pointer"
               >
-                <option value="all">Any Bedroom Count</option>
-                <option value="4">4+ Luxury Suites</option>
-                <option value="5">5+ Luxury Suites</option>
-                <option value="6">6+ Luxury Suites</option>
-                <option value="7">7+ Sovereign Compounds</option>
+                <option value="all">Any Bed Count</option>
+                <option value="3">3+ Bedroom Suites</option>
+                <option value="4">4+ Bedroom Suites</option>
+                <option value="5">5+ Bedroom Suites</option>
+                <option value="6">6+ Sovereign Estate Bedrooms</option>
               </select>
             </div>
           </div>
 
-          {/* Results Summary Bar, Sort By, and View Toggle */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-5 border-t border-[#E4DCD0]">
-            <div className="flex flex-wrap items-center gap-2.5">
-              <span className="text-sm font-semibold text-[#0A192F]">
-                Showing <span className="font-mono text-[#C5A880] font-bold">{filteredProperties.length}</span> Verified Properties
+          {/* Action Row: Reset, Count & View Mode Switcher */}
+          <div className="flex flex-wrap items-center justify-between gap-4 pt-5 border-t border-[#E4DCD0]">
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-mono font-bold text-[#0A192F] uppercase tracking-wider">
+                Showing {filteredProperties.length} of {activeTab === "rent" ? rentCount : activeTab === "developments" ? devCount : buyCount} {activeTab === "rent" ? "Rentals" : "Holdings"}
               </span>
-
               {hasActiveFilters && (
                 <button
+                  type="button"
                   onClick={clearAllFilters}
-                  className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#0A192F]/10 hover:bg-[#0A192F]/20 text-xs font-semibold text-[#0A192F] transition-all cursor-pointer"
+                  className="text-xs text-[#545B65] hover:text-[#0A192F] underline underline-offset-4 flex items-center gap-1 cursor-pointer font-medium"
                 >
-                  <X className="w-3.5 h-3.5 text-red-500" />
-                  <span>Clear All Filters</span>
+                  <X className="w-3.5 h-3.5" />
+                  <span>Clear Filters</span>
                 </button>
               )}
             </div>
@@ -368,9 +509,9 @@ function CollectionContent() {
           </div>
         ) : viewMode === "list" ? (
           /* ==============================================================
-             LIST VIEW (Clean Horizontal Rows for Both Mobile and Desktop)
+             LIST VIEW (Generous, High-End Luxury Spacing & Proportions)
              ============================================================== */
-          <div className="space-y-4 sm:space-y-5">
+          <div className="space-y-7 sm:space-y-9 lg:space-y-11">
             {filteredProperties.map((prop) => {
               const isCompared = compareIds.includes(prop.id);
               const isFav = savedIds.includes(prop.id);
@@ -378,112 +519,128 @@ function CollectionContent() {
               return (
                 <div
                   key={prop.id}
-                  onClick={() => setSelectedProperty(prop)}
-                  className="group rounded-2xl sm:rounded-3xl bg-white border border-[#E4DCD0] overflow-hidden shadow-xs hover:shadow-xl hover:border-[#C5A880] transition-all duration-300 flex flex-row items-stretch cursor-pointer active:scale-[0.99] p-3 sm:p-5 gap-3.5 sm:gap-6"
+                  onClick={() => openPropertyPreview(prop)}
+                  className="group rounded-3xl bg-white border border-[#E4DCD0] overflow-hidden shadow-xs hover:shadow-2xl hover:border-[#C5A880] transition-all duration-300 flex flex-row items-stretch cursor-pointer active:scale-[0.99] p-5 sm:p-7 lg:p-8 gap-5 sm:gap-7 lg:gap-9"
                 >
-                  {/* Left: Thumbnail Image */}
+                  {/* Left: Thumbnail Image with Rich Proportions */}
                   <div 
-                    onClick={() => setSelectedProperty(prop)}
-                    className="relative w-28 h-28 xs:w-36 xs:h-36 sm:w-64 sm:h-auto md:w-80 md:h-auto shrink-0 rounded-xl sm:rounded-2xl overflow-hidden bg-[#FAF8F5]"
+                    onClick={() => openPropertyPreview(prop)}
+                    className="relative w-36 xs:w-48 sm:w-72 md:w-84 shrink-0 min-h-[175px] sm:min-h-[220px] rounded-2xl overflow-hidden bg-[#FAF8F5] shadow-xs"
                   >
                     <img
                       src={prop.images[0]}
                       alt={prop.title}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent opacity-70" />
 
-                    {/* Status Badge */}
-                    <div className="absolute top-2 left-2 flex items-center gap-1 sm:gap-1.5">
-                      <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-[#0A192F]/90 text-[#FAF8F5] border border-[#C5A880]/40 backdrop-blur-xs">
-                        {prop.status}
+                    {/* Status / Lease Badge with Breathing Room */}
+                    <div className="absolute top-3 left-3 flex items-center gap-1.5 z-10">
+                      <span className="px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-[0.12em] bg-[#0A192F]/92 text-[#FAF8F5] border border-[#C5A880]/50 backdrop-blur-md shadow-sm">
+                        {activeTab === "rent" ? "FOR LEASE" : prop.status}
                       </span>
                     </div>
 
-                    {/* Quick Favorite on image */}
-                    <div className="absolute top-2 right-2 flex items-center gap-1 z-10">
+                    {/* Quick Favorite on image with Clean Padding */}
+                    <div className="absolute top-3 right-3 flex items-center gap-1 z-10">
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           toggleSave(prop.id, prop.title);
                         }}
-                        className="p-1.5 rounded-full bg-[#0A192F]/80 hover:bg-[#0A192F] text-white transition-all backdrop-blur-md cursor-pointer"
+                        className="p-2 rounded-full bg-[#0A192F]/80 hover:bg-[#0A192F] text-white transition-all backdrop-blur-md cursor-pointer shadow-sm active:scale-95"
                         title="Save to Favorites"
                       >
-                        <Heart className={`w-3 h-3 ${isFav ? "fill-[#C5A880] text-[#C5A880]" : ""}`} />
+                        <Heart className={`w-3.5 h-3.5 ${isFav ? "fill-[#C5A880] text-[#C5A880]" : ""}`} />
                       </button>
                     </div>
 
-                    {/* Cap rate tag on image bottom for mobile */}
-                    <div className="absolute bottom-1.5 left-2 right-2 sm:hidden flex justify-between items-center text-[10px] text-white font-mono">
-                      <span className="text-[#C5A880] font-bold">{prop.capRate || "5.8%"} Cap</span>
+                    {/* Cap rate tag or Lease indicator on image bottom */}
+                    <div className="absolute bottom-3 left-3 right-3 flex justify-between items-center text-[11px] sm:text-xs text-white font-mono z-10">
+                      <span className="text-[#C5A880] font-bold">
+                        {activeTab === "rent" ? "Luxury Lease" : `${prop.capRate || "5.8%"} Cap`}
+                      </span>
+                      <span className="text-white/80 hidden xs:inline">{prop.city}</span>
                     </div>
                   </div>
 
-                  {/* Right: Property Details & Actions */}
-                  <div className="flex-1 min-w-0 flex flex-col justify-between py-0.5">
-                    {/* Top Section: Location & Title */}
-                    <div>
-                      <div className="flex items-center text-[11px] sm:text-xs text-[#747D88] font-semibold mb-1 truncate">
-                        <MapPin className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1 text-[#C5A880] shrink-0" />
+                  {/* Right: Property Details & Actions with Relaxed, Generous Spacing */}
+                  <div className="flex-1 min-w-0 flex flex-col justify-between py-1.5 sm:py-2">
+                    {/* Top Section: Location & Title & Description */}
+                    <div className="space-y-2 sm:space-y-2.5">
+                      <div className="flex items-center text-xs text-[#747D88] font-semibold tracking-wide truncate">
+                        <MapPin className="w-3.5 h-3.5 mr-1.5 text-[#C5A880] shrink-0" />
                         <span className="truncate">{prop.neighborhood}, {prop.city}</span>
                       </div>
 
                       <Link 
                         href={`/properties/${prop.id}`}
-                        onClick={(e) => e.stopPropagation()}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          trackViewedProperty(prop.id);
+                        }}
                       >
-                        <h3 className="text-sm xs:text-base sm:text-xl lg:text-2xl font-serif text-[#0A192F] font-bold hover:text-[#C5A880] transition-colors leading-tight line-clamp-1 sm:line-clamp-2">
+                        <h3 className="text-base sm:text-xl lg:text-2xl font-serif text-[#0A192F] font-bold hover:text-[#C5A880] transition-colors leading-snug line-clamp-1 sm:line-clamp-2">
                           {prop.title}
                         </h3>
                       </Link>
 
-                      {/* Description visible on md+ screens */}
-                      <p className="hidden md:block text-xs sm:text-sm text-[#545B65] line-clamp-2 mt-1.5 leading-relaxed">
+                      {/* Brief description always visible for luxury context */}
+                      <p className="text-xs sm:text-sm text-[#545B65] line-clamp-1 sm:line-clamp-2 leading-relaxed">
                         {prop.description}
                       </p>
                     </div>
 
-                    {/* Middle: Valuation & Specs */}
-                    <div className="my-1.5 sm:my-3">
-                      <div className="flex items-baseline gap-2">
-                        <div suppressHydrationWarning className="text-base xs:text-lg sm:text-2xl font-serif font-bold text-[#0A192F] tracking-tight">
-                          {formatRawPrice(prop.price)}
+                    {/* Middle Section: Price & Specs with Dedicated Divider & Spacing */}
+                    <div className="my-4 sm:my-5 pt-3.5 sm:pt-4 border-t border-[#E4DCD0]/70 space-y-2.5 sm:space-y-3">
+                      {/* Price Row */}
+                      <div className="flex flex-wrap items-baseline gap-2.5">
+                        <div suppressHydrationWarning className="text-lg sm:text-2xl lg:text-3xl font-serif font-bold text-[#0A192F] tracking-tight">
+                          {activeTab === "rent" && prop.rentalPrice ? prop.rentalPrice : formatRawPrice(prop.price)}
                         </div>
-                        <span className="hidden sm:inline text-xs font-mono font-semibold text-[#C5A880]">
-                          • {prop.capRate || "5.8%"} Cap Rate
-                        </span>
+                        {activeTab === "rent" ? (
+                          <span className="text-xs font-mono text-[#747D88]">
+                            (Acquisition Value: {formatRawPrice(prop.price)})
+                          </span>
+                        ) : (
+                          <span className="text-xs font-mono font-semibold text-[#C5A880]">
+                            • {prop.capRate || "5.8%"} Cap Rate
+                          </span>
+                        )}
                       </div>
 
-                      {/* Compact Specs Row */}
-                      <div className="flex flex-wrap items-center gap-x-2 sm:gap-x-4 gap-y-0.5 text-[10px] sm:text-xs text-[#545B65] font-mono mt-1">
+                      {/* Spacious Specs Row */}
+                      <div className="flex flex-wrap items-center gap-x-3 sm:gap-x-5 gap-y-1.5 text-xs text-[#545B65] font-mono">
                         <span className="font-semibold text-[#0A192F]">{prop.beds} Beds</span>
-                        <span>•</span>
+                        <span className="text-[#C5A880] font-bold">•</span>
                         <span className="font-semibold text-[#0A192F]">{prop.baths} Baths</span>
-                        <span>•</span>
+                        <span className="text-[#C5A880] font-bold">•</span>
                         <span suppressHydrationWarning className="font-semibold text-[#0A192F]">{formatArea(prop.sqft, prop.sqm)}</span>
-                        <span className="hidden lg:inline">•</span>
-                        <span className="hidden lg:inline text-[#747D88] truncate">{prop.lotSize}</span>
+                        <span className="hidden sm:inline text-[#C5A880] font-bold">•</span>
+                        <span className="hidden sm:inline text-[#747D88] truncate">{prop.lotSize}</span>
                       </div>
                     </div>
 
-                    {/* Bottom Actions */}
-                    <div className="flex items-center gap-2 pt-1 border-t border-[#E4DCD0]/70 sm:border-0">
+                    {/* Bottom Actions with Proper Padding and Tap Targets */}
+                    <div className="flex items-center gap-3 pt-3.5 sm:pt-4 border-t border-[#E4DCD0]/70">
                       <Link
                         href={`/properties/${prop.id}`}
-                        onClick={(e) => e.stopPropagation()}
-                        className="py-1.5 sm:py-2.5 px-3 sm:px-4 rounded-lg sm:rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1 sm:gap-1.5 shadow-sm active:scale-95"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          trackViewedProperty(prop.id);
+                        }}
+                        className="py-2.5 sm:py-3 px-4 sm:px-5 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-sm active:scale-95"
                       >
                         <span>Full Dossier</span>
-                        <ExternalLink className="w-3 h-3 text-[#C5A880]" />
+                        <ExternalLink className="w-3.5 h-3.5 text-[#C5A880]" />
                       </Link>
 
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          setSelectedProperty(prop);
+                          openPropertyPreview(prop);
                         }}
-                        className="py-1.5 sm:py-2.5 px-2.5 sm:px-3 rounded-lg sm:rounded-xl bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#0A192F] text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all border border-[#E4DCD0] shadow-2xs active:scale-95 cursor-pointer"
+                        className="py-2.5 sm:py-3 px-4 sm:px-5 rounded-xl bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#0A192F] text-xs font-bold uppercase tracking-wider transition-all border border-[#E4DCD0] shadow-2xs active:scale-95 cursor-pointer"
                       >
                         Preview
                       </button>
@@ -493,12 +650,12 @@ function CollectionContent() {
                           e.stopPropagation();
                           toggleCompare(prop.id);
                         }}
-                        className={`hidden sm:inline-flex py-2 px-2.5 rounded-xl border border-[#E4DCD0] transition-all cursor-pointer ${
+                        className={`hidden sm:inline-flex py-2.5 px-3 rounded-xl border border-[#E4DCD0] transition-all cursor-pointer ${
                           isCompared ? "bg-[#C5A880] text-[#0A192F]" : "bg-[#FAF8F5] text-[#545B65] hover:text-[#0A192F]"
                         }`}
                         title="Compare Asset"
                       >
-                        <Layers className="w-3.5 h-3.5" />
+                        <Layers className="w-4 h-4" />
                       </button>
 
                       <button
@@ -506,10 +663,10 @@ function CollectionContent() {
                           e.stopPropagation();
                           setTourProperty(prop);
                         }}
-                        className="hidden sm:inline-flex py-2 px-2.5 rounded-xl bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#0A192F] transition-all border border-[#E4DCD0] shadow-2xs active:scale-95 cursor-pointer"
+                        className="hidden sm:inline-flex py-2.5 px-3 rounded-xl bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#0A192F] transition-all border border-[#E4DCD0] shadow-2xs active:scale-95 cursor-pointer"
                         title="Schedule Private Showing"
                       >
-                        <Calendar className="w-3.5 h-3.5 text-[#C5A880]" />
+                        <Calendar className="w-4 h-4 text-[#C5A880]" />
                       </button>
                     </div>
                   </div>
@@ -521,7 +678,7 @@ function CollectionContent() {
           /* ==============================================================
              GRID VIEW (Visual Card Showcase: 1-col mobile, 2-col tablet, 3-col desktop)
              ============================================================== */
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
             {filteredProperties.map((prop) => {
               const isCompared = compareIds.includes(prop.id);
               const isFav = savedIds.includes(prop.id);
@@ -529,12 +686,12 @@ function CollectionContent() {
               return (
                 <div
                   key={prop.id}
-                  onClick={() => setSelectedProperty(prop)}
-                  className="group rounded-3xl bg-white border border-[#E4DCD0] overflow-hidden shadow-xs hover:shadow-xl hover:border-[#C5A880] transition-all duration-300 flex flex-col cursor-pointer active:scale-[0.99]"
+                  onClick={() => openPropertyPreview(prop)}
+                  className="group rounded-3xl bg-white border border-[#E4DCD0] overflow-hidden shadow-xs hover:shadow-2xl hover:border-[#C5A880] transition-all duration-300 flex flex-col cursor-pointer active:scale-[0.99]"
                 >
                   {/* Image Container - Click to Open Quick Dossier Modal */}
                   <div 
-                    onClick={() => setSelectedProperty(prop)}
+                    onClick={() => openPropertyPreview(prop)}
                     className="relative aspect-[16/10] overflow-hidden cursor-pointer"
                   >
                     <img
@@ -548,10 +705,10 @@ function CollectionContent() {
 
                     {/* Top Badges */}
                     <div className="absolute top-4 left-4 flex items-center gap-2">
-                      <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#0A192F] text-[#FAF8F5] border border-[#C5A880]/40 shadow-sm">
-                        {prop.status}
+                      <span className="px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#0A192F] text-[#FAF8F5] border border-[#C5A880]/40 shadow-sm">
+                        {activeTab === "rent" ? "FOR LEASE" : prop.status}
                       </span>
-                      <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white/95 text-[#0A192F] border border-[#E4DCD0] shadow-sm">
+                      <span className="px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white/95 text-[#0A192F] border border-[#E4DCD0] shadow-sm">
                         {prop.category}
                       </span>
                     </div>
@@ -585,38 +742,49 @@ function CollectionContent() {
                     {/* Bottom Price on Image */}
                     <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between text-white">
                       <div>
-                        <div className="text-xs text-[#EADDC9] uppercase font-mono tracking-wider font-semibold">Valuation</div>
-                        <div suppressHydrationWarning className="text-2xl font-serif font-bold text-[#FAF8F5] tracking-tight">{formatRawPrice(prop.price)}</div>
+                        <div className="text-xs text-[#EADDC9] uppercase font-mono tracking-wider font-semibold">
+                          {activeTab === "rent" ? "Monthly Lease" : "Valuation"}
+                        </div>
+                        <div suppressHydrationWarning className="text-2xl font-serif font-bold text-[#FAF8F5] tracking-tight">
+                          {activeTab === "rent" && prop.rentalPrice ? prop.rentalPrice : formatRawPrice(prop.price)}
+                        </div>
                       </div>
                       <div className="text-right">
-                        <div className="text-[10px] text-[#EADDC9] uppercase font-mono tracking-wider">Cap Rate</div>
-                        <div className="text-sm font-mono font-bold text-[#C5A880]">{prop.capRate || "5.8%"}</div>
+                        <div className="text-[10px] text-[#EADDC9] uppercase font-mono tracking-wider">
+                          {activeTab === "rent" ? "Terms" : "Cap Rate"}
+                        </div>
+                        <div className="text-sm font-mono font-bold text-[#C5A880]">
+                          {activeTab === "rent" ? "Annual / Mo" : (prop.capRate || "5.8%")}
+                        </div>
                       </div>
                     </div>
                   </div>
 
                   {/* Body Content */}
-                  <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between space-y-5">
+                  <div className="p-6 sm:p-8 flex-1 flex flex-col justify-between space-y-6">
                     <div>
-                      <div className="flex items-center text-xs text-[#747D88] font-semibold mb-1.5">
-                        <MapPin className="w-3.5 h-3.5 mr-1 text-[#C5A880] shrink-0" />
+                      <div className="flex items-center text-xs text-[#747D88] font-semibold mb-2">
+                        <MapPin className="w-3.5 h-3.5 mr-1.5 text-[#C5A880] shrink-0" />
                         <span>{prop.neighborhood}, {prop.city}</span>
                       </div>
                       <Link 
                         href={`/properties/${prop.id}`}
-                        onClick={(e) => e.stopPropagation()}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          trackViewedProperty(prop.id);
+                        }}
                       >
                         <h3 className="text-xl sm:text-2xl font-serif text-[#0A192F] font-bold hover:text-[#C5A880] transition-colors leading-tight">
                           {prop.title}
                         </h3>
                       </Link>
-                      <p className="text-xs sm:text-sm text-[#545B65] line-clamp-2 mt-2 leading-relaxed">
+                      <p className="text-xs sm:text-sm text-[#545B65] line-clamp-2 mt-2.5 leading-relaxed">
                         {prop.description}
                       </p>
                     </div>
 
                     {/* Specs Grid */}
-                    <div className="grid grid-cols-3 gap-2.5 py-3 border-y border-[#E4DCD0] text-center text-xs">
+                    <div className="grid grid-cols-3 gap-3 py-3.5 border-y border-[#E4DCD0] text-center text-xs">
                       <div>
                         <span className="text-[10px] text-[#747D88] uppercase block font-semibold">Suites</span>
                         <span className="text-[#0A192F] font-mono font-bold text-sm mt-0.5 block">{prop.beds} Beds · {prop.baths} Baths</span>
@@ -632,10 +800,13 @@ function CollectionContent() {
                     </div>
 
                     {/* Action Links */}
-                    <div className="flex items-center gap-2.5 pt-1">
+                    <div className="flex items-center gap-3 pt-1">
                       <Link
                         href={`/properties/${prop.id}`}
-                        onClick={(e) => e.stopPropagation()}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          trackViewedProperty(prop.id);
+                        }}
                         className="flex-1 py-3 px-4 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-xs font-bold uppercase tracking-wider transition-all text-center flex items-center justify-center gap-1.5 shadow-sm active:scale-95"
                       >
                         <span>Full Dossier</span>
@@ -644,9 +815,9 @@ function CollectionContent() {
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          setSelectedProperty(prop);
+                          openPropertyPreview(prop);
                         }}
-                        className="py-3 px-3 rounded-xl bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#0A192F] text-xs font-bold uppercase tracking-wider transition-all border border-[#E4DCD0] shadow-2xs active:scale-95 cursor-pointer"
+                        className="py-3 px-3.5 rounded-xl bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#0A192F] text-xs font-bold uppercase tracking-wider transition-all border border-[#E4DCD0] shadow-2xs active:scale-95 cursor-pointer"
                         title="Quick View"
                       >
                         Preview
@@ -656,7 +827,7 @@ function CollectionContent() {
                           e.stopPropagation();
                           setTourProperty(prop);
                         }}
-                        className="py-3 px-3 rounded-xl bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#0A192F] transition-all border border-[#E4DCD0] shadow-2xs active:scale-95 cursor-pointer"
+                        className="py-3 px-3.5 rounded-xl bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#0A192F] transition-all border border-[#E4DCD0] shadow-2xs active:scale-95 cursor-pointer"
                         title="Schedule Private Showing"
                       >
                         <Calendar className="w-4 h-4 text-[#C5A880]" />
@@ -666,6 +837,72 @@ function CollectionContent() {
                 </div>
               );
             })}
+          </div>
+        )}
+
+        {/* RECENTLY VIEWED RESIDENCES (Spacious, Luxury Carousel / Grid Section) */}
+        {recentlyViewedIds.length > 0 && (
+          <div className="mt-20 sm:mt-28 pt-12 sm:pt-16 border-t border-[#E4DCD0]">
+            <div className="flex flex-wrap items-center justify-between gap-4 mb-8 sm:mb-10">
+              <div>
+                <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#C5A880] font-bold mb-1.5">
+                  <History className="w-3.5 h-3.5" />
+                  <span>Private Session History</span>
+                </div>
+                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold text-[#0A192F]">
+                  Recently Viewed Residences
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setRecentlyViewedIds([]);
+                  localStorage.removeItem("sk_recently_viewed_portfolio");
+                  addToast("Recently viewed history cleared", "info", "History Reset");
+                }}
+                className="text-xs uppercase tracking-wider font-semibold text-[#747D88] hover:text-[#0A192F] transition-colors cursor-pointer py-1.5 px-3 rounded-lg border border-[#E4DCD0] hover:bg-white"
+              >
+                Clear History
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
+              {recentlyViewedIds.map((id) => {
+                const prop = PROPERTIES_DATA.find((p) => p.id === id);
+                if (!prop) return null;
+                return (
+                  <div
+                    key={`recent-${prop.id}`}
+                    onClick={() => openPropertyPreview(prop)}
+                    className="group bg-white rounded-2xl border border-[#E4DCD0] overflow-hidden hover:shadow-xl hover:border-[#C5A880] transition-all p-4 sm:p-5 cursor-pointer flex flex-col justify-between"
+                  >
+                    <div className="relative aspect-[16/10] rounded-xl overflow-hidden mb-3.5 bg-[#FAF8F5]">
+                      <img
+                        src={prop.images[0]}
+                        alt={prop.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <span className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-[#0A192F]/90 text-white border border-[#C5A880]/30 shadow-xs">
+                        {prop.status}
+                      </span>
+                    </div>
+
+                    <div>
+                      <div className="text-xs text-[#747D88] font-semibold truncate mb-1.5">
+                        {prop.neighborhood}, {prop.city}
+                      </div>
+                      <h4 className="text-sm sm:text-base font-serif font-bold text-[#0A192F] line-clamp-1 group-hover:text-[#C5A880] transition-colors mb-2.5">
+                        {prop.title}
+                      </h4>
+                      <div className="flex items-center justify-between text-xs font-mono font-bold text-[#0A192F] pt-2.5 border-t border-[#E4DCD0]/60">
+                        <span>{formatRawPrice(prop.price)}</span>
+                        <span className="text-[#C5A880] text-xs">View Dossier →</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         )}
       </main>
@@ -718,7 +955,7 @@ function CollectionContent() {
         onClose={() => setSavedDrawerOpen(false)}
         savedIds={savedIds}
         onRemoveSaved={(id) => setSavedIds(savedIds.filter((item) => item !== id))}
-        onSelectProperty={(p) => setSelectedProperty(p)}
+        onSelectProperty={(p) => openPropertyPreview(p)}
       />
 
       {portalOpen && (

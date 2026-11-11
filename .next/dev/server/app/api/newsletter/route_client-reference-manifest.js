@@ -1,1 +1,0 @@
-globalThis.__RSC_MANIFEST=(globalThis.__RSC_MANIFEST||{});globalThis.__RSC_MANIFEST["/api/newsletter/route"]={"moduleLoading":{"prefix":"/_next/"},"ssrModuleMapping":{},"edgeSSRModuleMapping":{},"clientModules":{},"entryCSSFiles":{"/Users/kashish/Downloads/sterling-key-properties 5/app/api/newsletter/route":[]},"rscModuleMapping":{},"edgeRscModuleMapping":{}};
