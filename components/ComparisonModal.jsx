@@ -3,9 +3,10 @@
 import React from "react";
 import { X, Check, Minus, Calendar, Trash2, Eye } from "lucide-react";
 import { useCurrency } from "./CurrencyContext";
+import { useScrollLock } from "./useScrollLock";
 
 export default function ComparisonModal({
-  isOpen,
+  isOpen = true,
   onClose,
   properties = [],
   onRemoveFromCompare,
@@ -13,8 +14,9 @@ export default function ComparisonModal({
   onScheduleTour
 }) {
   const { formatRawPrice, formatArea } = useCurrency();
+  useScrollLock(isOpen !== false && properties.length > 0, onClose);
 
-  if (!isOpen || properties.length === 0) return null;
+  if (isOpen === false || properties.length === 0) return null;
 
   const allAmenities = [
     "Zero-Edge Infinity Pool",

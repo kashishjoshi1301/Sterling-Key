@@ -3,9 +3,12 @@
 import React from "react";
 import { X, Trash2, ExternalLink, Calendar } from "lucide-react";
 import { PROPERTIES_DATA } from "../data/mockData";
+import { useScrollLock } from "./useScrollLock";
 
-export default function SavedDrawer({ isOpen, onClose, savedIds = [], onRemoveSave, onSelectProperty, onScheduleTour }) {
-  if (!isOpen) return null;
+export default function SavedDrawer({ isOpen = true, onClose, savedIds = [], onRemoveSave, onSelectProperty, onScheduleTour }) {
+  useScrollLock(isOpen !== false, onClose);
+
+  if (isOpen === false) return null;
 
   const savedProperties = PROPERTIES_DATA.filter((p) => savedIds.includes(p.id));
 

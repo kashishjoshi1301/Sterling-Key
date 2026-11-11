@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Logo from "./Logo";
 import DossierPreviewModal from "./DossierPreviewModal";
+import PortalModal from "./PortalModal";
+import ScheduleModal from "./ScheduleModal";
 import { useToast } from "./Toast";
 import { CheckCircle2, ShieldCheck, FileText, ArrowRight, Loader2, RefreshCw } from "lucide-react";
 
@@ -13,6 +15,24 @@ export default function Footer({ onOpenPortal, onOpenSchedule }) {
   const [loading, setLoading] = useState(false);
   const [subscribedData, setSubscribedData] = useState(null);
   const [showDossierModal, setShowDossierModal] = useState(false);
+  const [internalPortalOpen, setInternalPortalOpen] = useState(false);
+  const [internalScheduleOpen, setInternalScheduleOpen] = useState(false);
+
+  const handlePortal = () => {
+    if (typeof onOpenPortal === "function") {
+      onOpenPortal();
+    } else {
+      setInternalPortalOpen(true);
+    }
+  };
+
+  const handleSchedule = () => {
+    if (typeof onOpenSchedule === "function") {
+      onOpenSchedule();
+    } else {
+      setInternalScheduleOpen(true);
+    }
+  };
 
   const offices = [
     { city: "New York", address: "767 Fifth Avenue, PH 50", phone: "+1 (212) 791-8840" },
@@ -247,8 +267,8 @@ export default function Footer({ onOpenPortal, onOpenSchedule }) {
             <ul className="space-y-2.5 text-sm text-[#545B65]">
               <li><Link href="/management" className="hover:text-[#0A192F] transition-colors font-medium">Asset & Property Management</Link></li>
               <li><Link href="/advisory" className="hover:text-[#0A192F] transition-colors font-medium">Private Advisory & Treaties</Link></li>
-              <li><button onClick={onOpenPortal} className="hover:text-[#0A192F] transition-colors font-medium cursor-pointer text-left">Client & Resident Portal</button></li>
-              <li><button onClick={onOpenSchedule} className="hover:text-[#0A192F] transition-colors font-medium cursor-pointer text-left">Private Advisory Briefing</button></li>
+              <li><button onClick={handlePortal} className="hover:text-[#0A192F] transition-colors font-medium cursor-pointer text-left">Client & Resident Portal</button></li>
+              <li><button onClick={handleSchedule} className="hover:text-[#0A192F] transition-colors font-medium cursor-pointer text-left">Private Advisory Briefing</button></li>
             </ul>
           </div>
 
@@ -297,6 +317,14 @@ export default function Footer({ onOpenPortal, onOpenSchedule }) {
           dossier={subscribedData.dossier}
           onClose={() => setShowDossierModal(false)}
         />
+      )}
+
+      {/* Fallback Modals */}
+      {internalPortalOpen && (
+        <PortalModal onClose={() => setInternalPortalOpen(false)} />
+      )}
+      {internalScheduleOpen && (
+        <ScheduleModal onClose={() => setInternalScheduleOpen(false)} />
       )}
     </footer>
   );

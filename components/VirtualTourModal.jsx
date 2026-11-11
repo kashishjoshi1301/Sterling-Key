@@ -2,6 +2,7 @@
 
 import React, { useState, useRef } from "react";
 import { X, Compass, RotateCcw } from "lucide-react";
+import { useScrollLock } from "./useScrollLock";
 
 const VIRTUAL_ROOMS = [
   {
@@ -21,13 +22,15 @@ const VIRTUAL_ROOMS = [
   }
 ];
 
-export default function VirtualTourModal({ isOpen, onClose, propertyTitle }) {
+export default function VirtualTourModal({ isOpen = true, onClose, title, propertyTitle }) {
   const [activeRoom, setActiveRoom] = useState(VIRTUAL_ROOMS[0]);
   const [panX, setPanX] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const startXRef = useRef(0);
 
-  if (!isOpen) return null;
+  useScrollLock(isOpen !== false, onClose);
+
+  if (isOpen === false) return null;
 
   const handleMouseDown = (e) => {
     setIsDragging(true);

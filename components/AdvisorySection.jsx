@@ -53,7 +53,7 @@ export default function AdvisorySection({ onOpenSchedule }) {
                   <div className="text-[11px] text-[#747D88] mb-2">
                     Region: {agent.region}
                   </div>
-                  <p className="text-xs text-[#545B65] leading-relaxed line-clamp-2">
+                  <p className="text-xs text-[#545B65] leading-relaxed min-h-[4.2rem] font-sans">
                     {agent.bio}
                   </p>
                 </div>

@@ -19,6 +19,9 @@ import {
 import { useCurrency } from "./CurrencyContext";
 import { useToast } from "./Toast";
 import AmbientSoundToggle from "./AmbientSoundToggle";
+import PortalModal from "./PortalModal";
+import ScheduleModal from "./ScheduleModal";
+import SavedDrawer from "./SavedDrawer";
 
 export default function Navbar({ 
   onOpenPortal, 
@@ -31,6 +34,34 @@ export default function Navbar({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { currency, setCurrency, unit, setUnit } = useCurrency();
   const { addToast } = useToast();
+
+  const [internalPortalOpen, setInternalPortalOpen] = useState(false);
+  const [internalScheduleOpen, setInternalScheduleOpen] = useState(false);
+  const [internalSavedOpen, setInternalSavedOpen] = useState(false);
+
+  const handleOpenPortal = () => {
+    if (typeof onOpenPortal === "function") {
+      onOpenPortal();
+    } else {
+      setInternalPortalOpen(true);
+    }
+  };
+
+  const handleOpenSchedule = () => {
+    if (typeof onOpenSchedule === "function") {
+      onOpenSchedule();
+    } else {
+      setInternalScheduleOpen(true);
+    }
+  };
+
+  const handleOpenSaved = () => {
+    if (typeof onOpenSaved === "function") {
+      onOpenSaved();
+    } else {
+      setInternalSavedOpen(true);
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -70,8 +101,16 @@ export default function Navbar({
             <span className="inline-flex items-center px-2 py-0.5 rounded text-[9px] sm:text-[10px] font-semibold tracking-[0.14em] uppercase bg-[#C5A880]/20 text-[#EADDC9] border border-[#C5A880]/30 shrink-0">
               Private Market
             </span>
-            <p className="truncate text-[#DDD4C6] text-xs font-medium min-w-0">
-              Exclusive: The Bel-Air Promontory Estate · Managing $4.8B+ in Institutional Assets
+            <p className="text-[#DDD4C6] text-xs font-medium min-w-0 whitespace-nowrap overflow-hidden">
+              <span className="hidden xl:inline">
+                Exclusive: The Bel-Air Promontory Estate · Managing $4.8B+ in Institutional Assets
+              </span>
+              <span className="hidden md:inline xl:hidden">
+                Exclusive: The Bel-Air Promontory Estate · $4.8B+ in Assets
+              </span>
+              <span className="md:hidden">
+                Exclusive: The Bel-Air Promontory Estate
+              </span>
             </p>
           </div>
 
@@ -95,7 +134,7 @@ export default function Navbar({
 
               <button
                 onClick={handleUnitToggle}
-                className="px-1.5 py-0.5 rounded text-[9px] uppercase font-mono tracking-wider bg-white/10 hover:bg-white/20 text-[#FAF8F5] border border-white/20 transition-colors font-bold cursor-pointer"
+                className="px-1.5 py-0.5 rounded text-[9px] uppercase font-mono tracking-wider bg-white/10 hover:bg-white/20 text-[#FAF8F5] border border-white/20 transition-colors font-bold"
                 title="Toggle Area Units"
               >
                 {unit === "sqft" ? "SF" : "M²"}
@@ -159,7 +198,7 @@ export default function Navbar({
           <div className="flex items-center justify-end gap-1.5 sm:gap-2.5 shrink-0 ml-auto">
             {/* Favorites Button */}
             <button
-              onClick={onOpenSaved}
+              onClick={handleOpenSaved}
               className="relative p-2 sm:p-2.5 rounded-xl border border-[#E4DCD0] text-[#383E46] hover:text-[#0A192F] hover:border-[#C5A880] hover:bg-[#F3EFEA] transition-all cursor-pointer active:scale-95 shrink-0"
               title="Saved Properties"
             >
@@ -173,7 +212,7 @@ export default function Navbar({
 
             {/* Client Portal Button - Shown on sm+ screens */}
             <button
-              onClick={onOpenPortal}
+              onClick={handleOpenPortal}
               className="hidden sm:flex items-center gap-1.5 px-2.5 2xl:px-3.5 py-2 rounded-xl border border-[#0A192F]/20 bg-white hover:bg-[#F3EFEA] text-[#0A192F] text-xs font-semibold uppercase tracking-[0.08em] transition-all shadow-2xs hover:border-[#C5A880] cursor-pointer shrink-0"
             >
               <Key className="w-3.5 h-3.5 text-[#C5A880] shrink-0" />
@@ -183,7 +222,7 @@ export default function Navbar({
 
             {/* Primary Action Button - Hidden on mobile screens to prevent navbar overflow, prominently featured in Mobile Drawer */}
             <button
-              onClick={onOpenSchedule}
+              onClick={handleOpenSchedule}
               className="btn-shimmer hidden md:inline-flex px-3 sm:px-3.5 2xl:px-4 py-2 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] font-semibold text-xs uppercase tracking-[0.08em] transition-all shadow-sm active:scale-95 cursor-pointer whitespace-nowrap shrink-0"
             >
               Private Advisory
@@ -265,7 +304,7 @@ export default function Navbar({
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
-                onOpenPortal();
+                handleOpenPortal();
               }}
               className="w-full py-3 rounded-xl bg-white border border-[#E4DCD0] text-[#0A192F] font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-xs"
             >
@@ -275,14 +314,25 @@ export default function Navbar({
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
-                onOpenSchedule();
+                handleOpenSchedule();
               }}
-              className="w-full py-3.5 rounded-xl bg-[#0A192F] text-[#FAF8F5] font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm cursor-pointer"
+              className="w-full py-3 rounded-xl bg-[#0A192F] text-[#FAF8F5] font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm cursor-pointer"
             >
               Schedule Advisory Consultation
             </button>
           </div>
         </div>
+      )}
+
+      {/* Internal Modals as Fallback when page does not manage them */}
+      {internalPortalOpen && (
+        <PortalModal onClose={() => setInternalPortalOpen(false)} />
+      )}
+      {internalScheduleOpen && (
+        <ScheduleModal onClose={() => setInternalScheduleOpen(false)} />
+      )}
+      {internalSavedOpen && (
+        <SavedDrawer onClose={() => setInternalSavedOpen(false)} />
       )}
     </>
   );

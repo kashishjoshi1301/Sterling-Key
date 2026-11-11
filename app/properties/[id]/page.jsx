@@ -25,11 +25,14 @@ import {
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScheduleModal from "@/components/ScheduleModal";
+import PortalModal from "@/components/PortalModal";
+import SavedDrawer from "@/components/SavedDrawer";
+import DossierPreviewModal from "@/components/DossierPreviewModal";
 import VirtualTourModal from "@/components/VirtualTourModal";
 import MortgageCalculator from "@/components/MortgageCalculator";
 import { useCurrency } from "@/components/CurrencyContext";
 import { useToast } from "@/components/Toast";
-import { PROPERTIES_DATA } from "@/data/mockData";
+import { PROPERTIES_DATA, downloadPropertyBrochure } from "@/data/mockData";
 
 export default function PropertyDetailPage() {
   const params = useParams();
@@ -42,6 +45,9 @@ export default function PropertyDetailPage() {
   const [activeTab, setActiveTab] = useState("overview");
   const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
   const [virtualTourOpen, setVirtualTourOpen] = useState(false);
+  const [portalOpen, setPortalOpen] = useState(false);
+  const [savedDrawerOpen, setSavedDrawerOpen] = useState(false);
+  const [showBrochureModal, setShowBrochureModal] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
   const handleShare = () => {
@@ -62,7 +68,12 @@ export default function PropertyDetailPage() {
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-[#1A1D20] flex flex-col font-sans selection:bg-[#C5A880]/30 selection:text-[#0A192F]">
-      <Navbar />
+      <Navbar 
+        onOpenPortal={() => setPortalOpen(true)}
+        onOpenSchedule={() => setScheduleModalOpen(true)}
+        onOpenSaved={() => setSavedDrawerOpen(true)}
+        savedCount={isSaved ? 1 : 0}
+      />
 
       <main className="flex-1 max-w-[1500px] w-full mx-auto px-4 sm:px-8 py-8 sm:py-12">
         {/* Navigation Breadcrumb */}
@@ -217,7 +228,11 @@ export default function PropertyDetailPage() {
                     <span>Call Broker</span>
                   </a>
                   <button
-                    onClick={() => addToast(`Full verified dossier for ${property.title} downloaded`, "success", "Dossier Exported")}
+                    onClick={() => {
+                      downloadPropertyBrochure(property);
+                      setShowBrochureModal(true);
+                      addToast(`Official investment brochure for ${property.title} downloaded`, "success", "Brochure Ready");
+                    }}
                     className="py-3 px-4 rounded-xl bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#0A192F] text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all border border-[#E4DCD0] shadow-xs cursor-pointer"
                   >
                     <Download className="w-4 h-4 text-[#C5A880]" />
@@ -410,13 +425,30 @@ export default function PropertyDetailPage() {
         </div>
       </main>
 
-      <Footer />
+      <Footer 
+        onOpenPortal={() => setPortalOpen(true)}
+        onOpenSchedule={() => setScheduleModalOpen(true)}
+      />
 
       {/* Modals */}
       {scheduleModalOpen && (
         <ScheduleModal
+          isOpen={true}
           property={property}
           onClose={() => setScheduleModalOpen(false)}
+        />
+      )}
+
+      {portalOpen && (
+        <PortalModal
+          isOpen={true}
+          onClose={() => setPortalOpen(false)}
+        />
+      )}
+
+      {savedDrawerOpen && (
+        <SavedDrawer
+          onClose={() => setSavedDrawerOpen(false)}
         />
       )}
 
@@ -424,6 +456,30 @@ export default function PropertyDetailPage() {
         <VirtualTourModal
           title={property.title}
           onClose={() => setVirtualTourOpen(false)}
+        />
+      )}
+
+      {showBrochureModal && (
+        <DossierPreviewModal
+          dossier={{
+            id: `SK-${property.id.toUpperCase()}-2026`,
+            title: `${property.title} — Official Investment Dossier`,
+            classification: "SOVEREIGN WEALTH & PRIVATE CLIENT ARCHIVE",
+            issuedDate: new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }),
+            recipient: "Confidential Registered Investor",
+            executiveSummary: property.description,
+            featuredOfferings: [
+              {
+                title: property.title,
+                status: property.status,
+                capRate: `${property.capRate || "5.8%"} Cap Rate`,
+                location: `${property.neighborhood}, ${property.city}`,
+                specs: `${property.beds} Beds · ${property.baths} Baths · ${property.sqft ? property.sqft.toLocaleString() + " SF" : ""}`,
+                valuation: property.priceFormatted || "$" + property.price.toLocaleString()
+              }
+            ]
+          }}
+          onClose={() => setShowBrochureModal(false)}
         />
       )}
     </div>

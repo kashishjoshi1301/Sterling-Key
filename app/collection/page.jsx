@@ -15,7 +15,7 @@ import PortalModal from "@/components/PortalModal";
 import ConciergeChatWidget from "@/components/ConciergeChatWidget";
 import { useCurrency } from "@/components/CurrencyContext";
 import { useToast } from "@/components/Toast";
-import { PROPERTIES_DATA } from "@/data/mockData";
+import { PROPERTIES_DATA, formatLocation } from "@/data/mockData";
 import { 
   Search, 
   MapPin, 
@@ -509,9 +509,9 @@ function CollectionContent() {
           </div>
         ) : viewMode === "list" ? (
           /* ==============================================================
-             LIST VIEW (Generous, High-End Luxury Spacing & Proportions)
+             LIST VIEW (Uniform Precision Height: All Cards Identical Dimensions)
              ============================================================== */
-          <div className="space-y-7 sm:space-y-9 lg:space-y-11">
+          <div className="space-y-6 sm:space-y-8 lg:space-y-10">
             {filteredProperties.map((prop) => {
               const isCompared = compareIds.includes(prop.id);
               const isFav = savedIds.includes(prop.id);
@@ -520,12 +520,26 @@ function CollectionContent() {
                 <div
                   key={prop.id}
                   onClick={() => openPropertyPreview(prop)}
-                  className="group rounded-3xl bg-white border border-[#E4DCD0] overflow-hidden shadow-xs hover:shadow-2xl hover:border-[#C5A880] transition-all duration-300 flex flex-row items-stretch cursor-pointer active:scale-[0.99] p-5 sm:p-7 lg:p-8 gap-5 sm:gap-7 lg:gap-9"
+                  className="relative group rounded-3xl bg-white border border-[#E4DCD0] overflow-hidden shadow-xs hover:shadow-2xl hover:border-[#C5A880] transition-all duration-300 flex flex-row items-stretch cursor-pointer active:scale-[0.99] p-3.5 xs:p-4 sm:p-5 lg:p-6 gap-3.5 xs:gap-4 sm:gap-6 lg:gap-7 h-[260px] sm:h-[275px] lg:h-[290px]"
                 >
-                  {/* Left: Thumbnail Image with Rich Proportions */}
+                  {/* Quick Favorite Heart Button - Dedicated Top-Right Card Placement */}
+                  <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleSave(prop.id, prop.title);
+                      }}
+                      className="p-2 sm:p-2.5 rounded-full bg-[#FAF8F5] hover:bg-white text-[#0A192F] border border-[#E4DCD0] hover:border-[#C5A880] transition-all backdrop-blur-md cursor-pointer shadow-xs hover:shadow-md active:scale-95 group/fav"
+                      title="Save to Favorites"
+                    >
+                      <Heart className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-colors ${isFav ? "fill-[#C5A880] text-[#C5A880]" : "text-[#747D88] group-hover/fav:text-[#C5A880]"}`} />
+                    </button>
+                  </div>
+
+                  {/* Left: Thumbnail Image with Uniform Full-Height Proportions */}
                   <div 
                     onClick={() => openPropertyPreview(prop)}
-                    className="relative w-36 xs:w-48 sm:w-72 md:w-84 shrink-0 min-h-[175px] sm:min-h-[220px] rounded-2xl overflow-hidden bg-[#FAF8F5] shadow-xs"
+                    className="relative w-32 xs:w-40 sm:w-64 md:w-80 lg:w-88 shrink-0 h-full rounded-xl sm:rounded-2xl overflow-hidden bg-[#FAF8F5] shadow-xs"
                   >
                     <img
                       src={prop.images[0]}
@@ -535,28 +549,14 @@ function CollectionContent() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent opacity-70" />
 
                     {/* Status / Lease Badge with Breathing Room */}
-                    <div className="absolute top-3 left-3 flex items-center gap-1.5 z-10">
-                      <span className="px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-[0.12em] bg-[#0A192F]/92 text-[#FAF8F5] border border-[#C5A880]/50 backdrop-blur-md shadow-sm">
+                    <div className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 flex items-center gap-1 z-10">
+                      <span className="px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[9px] sm:text-xs font-bold uppercase tracking-wider bg-[#0A192F]/92 text-[#FAF8F5] border border-[#C5A880]/50 backdrop-blur-md shadow-sm">
                         {activeTab === "rent" ? "FOR LEASE" : prop.status}
                       </span>
                     </div>
 
-                    {/* Quick Favorite on image with Clean Padding */}
-                    <div className="absolute top-3 right-3 flex items-center gap-1 z-10">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleSave(prop.id, prop.title);
-                        }}
-                        className="p-2 rounded-full bg-[#0A192F]/80 hover:bg-[#0A192F] text-white transition-all backdrop-blur-md cursor-pointer shadow-sm active:scale-95"
-                        title="Save to Favorites"
-                      >
-                        <Heart className={`w-3.5 h-3.5 ${isFav ? "fill-[#C5A880] text-[#C5A880]" : ""}`} />
-                      </button>
-                    </div>
-
                     {/* Cap rate tag or Lease indicator on image bottom */}
-                    <div className="absolute bottom-3 left-3 right-3 flex justify-between items-center text-[11px] sm:text-xs text-white font-mono z-10">
+                    <div className="absolute bottom-2.5 left-2.5 right-2.5 sm:bottom-3 sm:left-3 sm:right-3 flex justify-between items-center text-[10px] sm:text-xs text-white font-mono z-10">
                       <span className="text-[#C5A880] font-bold">
                         {activeTab === "rent" ? "Luxury Lease" : `${prop.capRate || "5.8%"} Cap`}
                       </span>
@@ -564,13 +564,13 @@ function CollectionContent() {
                     </div>
                   </div>
 
-                  {/* Right: Property Details & Actions with Relaxed, Generous Spacing */}
-                  <div className="flex-1 min-w-0 flex flex-col justify-between py-1.5 sm:py-2">
-                    {/* Top Section: Location & Title & Description */}
-                    <div className="space-y-2 sm:space-y-2.5">
-                      <div className="flex items-center text-xs text-[#747D88] font-semibold tracking-wide truncate">
-                        <MapPin className="w-3.5 h-3.5 mr-1.5 text-[#C5A880] shrink-0" />
-                        <span className="truncate">{prop.neighborhood}, {prop.city}</span>
+                  {/* Right: Property Details & Actions with Uniform Equal-Height Structure */}
+                  <div className="flex-1 min-w-0 flex flex-col justify-between h-full py-0.5 sm:py-1">
+                    {/* Top Section: Location, Title, & Description */}
+                    <div className="pr-9 sm:pr-12">
+                      <div className="flex items-center text-[11px] sm:text-xs text-[#747D88] font-semibold mb-0.5 h-4 sm:h-5">
+                        <MapPin className="w-3.5 h-3.5 mr-1 text-[#C5A880] shrink-0" />
+                        <span className="whitespace-nowrap overflow-hidden">{formatLocation(prop)}</span>
                       </div>
 
                       <Link 
@@ -579,60 +579,61 @@ function CollectionContent() {
                           e.stopPropagation();
                           trackViewedProperty(prop.id);
                         }}
+                        className="h-[2.5rem] sm:h-[2.85rem] flex items-center"
                       >
-                        <h3 className="text-base sm:text-xl lg:text-2xl font-serif text-[#0A192F] font-bold hover:text-[#C5A880] transition-colors leading-snug line-clamp-1 sm:line-clamp-2">
+                        <h3 className="text-sm xs:text-base sm:text-lg font-serif text-[#0A192F] font-bold hover:text-[#C5A880] transition-colors leading-snug">
                           {prop.title}
                         </h3>
                       </Link>
 
-                      {/* Brief description always visible for luxury context */}
-                      <p className="text-xs sm:text-sm text-[#545B65] line-clamp-1 sm:line-clamp-2 leading-relaxed">
-                        {prop.description}
+                      {/* Complete Architectural Statement (Zero '...' Cutoff) */}
+                      <p className="text-xs sm:text-sm text-[#545B65] leading-snug sm:leading-relaxed h-[2.3rem] sm:h-[2.7rem] overflow-hidden mt-0.5 font-sans">
+                        {prop.tagline || prop.description}
                       </p>
                     </div>
 
-                    {/* Middle Section: Price & Specs with Dedicated Divider & Spacing */}
-                    <div className="my-4 sm:my-5 pt-3.5 sm:pt-4 border-t border-[#E4DCD0]/70 space-y-2.5 sm:space-y-3">
+                    {/* Middle Section: Price & Specs with Exact Spacing */}
+                    <div className="my-1.5 sm:my-2 pt-2 sm:pt-2.5 border-t border-[#E4DCD0]/70">
                       {/* Price Row */}
-                      <div className="flex flex-wrap items-baseline gap-2.5">
-                        <div suppressHydrationWarning className="text-lg sm:text-2xl lg:text-3xl font-serif font-bold text-[#0A192F] tracking-tight">
+                      <div className="flex flex-wrap items-baseline gap-1.5 sm:gap-2 mb-0.5 h-6 sm:h-7">
+                        <div suppressHydrationWarning className="text-base xs:text-lg sm:text-xl lg:text-2xl font-serif font-bold text-[#0A192F] tracking-tight">
                           {activeTab === "rent" && prop.rentalPrice ? prop.rentalPrice : formatRawPrice(prop.price)}
                         </div>
                         {activeTab === "rent" ? (
-                          <span className="text-xs font-mono text-[#747D88]">
-                            (Acquisition Value: {formatRawPrice(prop.price)})
+                          <span className="text-[10px] sm:text-xs font-mono text-[#747D88]">
+                            (Acquisition: {formatRawPrice(prop.price)})
                           </span>
                         ) : (
-                          <span className="text-xs font-mono font-semibold text-[#C5A880]">
+                          <span className="text-[10px] sm:text-xs font-mono font-semibold text-[#C5A880]">
                             • {prop.capRate || "5.8%"} Cap Rate
                           </span>
                         )}
                       </div>
 
-                      {/* Spacious Specs Row */}
-                      <div className="flex flex-wrap items-center gap-x-3 sm:gap-x-5 gap-y-1.5 text-xs text-[#545B65] font-mono">
+                      {/* Specs Row */}
+                      <div className="flex flex-wrap items-center gap-x-2 sm:gap-x-3.5 gap-y-0.5 text-[10px] sm:text-xs text-[#545B65] font-mono py-0.5 border-t border-[#E4DCD0]/50 h-5 sm:h-6 overflow-hidden">
                         <span className="font-semibold text-[#0A192F]">{prop.beds} Beds</span>
-                        <span className="text-[#C5A880] font-bold">•</span>
+                        <span className="text-[#C5A880]">•</span>
                         <span className="font-semibold text-[#0A192F]">{prop.baths} Baths</span>
-                        <span className="text-[#C5A880] font-bold">•</span>
+                        <span className="text-[#C5A880]">•</span>
                         <span suppressHydrationWarning className="font-semibold text-[#0A192F]">{formatArea(prop.sqft, prop.sqm)}</span>
-                        <span className="hidden sm:inline text-[#C5A880] font-bold">•</span>
-                        <span className="hidden sm:inline text-[#747D88] truncate">{prop.lotSize}</span>
+                        <span className="hidden lg:inline text-[#C5A880]">•</span>
+                        <span className="hidden lg:inline text-[#747D88] truncate">{prop.lotSize}</span>
                       </div>
                     </div>
 
-                    {/* Bottom Actions with Proper Padding and Tap Targets */}
-                    <div className="flex items-center gap-3 pt-3.5 sm:pt-4 border-t border-[#E4DCD0]/70">
+                    {/* Bottom Actions: Clear, Full-Text Buttons (Never Squeezed) */}
+                    <div className="flex items-center gap-2 sm:gap-3 pt-2 sm:pt-2.5 border-t border-[#E4DCD0]/70 w-full shrink-0">
                       <Link
                         href={`/properties/${prop.id}`}
                         onClick={(e) => {
                           e.stopPropagation();
                           trackViewedProperty(prop.id);
                         }}
-                        className="py-2.5 sm:py-3 px-4 sm:px-5 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-sm active:scale-95"
+                        className="py-1.5 sm:py-2 px-3 sm:px-4 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 shadow-sm active:scale-95 whitespace-nowrap shrink-0"
                       >
                         <span>Full Dossier</span>
-                        <ExternalLink className="w-3.5 h-3.5 text-[#C5A880]" />
+                        <ExternalLink className="w-3.5 h-3.5 text-[#C5A880] shrink-0" />
                       </Link>
 
                       <button
@@ -640,34 +641,37 @@ function CollectionContent() {
                           e.stopPropagation();
                           openPropertyPreview(prop);
                         }}
-                        className="py-2.5 sm:py-3 px-4 sm:px-5 rounded-xl bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#0A192F] text-xs font-bold uppercase tracking-wider transition-all border border-[#E4DCD0] shadow-2xs active:scale-95 cursor-pointer"
+                        className="py-1.5 sm:py-2 px-3 sm:px-4 rounded-xl bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#0A192F] text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all border border-[#E4DCD0] shadow-2xs active:scale-95 cursor-pointer whitespace-nowrap shrink-0"
                       >
-                        Preview
+                        <span>Preview</span>
                       </button>
 
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleCompare(prop.id);
-                        }}
-                        className={`hidden sm:inline-flex py-2.5 px-3 rounded-xl border border-[#E4DCD0] transition-all cursor-pointer ${
-                          isCompared ? "bg-[#C5A880] text-[#0A192F]" : "bg-[#FAF8F5] text-[#545B65] hover:text-[#0A192F]"
-                        }`}
-                        title="Compare Asset"
-                      >
-                        <Layers className="w-4 h-4" />
-                      </button>
+                      {/* Compare and Tour Icons on Large Screens without crowding primary buttons */}
+                      <div className="hidden 2xl:flex items-center gap-2 ml-auto">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleCompare(prop.id);
+                          }}
+                          className={`p-2 rounded-xl border border-[#E4DCD0] transition-all cursor-pointer ${
+                            isCompared ? "bg-[#C5A880] text-[#0A192F]" : "bg-[#FAF8F5] text-[#545B65] hover:text-[#0A192F]"
+                          }`}
+                          title="Compare Asset"
+                        >
+                          <Layers className="w-3.5 h-3.5" />
+                        </button>
 
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setTourProperty(prop);
-                        }}
-                        className="hidden sm:inline-flex py-2.5 px-3 rounded-xl bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#0A192F] transition-all border border-[#E4DCD0] shadow-2xs active:scale-95 cursor-pointer"
-                        title="Schedule Private Showing"
-                      >
-                        <Calendar className="w-4 h-4 text-[#C5A880]" />
-                      </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setTourProperty(prop);
+                          }}
+                          className="p-2 rounded-xl bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#0A192F] transition-all border border-[#E4DCD0] shadow-2xs active:scale-95 cursor-pointer"
+                          title="Schedule Private Showing"
+                        >
+                          <Calendar className="w-3.5 h-3.5 text-[#C5A880]" />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -765,7 +769,7 @@ function CollectionContent() {
                     <div>
                       <div className="flex items-center text-xs text-[#747D88] font-semibold mb-2">
                         <MapPin className="w-3.5 h-3.5 mr-1.5 text-[#C5A880] shrink-0" />
-                        <span>{prop.neighborhood}, {prop.city}</span>
+                        <span>{formatLocation(prop)}</span>
                       </div>
                       <Link 
                         href={`/properties/${prop.id}`}
@@ -778,8 +782,8 @@ function CollectionContent() {
                           {prop.title}
                         </h3>
                       </Link>
-                      <p className="text-xs sm:text-sm text-[#545B65] line-clamp-2 mt-2.5 leading-relaxed">
-                        {prop.description}
+                      <p className="text-xs sm:text-sm text-[#545B65] mt-2.5 leading-relaxed font-sans">
+                        {prop.tagline || prop.description}
                       </p>
                     </div>
 
@@ -888,10 +892,10 @@ function CollectionContent() {
                     </div>
 
                     <div>
-                      <div className="text-xs text-[#747D88] font-semibold truncate mb-1.5">
-                        {prop.neighborhood}, {prop.city}
+                      <div className="text-xs text-[#747D88] font-semibold mb-1.5">
+                        {formatLocation(prop)}
                       </div>
-                      <h4 className="text-sm sm:text-base font-serif font-bold text-[#0A192F] line-clamp-1 group-hover:text-[#C5A880] transition-colors mb-2.5">
+                      <h4 className="text-sm sm:text-base font-serif font-bold text-[#0A192F] group-hover:text-[#C5A880] transition-colors mb-2.5 leading-snug">
                         {prop.title}
                       </h4>
                       <div className="flex items-center justify-between text-xs font-mono font-bold text-[#0A192F] pt-2.5 border-t border-[#E4DCD0]/60">

@@ -4,11 +4,15 @@ import React, { useState } from "react";
 import { X, Calendar, Check, ShieldCheck } from "lucide-react";
 import { PROPERTIES_DATA } from "../data/mockData";
 import { useToast } from "./Toast";
+import { useScrollLock } from "./useScrollLock";
 
-export default function ScheduleModal({ isOpen, onClose, preselectedProperty }) {
+export default function ScheduleModal({ isOpen = true, onClose, property, preselectedProperty }) {
   const { addToast } = useToast();
+  useScrollLock(isOpen !== false, onClose);
+
+  const activeProp = property || preselectedProperty || PROPERTIES_DATA[0];
   const [propertyTitle, setPropertyTitle] = useState(
-    preselectedProperty ? preselectedProperty.title : PROPERTIES_DATA[0].title
+    activeProp ? activeProp.title : PROPERTIES_DATA[0].title
   );
   const [tourType, setTourType] = useState("in-person");
   const [date, setDate] = useState("2026-11-12");
@@ -18,7 +22,7 @@ export default function ScheduleModal({ isOpen, onClose, preselectedProperty }) 
   const [phone, setPhone] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
-  if (!isOpen) return null;
+  if (isOpen === false) return null;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -28,7 +32,7 @@ export default function ScheduleModal({ isOpen, onClose, preselectedProperty }) 
 
   return (
     <div 
-      className="fixed inset-0 z-50 bg-black/65 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5 animate-fade-in"
+      className="fixed inset-0 z-50 bg-black/65 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5 animate-fade-in overscroll-contain touch-none"
       onClick={onClose}
     >
       <div 

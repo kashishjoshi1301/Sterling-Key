@@ -1,5 +1,5 @@
 {
   "/collection/page": "app/collection/page.js",
-  "/management/page": "app/management/page.js",
+  "/properties/[id]/page": "app/properties/[id]/page.js",
   "/page": "app/page.js"
 }

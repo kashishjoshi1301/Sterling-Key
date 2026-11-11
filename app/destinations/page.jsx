@@ -21,15 +21,16 @@ import {
   Bed, 
   Bath, 
   Maximize2, 
-  Heart, 
+  Heart,
+  SlidersHorizontal,
   ChevronRight,
   Sparkles
 } from "lucide-react";
-import { PROPERTIES_DATA, NEIGHBORHOODS_DATA } from "@/data/mockData";
+import { PROPERTIES_DATA, NEIGHBORHOODS_DATA, formatLocation } from "@/data/mockData";
 import { useCurrency } from "@/components/CurrencyContext";
 import { useToast } from "@/components/Toast";
 
-// Helper to reliably match properties to any of the 12 destinations
+// Helper to reliably match properties to a destination
 export const getDestinationProperties = (dest) => {
   if (!dest) return [];
   const id = (dest.id || "").toLowerCase();
@@ -299,10 +300,10 @@ export default function DestinationsPage() {
                       <div className="p-5 flex-1 flex flex-col justify-between">
                         <div>
                           <div className="flex items-center justify-between text-xs text-[#545B65] mb-1">
-                            <span>{prop.neighborhood}, {prop.city}</span>
+                            <span>{formatLocation(prop)}</span>
                             <span className="text-[#C5A880] font-mono font-bold">Cap {prop.capRate}</span>
                           </div>
-                          <h4 className="text-base font-serif font-bold text-[#0A192F] group-hover:text-[#C5A880] transition-colors line-clamp-1">
+                          <h4 className="text-base font-serif font-bold text-[#0A192F] group-hover:text-[#C5A880] transition-colors leading-snug">
                             {prop.title}
                           </h4>
                           <p suppressHydrationWarning className="text-lg font-serif font-bold text-[#0A192F] mt-2">

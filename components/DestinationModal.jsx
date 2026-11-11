@@ -17,6 +17,7 @@ import {
   Sparkles
 } from "lucide-react";
 import { useCurrency } from "./CurrencyContext";
+import { useScrollLock } from "./useScrollLock";
 
 export default function DestinationModal({ 
   destination, 
@@ -28,32 +29,7 @@ export default function DestinationModal({
   const { formatRawPrice, formatArea } = useCurrency();
   const scrollRef = useRef(null);
 
-  // Prevent background scroll when modal is active (Bulletproof for iOS & Android)
-  useEffect(() => {
-    if (!destination) return;
-    const prevBodyOverflow = document.body.style.overflow;
-    const prevHtmlOverflow = document.documentElement.style.overflow;
-    const prevTouchAction = document.body.style.touchAction;
-
-    document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
-    document.body.style.touchAction = "none";
-
-    return () => {
-      document.body.style.overflow = prevBodyOverflow;
-      document.documentElement.style.overflow = prevHtmlOverflow;
-      document.body.style.touchAction = prevTouchAction;
-    };
-  }, [destination]);
-
-  // Close on Escape key
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === "Escape") onClose?.();
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [onClose]);
+  useScrollLock(!!destination, onClose);
 
   // Reset scroll to top when destination changes
   useEffect(() => {

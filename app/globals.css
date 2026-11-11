@@ -169,3 +169,12 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Background Scroll Lock for all modals */
+body.overflow-locked,
+html.overflow-locked {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+  height: 100% !important;
+}

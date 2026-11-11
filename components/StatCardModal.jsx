@@ -2,8 +2,11 @@
 
 import React from "react";
 import { X, TrendingUp, ShieldCheck, MapPin, Clock, ArrowRight } from "lucide-react";
+import { useScrollLock } from "./useScrollLock";
 
 export default function StatCardModal({ statType, onClose, onScheduleTour }) {
+  useScrollLock(!!statType, onClose);
+
   if (!statType) return null;
 
   const statDetails = {

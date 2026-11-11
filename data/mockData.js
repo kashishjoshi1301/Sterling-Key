@@ -1108,3 +1108,95 @@ export const PRESS_ACCOLADES = [
     "quote": "Redefining white-glove resident hospitality for private estates."
   }
 ];
+
+export const formatLocation = (prop) => {
+  if (!prop) return "";
+  let neighborhood = prop.neighborhood || "";
+  let city = prop.city || "";
+
+  if (city.includes("&")) {
+    if (city.includes("Miami")) city = "Miami";
+    else if (city.includes("Aspen")) city = "Aspen";
+    else if (city.includes("Monaco") && (neighborhood.includes("Antibes") || neighborhood.includes("Cap"))) city = "French Riviera";
+    else if (city.includes("Monaco")) city = "Monaco";
+    else if (city.includes("Geneva")) city = "Geneva";
+    else if (city.includes("Lake Como")) city = "Lake Como";
+    else city = city.split("&")[0].trim();
+  }
+
+  if (neighborhood && city) {
+    if (neighborhood.toLowerCase().includes(city.toLowerCase())) return neighborhood;
+    return `${neighborhood}, ${city}`;
+  }
+  return neighborhood || city;
+};
+
+export const downloadPropertyBrochure = (prop) => {
+  if (!prop || typeof window === "undefined") return false;
+
+  const content = `================================================================================
+STERLING KEY PROPERTIES & ASSET MANAGEMENT
+CONFIDENTIAL INVESTMENT DOSSIER & ARCHITECTURAL SPECIFICATION
+================================================================================
+
+ASSET TITLE: ${prop.title}
+ARCHITECTURAL TAGLINE: ${prop.tagline || ""}
+LOCATION: ${prop.address}, ${prop.neighborhood}, ${prop.city}, ${prop.state || ""} ${prop.zip || ""}
+SOVEREIGN ASKING PRICE: ${prop.priceFormatted || "$" + (prop.price ? prop.price.toLocaleString() : "Contact Advisor")}
+${prop.rentalPrice ? `LUXURY LEASE RATE: ${prop.rentalPrice}\n` : ""}CAPITALIZATION RATE: ${prop.capRate || "5.8%"}
+PORTFOLIO STATUS: ${prop.status}
+ASSET CATEGORY: ${prop.category}
+
+--------------------------------------------------------------------------------
+ARCHITECTURAL METRICS & RESIDENCE CONFIGURATION
+--------------------------------------------------------------------------------
+Suites: ${prop.beds} Bedrooms · ${prop.baths} Bathrooms
+Interior Living Area: ${prop.sqft ? prop.sqft.toLocaleString() + " SF" : ""} / ${prop.sqm ? prop.sqm.toLocaleString() + " M²" : ""}
+Parcel & Grounds: ${prop.lotSize || "Private Domain"}
+Ceiling Heights: ${prop.floorPlan?.levels ? `${prop.floorPlan.levels} Levels · ` : ""}${prop.floorPlan?.ceilingHeight || "14 – 22 FT"}
+Curated Terraces / Deck: ${prop.floorPlan?.outdoorDeck || "Curated Deck & Terraces"}
+Enclosed Vehicle Gallery: ${prop.floorPlan?.galleryCars || 8} Enclosed Vehicles
+Year Completed / Restored: ${prop.yearBuilt || 2024}
+Annual Escrow Property Tax: ${prop.taxesAnnual || "$345,000"}
+Monthly Stewardship HOA / Dues: ${prop.hoa || "$1,250 / mo"}
+
+--------------------------------------------------------------------------------
+SIGNATURE RESIDENCE AMENITIES
+--------------------------------------------------------------------------------
+${(prop.amenities || []).map((a) => `• ${a}`).join("\n")}
+
+--------------------------------------------------------------------------------
+EXECUTIVE ARCHITECTURAL SUMMARY
+--------------------------------------------------------------------------------
+${prop.description}
+
+--------------------------------------------------------------------------------
+EXCLUSIVE REPRESENTATION & PRIVATE CLIENT ADVISORY
+--------------------------------------------------------------------------------
+Lead Managing Partner: ${prop.agent?.name || "Julian Vance"}
+Role: ${prop.agent?.title || "Senior Vice President | Luxury Estates"}
+Telephone: ${prop.agent?.phone || "+1 (310) 849-2910"}
+Confidential Inquiries: ${prop.agent?.email || "advisory@sterlingkey.com"}
+
+================================================================================
+AUTHENTICATED DOCUMENT REFERENCE: SK-${(prop.id || "ASSET").toUpperCase()}-${new Date().getFullYear()}
+ISSUED UNDER STRICT NON-DISCLOSURE PROTOCOL (SHA-256 ENCRYPTED)
+================================================================================
+`;
+
+  try {
+    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `SterlingKey_${(prop.title || "Property").replace(/[^a-zA-Z0-9]/g, "_")}_Brochure.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    return true;
+  } catch (err) {
+    console.error("Brochure download error:", err);
+    return false;
+  }
+};

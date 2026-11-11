@@ -20,6 +20,7 @@ import {
 import { useCurrency } from "./CurrencyContext";
 import { useToast } from "./Toast";
 import InteractivePropertyMap from "./InteractivePropertyMap";
+import { formatLocation } from "../data/mockData";
 
 export default function PropertyListings({ 
   properties = [], 
@@ -299,10 +300,10 @@ export default function PropertyListings({
                     <div>
                       <div className="flex items-center text-[11px] text-[#747D88] font-medium mb-1.5">
                         <MapPin className="w-3.5 h-3.5 mr-1 text-[#C5A880] shrink-0" />
-                        <span>{property.neighborhood}, {property.city}</span>
+                        <span>{formatLocation(property)}</span>
                       </div>
 
-                      <h3 className="text-lg sm:text-xl font-serif text-[#0A192F] font-semibold group-hover:text-[#183664] transition-colors line-clamp-1 mb-1">
+                      <h3 className="text-lg sm:text-xl font-serif text-[#0A192F] font-semibold group-hover:text-[#183664] transition-colors leading-snug mb-1">
                         {property.title}
                       </h3>
                       <p className="text-[11px] text-[#747D88] line-clamp-1 mb-3.5">

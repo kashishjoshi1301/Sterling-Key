@@ -18,7 +18,7 @@ import StatCardModal from "../components/StatCardModal";
 
 import { useToast } from "../components/Toast";
 import { useCurrency } from "../components/CurrencyContext";
-import { PROPERTIES_DATA, NEIGHBORHOODS_DATA } from "../data/mockData";
+import { PROPERTIES_DATA, NEIGHBORHOODS_DATA, formatLocation } from "../data/mockData";
 import { 
   ArrowRight, 
   Lock, 
@@ -202,12 +202,12 @@ export default function Home() {
                   <div>
                     <div className="flex items-center gap-1.5 text-xs text-[#545B65] font-medium mb-1.5">
                       <MapPin className="w-3.5 h-3.5 text-[#C5A880]" />
-                      <span>{property.neighborhood}, {property.city}</span>
+                      <span>{formatLocation(property)}</span>
                     </div>
-                    <h3 className="text-lg font-serif font-bold text-[#0A192F] group-hover:text-[#C5A880] transition-colors leading-snug line-clamp-1">
+                    <h3 className="text-lg font-serif font-bold text-[#0A192F] group-hover:text-[#C5A880] transition-colors leading-snug">
                       {property.title}
                     </h3>
-                    <p className="text-xs text-[#545B65] mt-1.5 line-clamp-2 leading-relaxed">
+                    <p className="text-xs text-[#545B65] mt-1.5 leading-relaxed font-sans min-h-[2.4rem]">
                       {property.tagline}
                     </p>
                   </div>

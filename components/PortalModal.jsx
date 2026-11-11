@@ -18,9 +18,11 @@ import {
   Sparkles
 } from "lucide-react";
 import { useToast } from "./Toast";
+import { useScrollLock } from "./useScrollLock";
 
-export default function PortalModal({ isOpen, onClose }) {
+export default function PortalModal({ isOpen = true, onClose }) {
   const { addToast } = useToast();
+  useScrollLock(isOpen !== false, onClose);
   const [activeTab, setActiveTab] = useState("owner");
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [email, setEmail] = useState("");
@@ -33,7 +35,7 @@ export default function PortalModal({ isOpen, onClose }) {
   const [urgency, setUrgency] = useState("routine");
   const [issueDescription, setIssueDescription] = useState("");
 
-  if (!isOpen) return null;
+  if (isOpen === false) return null;
 
   const handlePayRent = () => {
     setRentPaid(true);
@@ -53,7 +55,7 @@ export default function PortalModal({ isOpen, onClose }) {
 
   return (
     <div 
-      className="fixed inset-0 z-50 bg-black/65 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 animate-fade-in"
+      className="fixed inset-0 z-50 bg-black/65 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 animate-fade-in overscroll-contain touch-none"
       onClick={onClose}
     >
       <div 
