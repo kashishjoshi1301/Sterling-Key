@@ -153,7 +153,7 @@ export default function InteractivePropertyMap({
                   {activePin.status}
                 </span>
               </div>
-              <h4 className="text-xs font-serif text-[#0A192F] font-semibold line-clamp-1 mt-0.5">
+              <h4 className="text-xs font-serif text-[#0A192F] font-semibold mt-0.5 leading-snug">
                 {activePin.title}
               </h4>
               <div className="text-sm font-serif font-bold text-[#0A192F] mt-0.5">

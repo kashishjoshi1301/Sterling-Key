@@ -618,7 +618,7 @@ function CollectionContent() {
                         <span className="text-[#C5A880]">•</span>
                         <span suppressHydrationWarning className="font-semibold text-[#0A192F]">{formatArea(prop.sqft, prop.sqm)}</span>
                         <span className="hidden lg:inline text-[#C5A880]">•</span>
-                        <span className="hidden lg:inline text-[#747D88] truncate">{prop.lotSize}</span>
+                        <span className="hidden lg:inline text-[#747D88] whitespace-nowrap">{prop.lotSize}</span>
                       </div>
                     </div>
 
@@ -799,7 +799,7 @@ function CollectionContent() {
                       </div>
                       <div>
                         <span className="text-[10px] text-[#747D88] uppercase block font-semibold">Lot Size</span>
-                        <span className="text-[#0A192F] font-mono font-bold text-sm mt-0.5 block truncate">{prop.lotSize}</span>
+                        <span className="text-[#0A192F] font-mono font-bold text-sm mt-0.5 block leading-snug break-words">{prop.lotSize}</span>
                       </div>
                     </div>
 

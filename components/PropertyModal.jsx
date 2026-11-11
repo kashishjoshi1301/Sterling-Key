@@ -263,31 +263,31 @@ export default function PropertyModal({
           {/* TAB 1: OVERVIEW */}
           {activeTab === "overview" && (
             <div className="space-y-5 sm:space-y-6 animate-fade-in">
-              {/* Key Specs: 6 Cards in Balanced Grid */}
-              <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 sm:gap-3">
-                <div className="bg-white border border-[#E4DCD0] rounded-xl sm:rounded-2xl p-2 sm:p-3 text-center shadow-xs">
+              {/* Key Specs: 6 Cards in Balanced Grid - Zero Truncation & Pixel Perfect Alignment */}
+              <div className="grid grid-cols-2 xs:grid-cols-3 md:grid-cols-6 gap-2 sm:gap-2.5">
+                <div className="bg-white border border-[#E4DCD0] rounded-xl sm:rounded-2xl p-2 sm:p-2.5 text-center shadow-xs flex flex-col justify-center items-center min-h-[74px] sm:min-h-[82px]">
                   <div className="text-[9px] sm:text-[11px] text-[#747D88] uppercase tracking-wider font-bold">Bedrooms</div>
-                  <div className="text-sm sm:text-lg font-bold text-[#0A192F] font-mono mt-0.5">{property.beds}</div>
+                  <div className="text-sm sm:text-base md:text-lg font-bold text-[#0A192F] font-mono mt-0.5">{property.beds}</div>
                 </div>
-                <div className="bg-white border border-[#E4DCD0] rounded-xl sm:rounded-2xl p-2 sm:p-3 text-center shadow-xs">
+                <div className="bg-white border border-[#E4DCD0] rounded-xl sm:rounded-2xl p-2 sm:p-2.5 text-center shadow-xs flex flex-col justify-center items-center min-h-[74px] sm:min-h-[82px]">
                   <div className="text-[9px] sm:text-[11px] text-[#747D88] uppercase tracking-wider font-bold">Bathrooms</div>
-                  <div className="text-sm sm:text-lg font-bold text-[#0A192F] font-mono mt-0.5">{property.baths}</div>
+                  <div className="text-sm sm:text-base md:text-lg font-bold text-[#0A192F] font-mono mt-0.5">{property.baths}</div>
                 </div>
-                <div className="bg-white border border-[#E4DCD0] rounded-xl sm:rounded-2xl p-2 sm:p-3 text-center shadow-xs">
+                <div className="bg-white border border-[#E4DCD0] rounded-xl sm:rounded-2xl p-2 sm:p-2.5 text-center shadow-xs flex flex-col justify-center items-center min-h-[74px] sm:min-h-[82px]">
                   <div className="text-[9px] sm:text-[11px] text-[#747D88] uppercase tracking-wider font-bold">Interior</div>
-                  <div className="text-xs sm:text-base font-bold text-[#0A192F] font-mono mt-0.5 truncate">{formatArea(property.sqft, property.sqm)}</div>
+                  <div suppressHydrationWarning className="text-xs sm:text-sm md:text-base font-bold text-[#0A192F] font-mono mt-0.5 whitespace-nowrap">{formatArea(property.sqft, property.sqm)}</div>
                 </div>
-                <div className="bg-white border border-[#E4DCD0] rounded-xl sm:rounded-2xl p-2 sm:p-3 text-center shadow-xs">
+                <div className="bg-white border border-[#E4DCD0] rounded-xl sm:rounded-2xl p-2 sm:p-2.5 text-center shadow-xs flex flex-col justify-center items-center min-h-[74px] sm:min-h-[82px]">
                   <div className="text-[9px] sm:text-[11px] text-[#747D88] uppercase tracking-wider font-bold">Lot Size</div>
-                  <div className="text-xs sm:text-base font-bold text-[#0A192F] font-mono mt-0.5 truncate">{property.lotSize}</div>
+                  <div className="text-[11px] sm:text-xs md:text-sm font-bold text-[#0A192F] font-mono mt-0.5 leading-snug break-words text-center px-1">{property.lotSize}</div>
                 </div>
-                <div className="bg-white border border-[#E4DCD0] rounded-xl sm:rounded-2xl p-2 sm:p-3 text-center shadow-xs">
+                <div className="bg-white border border-[#E4DCD0] rounded-xl sm:rounded-2xl p-2 sm:p-2.5 text-center shadow-xs flex flex-col justify-center items-center min-h-[74px] sm:min-h-[82px]">
                   <div className="text-[9px] sm:text-[11px] text-[#747D88] uppercase tracking-wider font-bold">Year Built</div>
-                  <div className="text-sm sm:text-lg font-bold text-[#0A192F] font-mono mt-0.5">{property.yearBuilt}</div>
+                  <div className="text-sm sm:text-base md:text-lg font-bold text-[#0A192F] font-mono mt-0.5">{property.yearBuilt}</div>
                 </div>
-                <div className="bg-white border border-[#E4DCD0] rounded-xl sm:rounded-2xl p-2 sm:p-3 text-center shadow-xs">
+                <div className="bg-white border border-[#E4DCD0] rounded-xl sm:rounded-2xl p-2 sm:p-2.5 text-center shadow-xs flex flex-col justify-center items-center min-h-[74px] sm:min-h-[82px]">
                   <div className="text-[9px] sm:text-[11px] text-[#747D88] uppercase tracking-wider font-bold">Proj. Yield</div>
-                  <div className="text-sm sm:text-lg font-bold text-[#C5A880] font-mono mt-0.5">{property.capRate || "5.2%"}</div>
+                  <div className="text-sm sm:text-base md:text-lg font-bold text-[#C5A880] font-mono mt-0.5">{property.capRate || "5.2%"}</div>
                 </div>
               </div>
 
@@ -310,7 +310,7 @@ export default function PropertyModal({
                   {property.amenities.map((item, idx) => (
                     <div key={idx} className="flex items-center gap-2 p-2 sm:p-2.5 px-3 rounded-xl bg-white border border-[#E4DCD0] text-xs sm:text-sm text-[#1A1D20] shadow-xs">
                       <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#C5A880] shrink-0" />
-                      <span className="truncate font-medium">{item}</span>
+                      <span className="font-medium leading-snug">{item}</span>
                     </div>
                   ))}
                 </div>
@@ -322,21 +322,21 @@ export default function PropertyModal({
           {activeTab === "floorplan" && (
             <div className="space-y-4 sm:space-y-5 animate-fade-in">
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 text-sm">
-                <div className="p-3 sm:p-3.5 rounded-xl sm:rounded-2xl bg-white border border-[#E4DCD0] shadow-xs">
+                <div className="p-3 sm:p-3.5 rounded-xl sm:rounded-2xl bg-white border border-[#E4DCD0] shadow-xs flex flex-col justify-center min-h-[76px]">
                   <span className="text-[10px] sm:text-xs text-[#747D88] uppercase block font-bold">Levels / Storeys</span>
-                  <span className="text-[#0A192F] font-mono font-bold text-xs sm:text-base mt-0.5 block">{property.floorPlan?.levels || 2} Floors</span>
+                  <span className="text-[#0A192F] font-mono font-bold text-xs sm:text-base mt-0.5 block leading-snug">{property.floorPlan?.levels || 2} Floors</span>
                 </div>
-                <div className="p-3 sm:p-3.5 rounded-xl sm:rounded-2xl bg-white border border-[#E4DCD0] shadow-xs">
+                <div className="p-3 sm:p-3.5 rounded-xl sm:rounded-2xl bg-white border border-[#E4DCD0] shadow-xs flex flex-col justify-center min-h-[76px]">
                   <span className="text-[10px] sm:text-xs text-[#747D88] uppercase block font-bold">Ceiling Height</span>
-                  <span className="text-[#0A192F] font-mono font-bold text-xs sm:text-base mt-0.5 block">{property.floorPlan?.ceilingHeight || "14 FT"}</span>
+                  <span className="text-[#0A192F] font-mono font-bold text-xs sm:text-base mt-0.5 block leading-snug">{property.floorPlan?.ceilingHeight || "14 FT"}</span>
                 </div>
-                <div className="p-3 sm:p-3.5 rounded-xl sm:rounded-2xl bg-white border border-[#E4DCD0] shadow-xs">
+                <div className="p-3 sm:p-3.5 rounded-xl sm:rounded-2xl bg-white border border-[#E4DCD0] shadow-xs flex flex-col justify-center min-h-[76px]">
                   <span className="text-[10px] sm:text-xs text-[#747D88] uppercase block font-bold">Outdoor Living</span>
-                  <span className="text-[#0A192F] font-mono font-bold text-xs sm:text-base mt-0.5 block truncate">{property.floorPlan?.outdoorDeck || "3,200 SF"}</span>
+                  <span className="text-[#0A192F] font-mono font-bold text-xs sm:text-base mt-0.5 block leading-snug">{property.floorPlan?.outdoorDeck || "3,200 SF"}</span>
                 </div>
-                <div className="p-3 sm:p-3.5 rounded-xl sm:rounded-2xl bg-white border border-[#E4DCD0] shadow-xs">
+                <div className="p-3 sm:p-3.5 rounded-xl sm:rounded-2xl bg-white border border-[#E4DCD0] shadow-xs flex flex-col justify-center min-h-[76px]">
                   <span className="text-[10px] sm:text-xs text-[#747D88] uppercase block font-bold">Gallery Garage</span>
-                  <span className="text-[#0A192F] font-mono font-bold text-xs sm:text-base mt-0.5 block truncate">{property.floorPlan?.galleryCars || 4} Enclosed Cars</span>
+                  <span className="text-[#0A192F] font-mono font-bold text-xs sm:text-base mt-0.5 block leading-snug">{property.floorPlan?.galleryCars || 4} Enclosed Cars</span>
                 </div>
               </div>
 
@@ -406,10 +406,10 @@ export default function PropertyModal({
         </div>
 
         {/* Representing Advisor & Actions Sticky Footer - Compact, Guaranteed 100% Visible */}
-        <div className="bg-white border-t border-[#E4DCD0] px-3.5 py-2.5 sm:px-8 sm:py-3.5 shrink-0 shadow-xl z-20">
-          <div className="flex items-center justify-between gap-2.5 sm:gap-4">
-            {/* Left: Representing Advisor Card with Complete Visibility */}
-            <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1 sm:flex-initial">
+        <div className="bg-white border-t border-[#E4DCD0] px-4 py-3 sm:px-8 sm:py-3.5 shrink-0 shadow-xl z-20">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+            {/* Advisor Card with Zero Truncation */}
+            <div className="flex items-center gap-3">
               <img
                 src={property.agent.image}
                 alt={property.agent.name}
@@ -417,36 +417,36 @@ export default function PropertyModal({
                   e.currentTarget.onerror = null;
                   e.currentTarget.src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80";
                 }}
-                className="w-8 h-8 sm:w-11 sm:h-11 rounded-full object-cover border-2 border-[#C5A880] shrink-0"
+                className="w-9 h-9 sm:w-11 sm:h-11 rounded-full object-cover border-2 border-[#C5A880] shrink-0 shadow-2xs"
               />
-              <div className="min-w-0 truncate">
-                <div className="text-[8px] sm:text-[10px] uppercase tracking-wider text-[#C5A880] font-bold truncate">
+              <div className="min-w-0">
+                <div className="text-[9px] sm:text-[10px] uppercase tracking-wider text-[#C5A880] font-bold">
                   Represented Exclusively By
                 </div>
-                <div className="text-xs sm:text-sm font-serif text-[#0A192F] font-bold truncate">
+                <div className="text-xs sm:text-sm font-serif text-[#0A192F] font-bold whitespace-nowrap">
                   {property.agent.name}
                 </div>
-                <div className="text-[10px] text-[#747D88] truncate hidden sm:block">
+                <div className="text-[10px] text-[#747D88] hidden sm:block">
                   {property.agent.title}
                 </div>
               </div>
             </div>
 
-            {/* Right: Actions Row - Always Aligned & Visible */}
-            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            {/* Actions Row - Responsive with Full-Width Touch targets on mobile */}
+            <div className="flex items-center gap-2 w-full sm:w-auto">
               <button
                 onClick={() => {
                   onClose();
                   onScheduleTour(property);
                 }}
-                className="py-2 px-3 sm:py-2.5 sm:px-5 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 active:scale-95 transition-all shadow-sm whitespace-nowrap cursor-pointer"
+                className="flex-1 sm:flex-initial py-2.5 px-4 sm:py-2.5 sm:px-5 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 active:scale-95 transition-all shadow-sm whitespace-nowrap cursor-pointer"
               >
                 <Calendar className="w-3.5 h-3.5 text-[#C5A880]" />
                 <span>Schedule Showing</span>
               </button>
               <a
                 href={`tel:${property.agent.phone}`}
-                className="p-2 sm:py-2.5 sm:px-3.5 rounded-xl bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#0A192F] text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all border border-[#E4DCD0] shadow-2xs"
+                className="p-2.5 sm:py-2.5 sm:px-3.5 rounded-xl bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#0A192F] text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all border border-[#E4DCD0] shadow-2xs shrink-0"
                 title="Call Representative"
               >
                 <Phone className="w-3.5 h-3.5 text-[#C5A880]" />
@@ -457,7 +457,7 @@ export default function PropertyModal({
                   downloadPropertyBrochure(property);
                   addToast(`Brochure and confidential floor plan for ${property.title} downloaded`, "success", "Brochure Ready");
                 }}
-                className="p-2 sm:py-2.5 sm:px-3.5 rounded-xl bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#0A192F] text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all border border-[#E4DCD0] shadow-2xs cursor-pointer"
+                className="p-2.5 sm:py-2.5 sm:px-3.5 rounded-xl bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#0A192F] text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all border border-[#E4DCD0] shadow-2xs cursor-pointer shrink-0"
                 title="Download Brochure"
               >
                 <Download className="w-3.5 h-3.5 text-[#C5A880]" />

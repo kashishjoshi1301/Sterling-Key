@@ -306,7 +306,7 @@ export default function PropertyListings({
                       <h3 className="text-lg sm:text-xl font-serif text-[#0A192F] font-semibold group-hover:text-[#183664] transition-colors leading-snug mb-1">
                         {property.title}
                       </h3>
-                      <p className="text-[11px] text-[#747D88] line-clamp-1 mb-3.5">
+                      <p className="text-[11px] text-[#747D88] mb-3.5 leading-snug">
                         {property.address}
                       </p>
 

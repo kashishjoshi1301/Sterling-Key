@@ -212,7 +212,7 @@ export default function HeroSection({ onSearchSubmit, onSelectTab, onOpenStatMod
                   <select
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
-                    className="bg-transparent text-xs sm:text-[13px] font-medium text-[#1A1D20] focus:outline-none w-full cursor-pointer appearance-none truncate pr-1 [&>option]:bg-white [&>option]:text-[#1A1D20]"
+                    className="bg-transparent text-xs sm:text-[13px] font-medium text-[#1A1D20] focus:outline-none w-full cursor-pointer appearance-none pr-1 [&>option]:bg-white [&>option]:text-[#1A1D20]"
                   >
                     <option value="all">All Destinations</option>
                     <option value="Manhattan">Manhattan, NY</option>
@@ -244,7 +244,7 @@ export default function HeroSection({ onSearchSubmit, onSelectTab, onOpenStatMod
                   <select
                     value={propertyType}
                     onChange={(e) => setPropertyType(e.target.value)}
-                    className="bg-transparent text-xs sm:text-[13px] font-medium text-[#1A1D20] focus:outline-none w-full cursor-pointer appearance-none truncate pr-1 [&>option]:bg-white [&>option]:text-[#1A1D20]"
+                    className="bg-transparent text-xs sm:text-[13px] font-medium text-[#1A1D20] focus:outline-none w-full cursor-pointer appearance-none pr-1 [&>option]:bg-white [&>option]:text-[#1A1D20]"
                   >
                     <option value="all">All Styles</option>
                     <option value="Penthouses">Modern Penthouses</option>
@@ -269,7 +269,7 @@ export default function HeroSection({ onSearchSubmit, onSelectTab, onOpenStatMod
                   <select
                     value={priceRange}
                     onChange={(e) => setPriceRange(e.target.value)}
-                    className="bg-transparent text-xs sm:text-[13px] font-medium text-[#1A1D20] focus:outline-none w-full cursor-pointer appearance-none truncate pr-1 [&>option]:bg-white [&>option]:text-[#1A1D20]"
+                    className="bg-transparent text-xs sm:text-[13px] font-medium text-[#1A1D20] focus:outline-none w-full cursor-pointer appearance-none pr-1 [&>option]:bg-white [&>option]:text-[#1A1D20]"
                   >
                     {activeTab === "rent" ? (
                       <>

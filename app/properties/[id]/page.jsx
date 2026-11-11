@@ -207,6 +207,17 @@ export default function PropertyDetailPage() {
                     Lease Option: {property.rentalPrice}
                   </div>
                 )}
+
+                {/* Core Property Metrics Row */}
+                <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-[#545B65] font-mono pt-3 mt-3 border-t border-[#E4DCD0]">
+                  <span className="font-bold text-[#0A192F]">{property.beds} Beds</span>
+                  <span className="text-[#C5A880]">•</span>
+                  <span className="font-bold text-[#0A192F]">{property.baths} Baths</span>
+                  <span className="text-[#C5A880]">•</span>
+                  <span suppressHydrationWarning className="font-bold text-[#0A192F]">{formatArea(property.sqft, property.sqm)}</span>
+                  <span className="text-[#C5A880]">•</span>
+                  <span className="font-bold text-[#C5A880]">{property.capRate || "5.8%"} Cap</span>
+                </div>
               </div>
 
               {/* Action Buttons */}
@@ -268,38 +279,42 @@ export default function PropertyDetailPage() {
         </div>
 
         {/* Detailed Tabs & Specifications */}
-        <div className="space-y-8">
-          <div className="flex items-center gap-6 border-b border-[#E4DCD0] pb-2">
+        <div className="space-y-6 sm:space-y-8">
+          <div className="flex items-center gap-2 sm:gap-6 border-b border-[#E4DCD0] pb-2 overflow-x-auto no-scrollbar">
             <button
               onClick={() => setActiveTab("overview")}
-              className={`py-3 text-sm uppercase tracking-wider font-bold border-b-2 transition-all flex items-center gap-2 ${
+              className={`py-2.5 sm:py-3 px-3 sm:px-1 text-xs sm:text-sm uppercase tracking-wider font-bold border-b-2 transition-all flex items-center gap-1.5 shrink-0 whitespace-nowrap cursor-pointer ${
                 activeTab === "overview" ? "border-[#0A192F] text-[#0A192F]" : "border-transparent text-[#545B65] hover:text-[#0A192F]"
               }`}
             >
-              <Compass className="w-4 h-4 text-[#C5A880]" /> Overview & Architectural Narrative
+              <Compass className="w-4 h-4 text-[#C5A880] shrink-0" />
+              <span>Overview</span>
+              <span className="hidden sm:inline">& Narrative</span>
             </button>
             <button
               onClick={() => setActiveTab("floorplan")}
-              className={`py-3 text-sm uppercase tracking-wider font-bold border-b-2 transition-all flex items-center gap-2 ${
+              className={`py-2.5 sm:py-3 px-3 sm:px-1 text-xs sm:text-sm uppercase tracking-wider font-bold border-b-2 transition-all flex items-center gap-1.5 shrink-0 whitespace-nowrap cursor-pointer ${
                 activeTab === "floorplan" ? "border-[#0A192F] text-[#0A192F]" : "border-transparent text-[#545B65] hover:text-[#0A192F]"
               }`}
             >
-              <Layers className="w-4 h-4 text-[#C5A880]" /> CAD Floor Plans & Blueprints
+              <Layers className="w-4 h-4 text-[#C5A880] shrink-0" />
+              <span>Floor Plans & Specs</span>
             </button>
             <button
               onClick={() => setActiveTab("financials")}
-              className={`py-3 text-sm uppercase tracking-wider font-bold border-b-2 transition-all flex items-center gap-2 ${
+              className={`py-2.5 sm:py-3 px-3 sm:px-1 text-xs sm:text-sm uppercase tracking-wider font-bold border-b-2 transition-all flex items-center gap-1.5 shrink-0 whitespace-nowrap cursor-pointer ${
                 activeTab === "financials" ? "border-[#0A192F] text-[#0A192F]" : "border-transparent text-[#545B65] hover:text-[#0A192F]"
               }`}
             >
-              <TrendingUp className="w-4 h-4 text-[#C5A880]" /> Yield & Investment Metrics
+              <TrendingUp className="w-4 h-4 text-[#C5A880] shrink-0" />
+              <span>Yield & Financials</span>
             </button>
           </div>
 
           {activeTab === "overview" && (
             <div className="space-y-8">
               {/* Specs Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
                 <div className="p-4 rounded-2xl bg-white border border-[#E4DCD0] text-center shadow-xs">
                   <div className="text-xs text-[#747D88] uppercase tracking-wider font-bold">Bedrooms</div>
                   <div className="text-xl font-bold text-[#0A192F] font-mono mt-1">{property.beds}</div>
@@ -314,7 +329,7 @@ export default function PropertyDetailPage() {
                 </div>
                 <div className="p-4 rounded-2xl bg-white border border-[#E4DCD0] text-center shadow-xs">
                   <div className="text-xs text-[#747D88] uppercase tracking-wider font-bold">Parcel Lot Size</div>
-                  <div className="text-xl font-bold text-[#0A192F] font-mono mt-1 truncate">{property.lotSize}</div>
+                  <div className="text-xl font-bold text-[#0A192F] font-mono mt-1">{property.lotSize}</div>
                 </div>
                 <div className="p-4 rounded-2xl bg-white border border-[#E4DCD0] text-center shadow-xs">
                   <div className="text-xs text-[#747D88] uppercase tracking-wider font-bold">Year Commissioned</div>
@@ -394,28 +409,28 @@ export default function PropertyDetailPage() {
           )}
 
           {activeTab === "financials" && (
-            <div className="space-y-8">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-                <div className="p-6 rounded-3xl bg-white border border-[#E4DCD0] shadow-xs">
-                  <span className="text-xs text-[#747D88] uppercase block font-bold">Projected Cap Rate</span>
-                  <span className="text-3xl text-[#C5A880] font-mono font-bold mt-1.5 block">{property.capRate || "5.8%"}</span>
+            <div className="space-y-6 sm:space-y-8">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-5">
+                <div className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-white border border-[#E4DCD0] shadow-xs">
+                  <span className="text-[10px] sm:text-xs text-[#747D88] uppercase block font-bold">Projected Cap Rate</span>
+                  <span className="text-2xl sm:text-3xl text-[#C5A880] font-mono font-bold mt-1 block">{property.capRate || "5.8%"}</span>
                   <span className="text-xs text-[#545B65] mt-1 block font-medium">Institutional benchmark yield</span>
                 </div>
-                <div className="p-6 rounded-3xl bg-white border border-[#E4DCD0] shadow-xs">
-                  <span className="text-xs text-[#747D88] uppercase block font-bold">Annual Property Tax</span>
-                  <span className="text-3xl text-[#0A192F] font-mono font-bold mt-1.5 block">{property.taxesAnnual || "$180,000"}</span>
+                <div className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-white border border-[#E4DCD0] shadow-xs">
+                  <span className="text-[10px] sm:text-xs text-[#747D88] uppercase block font-bold">Annual Property Tax</span>
+                  <span className="text-2xl sm:text-3xl text-[#0A192F] font-mono font-bold mt-1 block">{property.taxesAnnual || "$180,000"}</span>
                   <span className="text-xs text-[#545B65] mt-1 block font-medium">Escrow audited estimate</span>
                 </div>
-                <div className="p-6 rounded-3xl bg-white border border-[#E4DCD0] shadow-xs">
-                  <span className="text-xs text-[#747D88] uppercase block font-bold">Monthly HOA & Dues</span>
-                  <span className="text-3xl text-[#0A192F] font-mono font-bold mt-1.5 block">{property.hoa || "$1,250 / mo"}</span>
+                <div className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-white border border-[#E4DCD0] shadow-xs">
+                  <span className="text-[10px] sm:text-xs text-[#747D88] uppercase block font-bold">Monthly HOA & Dues</span>
+                  <span className="text-2xl sm:text-3xl text-[#0A192F] font-mono font-bold mt-1 block">{property.hoa || "$1,250 / mo"}</span>
                   <span className="text-xs text-[#545B65] mt-1 block font-medium">Full white-glove concierge</span>
                 </div>
               </div>
 
               {/* Interactive Mortgage Calculator Component Embedded */}
-              <div className="p-8 rounded-3xl bg-white border border-[#E4DCD0] shadow-sm">
-                <h3 className="text-xl font-serif text-[#0A192F] font-bold mb-6">
+              <div className="p-5 sm:p-8 rounded-2xl sm:rounded-3xl bg-white border border-[#E4DCD0] shadow-sm">
+                <h3 className="text-lg sm:text-xl font-serif text-[#0A192F] font-bold mb-4 sm:mb-6">
                   Financing & Capital Expenditure Model
                 </h3>
                 <MortgageCalculator initialPrice={property.price} />

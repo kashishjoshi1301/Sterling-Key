@@ -31,7 +31,7 @@ export default function ComparisonBar({
               alt={p.title}
               className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg object-cover"
             />
-            <span className="text-[11px] text-white font-medium max-w-[70px] sm:max-w-[90px] truncate">
+            <span className="text-[11px] text-white font-medium max-w-[120px] sm:max-w-[170px] truncate" title={p.title}>
               {p.title}
             </span>
             <button

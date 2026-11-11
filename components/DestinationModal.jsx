@@ -101,7 +101,7 @@ export default function DestinationModal({
             <h2 className="text-2xl sm:text-4xl font-serif font-bold text-white leading-tight">
               {destination.name}
             </h2>
-            <p className="text-xs sm:text-sm text-white/85 mt-1 max-w-2xl line-clamp-2">
+            <p className="text-xs sm:text-sm text-white/85 mt-1 max-w-2xl leading-relaxed">
               {destination.description}
             </p>
           </div>
@@ -219,7 +219,7 @@ export default function DestinationModal({
                         <div className="text-[11px] text-[#747D88] font-medium mb-0.5">
                           {prop.neighborhood}, {prop.city}
                         </div>
-                        <h4 className="text-sm sm:text-base font-serif font-bold text-[#0A192F] group-hover:text-[#C5A880] transition-colors line-clamp-1">
+                        <h4 className="text-sm sm:text-base font-serif font-bold text-[#0A192F] group-hover:text-[#C5A880] transition-colors leading-snug">
                           {prop.title}
                         </h4>
                         <div className="text-base sm:text-lg font-serif font-bold text-[#0A192F] mt-1.5">

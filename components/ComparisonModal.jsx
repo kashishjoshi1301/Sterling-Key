@@ -88,7 +88,7 @@ export default function ComparisonModal({
                       <div className="text-[10px] text-[#C5A880] uppercase font-semibold">
                         {prop.neighborhood}, {prop.city}
                       </div>
-                      <h4 className="text-sm font-serif text-[#0A192F] font-semibold line-clamp-1 mt-0.5">
+                      <h4 className="text-sm font-serif text-[#0A192F] font-semibold mt-0.5 leading-snug">
                         {prop.title}
                       </h4>
                       <div className="text-base font-serif font-bold text-[#0A192F] mt-1">

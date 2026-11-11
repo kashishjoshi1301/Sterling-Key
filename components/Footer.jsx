@@ -235,7 +235,7 @@ export default function Footer({ onOpenPortal, onOpenSchedule }) {
             {offices.map((office, i) => (
               <div key={i} className="p-4 rounded-xl bg-white border border-[#E4DCD0] shadow-sm hover:border-[#C5A880] transition-colors">
                 <div className="text-[#0A192F] font-serif font-semibold text-sm mb-1">{office.city}</div>
-                <p className="text-xs text-[#747D88] line-clamp-1">{office.address}</p>
+                <p className="text-xs text-[#747D88] leading-tight">{office.address}</p>
                 <div className="text-[#C5A880] text-xs mt-1.5 font-mono font-semibold">{office.phone}</div>
               </div>
             ))}

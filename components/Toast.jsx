@@ -51,7 +51,7 @@ export function ToastProvider({ children }) {
 
             <div className="flex-1 min-w-0">
               {toast.title && (
-                <div className="text-xs font-serif font-semibold text-[#EADDC9] line-clamp-1">
+                <div className="text-xs font-serif font-semibold text-[#EADDC9]">
                   {toast.title}
                 </div>
               )}

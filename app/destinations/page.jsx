@@ -187,7 +187,7 @@ export default function DestinationsPage() {
                   {/* Destination Info on Bottom */}
                   <div className="absolute bottom-3.5 left-3.5 right-3.5">
                     <div className="flex items-center justify-between mb-0.5">
-                      <span className="text-[10px] text-[#C5A880] font-medium truncate pr-2">
+                      <span className="text-[10px] text-[#C5A880] font-medium pr-2">
                         {city.tag}
                       </span>
                       <span className="p-1 rounded-full bg-white/20 backdrop-blur-xs group-hover:bg-[#C5A880] text-white transition-all shrink-0">

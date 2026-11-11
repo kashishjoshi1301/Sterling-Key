@@ -57,7 +57,7 @@ export default function SavedDrawer({ isOpen = true, onClose, savedIds = [], onR
 
                 <div className="flex-1 flex flex-col justify-between min-w-0">
                   <div>
-                    <h4 className="text-xs sm:text-sm font-serif text-[#0A192F] font-semibold line-clamp-1 leading-snug">
+                    <h4 className="text-xs sm:text-sm font-serif text-[#0A192F] font-semibold leading-snug">
                       {p.title}
                     </h4>
                     <div className="text-xs sm:text-sm text-[#0A192F] font-mono font-bold mt-1">
