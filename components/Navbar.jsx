@@ -97,15 +97,15 @@ export default function Navbar({
 
   return (
     <>
-      {/* Top Deep Navy Ticker Bar - Strictly Single-Line & Fully Responsive */}
-      <div className="bg-[#0A192F] border-b border-[#060D18] py-1.5 sm:py-2 text-xs text-[#EAE3D9] font-sans tracking-wide w-full overflow-hidden">
-        <div className="max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8 flex items-center justify-between gap-2 sm:gap-3 w-full">
-          {/* Left Ticker Teaser - Clean Ellipsis Truncation (Never Cuts Words Mid-Letter) */}
-          <div className="flex items-center gap-1.5 sm:gap-2.5 overflow-hidden min-w-0 flex-1">
+      {/* Top Deep Navy Ticker Bar - Full Details & Zero Ellipsis Truncation Across All Screen Sizes */}
+      <div className="bg-[#0A192F] border-b border-[#060D18] py-1.5 sm:py-2 text-xs text-[#EAE3D9] font-sans tracking-wide w-full">
+        <div className="max-w-[1600px] mx-auto px-2.5 sm:px-6 lg:px-8 flex flex-col xs:flex-row items-center justify-between gap-1.5 sm:gap-3 w-full">
+          {/* Left Ticker Teaser - Full Name Always Visible on Every Device */}
+          <div className="flex items-center gap-1.5 sm:gap-2.5 w-full xs:w-auto justify-center xs:justify-start">
             <span className="inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded text-[8px] sm:text-[10px] font-semibold tracking-[0.12em] uppercase bg-[#C5A880]/20 text-[#EADDC9] border border-[#C5A880]/30 shrink-0">
               Private Market
             </span>
-            <p className="text-[#DDD4C6] text-[11px] sm:text-xs font-medium min-w-0 truncate">
+            <p className="text-[#DDD4C6] text-[10px] xs:text-[11px] sm:text-xs font-medium whitespace-normal sm:whitespace-nowrap text-center xs:text-left">
               <span className="hidden xl:inline">
                 Exclusive: The Bel-Air Promontory Estate · Managing $4.8B+ in Institutional Assets
               </span>
@@ -115,14 +115,14 @@ export default function Navbar({
               <span className="hidden sm:inline md:hidden">
                 Exclusive: The Bel-Air Promontory Estate
               </span>
-              <span className="sm:hidden truncate">
-                The Bel-Air Promontory Estate
+              <span className="sm:hidden">
+                Exclusive: The Bel-Air Promontory Estate
               </span>
             </p>
           </div>
 
           {/* Right Preferences & Contact Desk - Fully Accessible on Mobile & Desktop */}
-          <div className="flex items-center gap-2 sm:gap-3.5 lg:gap-5 text-[11px] sm:text-xs text-[#DDD4C6] shrink-0">
+          <div className="flex items-center gap-2 sm:gap-3.5 lg:gap-5 text-[11px] sm:text-xs text-[#DDD4C6] shrink-0 justify-center xs:justify-end">
             {/* Currency & Unit Switcher */}
             <div className="flex items-center gap-1.5 sm:gap-2 border-r border-white/15 pr-2 sm:pr-3.5">
               <div className="flex items-center gap-1">

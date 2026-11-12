@@ -246,61 +246,120 @@ export default function Footer({ onOpenPortal, onOpenSchedule }) {
           </div>
         </div>
 
-        {/* Global Advisory Chambers / Physical Locations */}
-        <div className="mb-16">
-          <div className="text-center mb-6">
-            <span className="text-[10px] uppercase font-mono tracking-widest text-[#C5A880] font-bold">
-              Global Flagship Advisory Chambers
-            </span>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
-            {offices.map((office, i) => (
-              <div key={i} className="p-4 rounded-xl bg-white border border-[#E4DCD0] shadow-sm hover:border-[#C5A880] transition-colors">
-                <div className="text-[#0A192F] font-serif font-semibold text-sm mb-1">{office.city}</div>
-                <p className="text-xs text-[#747D88] leading-tight">{office.address}</p>
-                <div className="text-[#C5A880] text-xs mt-1.5 font-mono font-semibold">{office.phone}</div>
+        {/* Main Footer Navigation - 2 Columns on Small Screens (Side-by-Side), 12-Col on Desktop */}
+        <div className="border-t border-[#E4DCD0] pt-12 pb-10 mb-8">
+          <div className="grid grid-cols-2 lg:grid-cols-12 gap-x-6 sm:gap-x-10 lg:gap-x-12 gap-y-10">
+            {/* Column 1: Brand Identity (Full Width on Mobile, 4-Span on Desktop with Right Padding) */}
+            <div className="col-span-2 lg:col-span-4 space-y-4 pr-0 lg:pr-6">
+              <Logo size="md" variant="dark" />
+              <p className="text-[#545B65] text-xs sm:text-sm leading-relaxed">
+                Sterling Key Properties represents architectural masterworks, unlisted off-market treaties, and trophy residential assets across resilient sovereign havens.
+              </p>
+              <div className="space-y-1.5 text-xs text-[#545B65] pt-2 border-t border-[#E4DCD0]">
+                <p><span className="font-semibold text-[#0A192F]">Private Desk:</span> <span className="font-mono text-[#0A192F]">+1 (800) 555-7837</span></p>
+                <p><span className="font-semibold text-[#0A192F]">Global HQ:</span> 767 Fifth Avenue, New York</p>
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
 
-        {/* Footer Navigation Columns - Generous Brand Column Space */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-10 mb-14 border-t border-[#E4DCD0] pt-12">
-          {/* Brand Info Column (2-Span on tablet and desktop so logo NEVER truncates) */}
-          <div className="sm:col-span-2 lg:col-span-2">
-            <Logo size="md" variant="dark" className="mb-4" />
-            <p className="text-[#545B65] text-sm leading-relaxed max-w-sm">
-              Sterling Key Properties represents architectural masterworks and institutional multi-family assets across resilient sovereign havens.
-            </p>
-          </div>
+            {/* Column 2: Portfolio (Side-by-side with Institutional on Small Screens) */}
+            <div className="col-span-1 lg:col-span-2">
+              <div className="text-[#0A192F] font-serif font-bold text-sm tracking-wide mb-4">
+                Portfolio
+              </div>
+              <ul className="space-y-2.5 text-xs sm:text-sm text-[#545B65]">
+                <li>
+                  <Link href="/collection" className="hover:text-[#0A192F] transition-colors">
+                    Browse Collections
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/vault" className="hover:text-[#0A192F] transition-colors">
+                    The Sovereign Vault
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/destinations" className="hover:text-[#0A192F] transition-colors">
+                    Global Flagships
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/financials" className="hover:text-[#0A192F] transition-colors">
+                    Valuation & Financials
+                  </Link>
+                </li>
+              </ul>
+            </div>
 
-          <div>
-            <div className="text-[#0A192F] font-semibold text-sm uppercase tracking-wider mb-4">Portfolio Pages</div>
-            <ul className="space-y-2.5 text-sm text-[#545B65]">
-              <li><Link href="/collection" className="hover:text-[#0A192F] transition-colors font-medium">Browse All Collections</Link></li>
-              <li><Link href="/vault" className="hover:text-[#0A192F] transition-colors font-medium">The Sovereign Vault</Link></li>
-              <li><Link href="/destinations" className="hover:text-[#0A192F] transition-colors font-medium">Global Flagships</Link></li>
-              <li><Link href="/financials" className="hover:text-[#0A192F] transition-colors font-medium">Valuation & Financials</Link></li>
-            </ul>
-          </div>
+            {/* Column 3: Institutional Services (Side-by-side with Portfolio on Small Screens) */}
+            <div className="col-span-1 lg:col-span-2">
+              <div className="text-[#0A192F] font-serif font-bold text-sm tracking-wide mb-4">
+                Institutional
+              </div>
+              <ul className="space-y-2.5 text-xs sm:text-sm text-[#545B65]">
+                <li>
+                  <Link href="/management" className="hover:text-[#0A192F] transition-colors">
+                    Asset Management
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/advisory" className="hover:text-[#0A192F] transition-colors">
+                    Private Advisory & Treaties
+                  </Link>
+                </li>
+                <li>
+                  <button onClick={handlePortal} className="hover:text-[#0A192F] transition-colors cursor-pointer text-left">
+                    Client & Family Portal
+                  </button>
+                </li>
+                <li>
+                  <button onClick={handleSchedule} className="hover:text-[#0A192F] transition-colors cursor-pointer text-left">
+                    Private Advisory Briefing
+                  </button>
+                </li>
+              </ul>
+            </div>
 
-          <div>
-            <div className="text-[#0A192F] font-semibold text-sm uppercase tracking-wider mb-4">Institutional Services</div>
-            <ul className="space-y-2.5 text-sm text-[#545B65]">
-              <li><Link href="/management" className="hover:text-[#0A192F] transition-colors font-medium">Asset & Property Management</Link></li>
-              <li><Link href="/advisory" className="hover:text-[#0A192F] transition-colors font-medium">Private Advisory & Treaties</Link></li>
-              <li><button onClick={handlePortal} className="hover:text-[#0A192F] transition-colors font-medium cursor-pointer text-left">Client & Resident Portal</button></li>
-              <li><button onClick={handleSchedule} className="hover:text-[#0A192F] transition-colors font-medium cursor-pointer text-left">Private Advisory Briefing</button></li>
-            </ul>
-          </div>
+            {/* Column 4: Global Flagships (Side-by-side with Security Protocol on Small Screens) */}
+            <div className="col-span-1 lg:col-span-2">
+              <div className="text-[#0A192F] font-serif font-bold text-sm tracking-wide mb-4">
+                Global Flagships
+              </div>
+              <ul className="space-y-2.5 text-xs sm:text-sm text-[#545B65]">
+                <li>
+                  <span className="font-semibold text-[#0A192F]">New York:</span> 767 Fifth Ave
+                </li>
+                <li>
+                  <span className="font-semibold text-[#0A192F]">London:</span> 25 Berkeley Sq
+                </li>
+                <li>
+                  <span className="font-semibold text-[#0A192F]">Miami Beach:</span> Brickell Ave
+                </li>
+                <li>
+                  <span className="font-semibold text-[#0A192F]">Beverly Hills:</span> Wilshire Blvd
+                </li>
+                <li>
+                  <span className="font-semibold text-[#0A192F]">Aspen:</span> Cooper Ave
+                </li>
+              </ul>
+            </div>
 
-          <div>
-            <div className="text-[#0A192F] font-semibold text-sm uppercase tracking-wider mb-4">Security & Compliance</div>
-            <p className="text-[#747D88] text-xs leading-relaxed mb-4">
-              Encrypted biometric vault access, SHA-256 NDA handshakes, and strict FINCEN anti-money laundering institutional screening protocols.
-            </p>
-            <div className="text-xs text-[#C5A880] font-mono font-semibold tracking-wider">
-              EQUAL HOUSING OPPORTUNITY
+            {/* Column 5: Security & Compliance (Side-by-side with Global Flagships on Small Screens) */}
+            <div className="col-span-1 lg:col-span-2">
+              <div className="text-[#0A192F] font-serif font-bold text-sm tracking-wide mb-4">
+                Security Protocol
+              </div>
+              <ul className="space-y-2.5 text-xs sm:text-sm text-[#747D88]">
+                <li className="flex items-center gap-1.5 text-[#0A192F] font-medium">
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#C5A880] shrink-0" />
+                  <span>Biometric Vault Access</span>
+                </li>
+                <li>Strict FINCEN Screening</li>
+                <li>SHA-256 NDA Handshakes</li>
+                <li>Sovereign Clearance</li>
+                <li className="pt-1.5 text-[#C5A880] font-mono text-[10px] font-bold tracking-wider">
+                  EQUAL HOUSING
+                </li>
+              </ul>
             </div>
           </div>
         </div>

@@ -11,23 +11,23 @@ export default function Logo({ size = "md", showText = true, className = "", var
   };
 
   const titleSizes = {
-    sm: "text-xs tracking-[0.2em]",
-    md: "text-sm sm:text-base tracking-[0.22em]",
-    lg: "text-lg tracking-[0.26em]",
-    xl: "text-2xl tracking-[0.3em]"
+    sm: "text-xs tracking-[0.12em]",
+    md: "text-sm sm:text-base tracking-[0.14em]",
+    lg: "text-lg tracking-[0.16em]",
+    xl: "text-2xl tracking-[0.18em]"
   };
 
   const subtitleSizes = {
-    sm: "text-[7px] tracking-[0.16em]",
-    md: "text-[8px] sm:text-[9px] tracking-[0.2em]",
-    lg: "text-[10px] tracking-[0.24em]",
-    xl: "text-xs tracking-[0.28em]"
+    sm: "text-[8px] tracking-[0.12em]",
+    md: "text-[9px] sm:text-[10px] tracking-[0.14em]",
+    lg: "text-[11px] tracking-[0.16em]",
+    xl: "text-xs tracking-[0.18em]"
   };
 
   const isLight = variant === "light";
 
   return (
-    <div className={`flex items-center gap-2.5 sm:gap-3.5 select-none group cursor-pointer ${className}`}>
+    <div className={`flex items-center gap-2.5 sm:gap-3 select-none group cursor-pointer ${className}`}>
       {/* High-Contrast Architectural Emblem */}
       <div
         className={`relative ${emblemSizes[size]} rounded-xl flex items-center justify-center shrink-0 shadow-sm transition-transform duration-300 group-hover:scale-105 ${
@@ -99,9 +99,9 @@ export default function Logo({ size = "md", showText = true, className = "", var
         </svg>
       </div>
 
-      {/* Typography - Explicit Inline Colors for 100% Contrast & Visibility */}
+      {/* Typography - Perfectly Balanced 2-Line Architectural Lockup */}
       {showText && (
-        <div className="flex flex-col text-left shrink-0">
+        <div className="flex flex-col text-left shrink-0 justify-center">
           <span
             style={{ color: isLight ? "#FAF8F5" : "#0A192F" }}
             className={`font-serif uppercase font-bold leading-tight ${titleSizes[size]} transition-colors whitespace-nowrap`}
@@ -109,8 +109,8 @@ export default function Logo({ size = "md", showText = true, className = "", var
             Sterling Key
           </span>
           <span
-            style={{ color: isLight ? "#C5A880" : "#4A5568" }}
-            className={`font-sans uppercase font-semibold leading-tight mt-0.5 ${subtitleSizes[size]} whitespace-nowrap hidden xs:inline-block sm:inline-block`}
+            style={{ color: isLight ? "#C5A880" : "#747D88" }}
+            className={`font-sans uppercase font-semibold leading-tight mt-0.5 ${subtitleSizes[size]} whitespace-nowrap`}
           >
             Properties & Asset Management
           </span>

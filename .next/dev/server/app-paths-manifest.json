@@ -1,7 +1,4 @@
 {
-  "/destinations/page": "app/destinations/page.js",
-  "/management/page": "app/management/page.js",
-  "/vault/page": "app/vault/page.js",
   "/collection/page": "app/collection/page.js",
-  "/financials/page": "app/financials/page.js"
+  "/properties/[id]/page": "app/properties/[id]/page.js"
 }

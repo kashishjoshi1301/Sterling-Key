@@ -506,7 +506,7 @@ function CollectionContent() {
                 <div
                   key={prop.id}
                   onClick={() => openPropertyPreview(prop)}
-                  className="relative group rounded-3xl bg-white border border-[#E4DCD0] overflow-hidden shadow-xs hover:shadow-2xl hover:border-[#C5A880] transition-all duration-300 flex flex-row items-stretch cursor-pointer active:scale-[0.99] p-3 xs:p-4 sm:p-5 lg:p-6 gap-3 xs:gap-4 sm:gap-6 lg:gap-7 h-[260px] sm:h-[275px] lg:h-[290px]"
+                  className="relative group rounded-3xl bg-white border border-[#E4DCD0] overflow-hidden shadow-xs hover:shadow-2xl hover:border-[#C5A880] transition-all duration-300 flex flex-row items-stretch cursor-pointer active:scale-[0.99] p-3 xs:p-4 sm:p-5 lg:p-6 gap-3 xs:gap-4 sm:gap-6 lg:gap-7 h-[260px] xs:h-[270px] sm:h-[280px] lg:h-[290px]"
                 >
                   {/* Quick Compare & Favorite Buttons - Dedicated Top-Right Card Placement */}
                   <div className="absolute top-2.5 right-2.5 sm:top-4 sm:right-4 z-20 flex items-center gap-1.5">
@@ -536,7 +536,7 @@ function CollectionContent() {
                     </button>
                   </div>
 
-                  {/* Left: Thumbnail Image with Uniform Full-Height Proportions */}
+                  {/* Left: Thumbnail Image with Uniform Strict Height and Aspect Ratio */}
                   <div 
                     onClick={() => openPropertyPreview(prop)}
                     className="relative w-28 xs:w-36 sm:w-64 md:w-80 lg:w-88 shrink-0 h-full rounded-xl sm:rounded-2xl overflow-hidden bg-[#FAF8F5] shadow-xs"
@@ -544,12 +544,12 @@ function CollectionContent() {
                     <img
                       src={prop.images[0]}
                       alt={prop.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent opacity-70" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent opacity-70 pointer-events-none" />
 
                     {/* Status / Lease Badge with Breathing Room */}
-                    <div className="absolute top-2 left-2 sm:top-3 sm:left-3 flex items-center gap-1 z-10">
+                    <div className="absolute top-2 left-2 sm:top-3 sm:left-3 flex items-center gap-1 z-10 pointer-events-none">
                       {isBought(prop.id) ? (
                         <span className="px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[9px] sm:text-xs font-bold uppercase tracking-wider bg-[#8B1E1E] text-white border border-red-400 shadow-sm">
                           SOLD OUT
@@ -566,7 +566,7 @@ function CollectionContent() {
                     </div>
 
                     {/* Cap rate tag or Lease indicator on image bottom */}
-                    <div className="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3 flex justify-between items-center text-[10px] sm:text-xs text-white font-mono z-10">
+                    <div className="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3 flex justify-between items-center text-[10px] sm:text-xs text-white font-mono z-10 pointer-events-none">
                       <span className="text-[#C5A880] font-bold">
                         {activeTab === "rent" ? "Luxury Lease" : `${prop.capRate || "5.8%"} Cap`}
                       </span>
@@ -576,9 +576,9 @@ function CollectionContent() {
 
                   {/* Right: Property Details & Actions with Uniform Equal-Height Structure */}
                   <div className="flex-1 min-w-0 flex flex-col justify-between h-full py-0.5 sm:py-1">
-                    {/* Top Section: Location, Title, & Description - Generous Right Padding to Prevent Overlap with Compare/Save Icons */}
-                    <div className="pr-16 xs:pr-20 sm:pr-24">
-                      <div className="flex items-center text-[11px] sm:text-xs text-[#747D88] font-semibold mb-0.5 h-4 sm:h-5">
+                    {/* Top Section: Location, Title, & Tagline */}
+                    <div className="pr-14 xs:pr-18 sm:pr-24">
+                      <div className="flex items-center text-[11px] sm:text-xs text-[#747D88] font-semibold mb-0.5 sm:mb-1">
                         <MapPin className="w-3.5 h-3.5 mr-1 text-[#C5A880] shrink-0" />
                         <span className="truncate">{formatLocation(prop)}</span>
                       </div>
@@ -589,23 +589,23 @@ function CollectionContent() {
                           e.stopPropagation();
                           trackViewedProperty(prop.id);
                         }}
-                        className="h-[2.5rem] sm:h-[2.85rem] flex items-center"
+                        className="block mb-0.5 sm:mb-1"
                       >
-                        <h3 className="text-sm xs:text-base sm:text-lg font-serif text-[#0A192F] font-bold hover:text-[#C5A880] transition-colors leading-snug line-clamp-2">
+                        <h3 className="text-sm xs:text-base sm:text-lg lg:text-xl font-serif text-[#0A192F] font-bold hover:text-[#C5A880] transition-colors leading-snug line-clamp-1 sm:line-clamp-2">
                           {prop.title}
                         </h3>
                       </Link>
 
-                      {/* Clean 2-Line Architectural Description (Never Horizontally Sliced) */}
-                      <p className="text-xs sm:text-sm text-[#545B65] leading-snug sm:leading-relaxed line-clamp-2 mt-0.5 font-sans min-h-[2.2rem] sm:min-h-[2.6rem]">
+                      {/* Tagline / Description - Clean, Uniform & Never Stretches */}
+                      <p className="text-xs sm:text-sm text-[#545B65] leading-relaxed line-clamp-2 font-sans">
                         {prop.tagline || prop.description}
                       </p>
                     </div>
 
                     {/* Middle Section: Price & Specs with Exact Spacing */}
-                    <div className="my-1 sm:my-2 pt-1.5 sm:pt-2.5 border-t border-[#E4DCD0]/70">
+                    <div className="my-1 sm:my-1.5 pt-1.5 sm:pt-2 border-t border-[#E4DCD0]/70">
                       {/* Price Row */}
-                      <div className="flex flex-wrap items-baseline gap-1.5 sm:gap-2 mb-0.5 h-6 sm:h-7">
+                      <div className="flex flex-wrap items-baseline gap-1.5 sm:gap-2 mb-0.5">
                         <div suppressHydrationWarning className="text-sm xs:text-base sm:text-xl lg:text-2xl font-serif font-bold text-[#0A192F] tracking-tight">
                           {activeTab === "rent" && prop.rentalPrice ? prop.rentalPrice : formatRawPrice(prop.price)}
                         </div>
@@ -621,7 +621,7 @@ function CollectionContent() {
                       </div>
 
                       {/* Specs Row */}
-                      <div className="flex flex-wrap items-center gap-x-2 sm:gap-x-3.5 gap-y-0.5 text-[10px] sm:text-xs text-[#545B65] font-mono py-0.5 border-t border-[#E4DCD0]/50 h-5 sm:h-6 overflow-hidden">
+                      <div className="flex flex-wrap items-center gap-x-2 sm:gap-x-3.5 gap-y-0.5 text-[10px] sm:text-xs text-[#545B65] font-mono py-0.5 sm:py-1 border-t border-[#E4DCD0]/50">
                         <span className="font-semibold text-[#0A192F]">{prop.beds} Beds</span>
                         <span className="text-[#C5A880]">•</span>
                         <span className="font-semibold text-[#0A192F]">{prop.baths} Baths</span>
@@ -632,8 +632,8 @@ function CollectionContent() {
                       </div>
                     </div>
 
-                    {/* Bottom Actions: Responsive 2-Col Grid on Mobile (Guaranteed to Stay Inside Card) */}
-                    <div className="grid grid-cols-2 gap-1.5 sm:flex sm:items-center sm:gap-2.5 pt-1.5 sm:pt-2.5 border-t border-[#E4DCD0]/70 w-full">
+                    {/* Bottom Actions: Responsive 2-Col Grid on Mobile */}
+                    <div className="grid grid-cols-2 gap-1.5 sm:flex sm:items-center sm:gap-2.5 pt-1.5 sm:pt-2 border-t border-[#E4DCD0]/70 w-full">
                       <Link
                         href={`/properties/${prop.id}`}
                         onClick={(e) => {
@@ -717,28 +717,28 @@ function CollectionContent() {
                     {/* Gradient Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
 
-                    {/* Top Badges */}
-                    <div className="absolute top-4 left-4 flex items-center gap-2">
+                    {/* Top Badges - Confined with max-w so badges never collide with compare/favorite buttons */}
+                    <div className="absolute top-3 left-3 sm:top-4 sm:left-4 flex flex-wrap items-center gap-1.5 sm:gap-2 max-w-[calc(100%-85px)] z-10 pointer-events-none">
                       {isBought(prop.id) ? (
-                        <span className="px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#8B1E1E] text-white border border-red-400 shadow-sm">
+                        <span className="px-2.5 sm:px-3.5 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-[#8B1E1E] text-white border border-red-400 shadow-sm">
                           SOLD OUT
                         </span>
                       ) : isRented(prop.id) ? (
-                        <span className="px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#475569] text-white border border-slate-400 shadow-sm">
+                        <span className="px-2.5 sm:px-3.5 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-[#475569] text-white border border-slate-400 shadow-sm">
                           CURRENTLY UNAVAILABLE
                         </span>
                       ) : (
-                        <span className="px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#0A192F] text-[#FAF8F5] border border-[#C5A880]/40 shadow-sm">
+                        <span className="px-2.5 sm:px-3.5 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-[#0A192F] text-[#FAF8F5] border border-[#C5A880]/40 shadow-sm">
                           {activeTab === "rent" ? "FOR LEASE" : prop.status}
                         </span>
                       )}
-                      <span className="px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white/95 text-[#0A192F] border border-[#E4DCD0] shadow-sm">
+                      <span className="px-2.5 sm:px-3.5 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-white/95 text-[#0A192F] border border-[#E4DCD0] shadow-sm">
                         {prop.category}
                       </span>
                     </div>
 
                     {/* Top Right Save & Compare Buttons */}
-                    <div className="absolute top-4 right-4 flex items-center gap-1.5 z-10">
+                    <div className="absolute top-3 right-3 sm:top-4 sm:right-4 flex items-center gap-1.5 z-20">
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
@@ -798,11 +798,11 @@ function CollectionContent() {
                           trackViewedProperty(prop.id);
                         }}
                       >
-                        <h3 className="text-xl sm:text-2xl font-serif text-[#0A192F] font-bold hover:text-[#C5A880] transition-colors leading-tight">
+                        <h3 className="text-xl sm:text-2xl font-serif text-[#0A192F] font-bold hover:text-[#C5A880] transition-colors leading-tight min-h-[3.2rem] sm:min-h-[3.8rem] flex items-start">
                           {prop.title}
                         </h3>
                       </Link>
-                      <p className="text-xs sm:text-sm text-[#545B65] mt-2.5 leading-relaxed font-sans">
+                      <p className="text-xs sm:text-sm text-[#545B65] mt-2.5 leading-relaxed font-sans line-clamp-2 min-h-[2.5rem]">
                         {prop.tagline || prop.description}
                       </p>
                     </div>

@@ -75,7 +75,7 @@ export default function ComparisonModal({
     {
       label: "Lot Size",
       render: (p) => (
-        <span className="text-[#1A1D20] text-xs">
+        <span className="text-[#1A1D20] text-[11px] sm:text-xs leading-snug break-words">
           {p.lotSize}
         </span>
       )
@@ -124,22 +124,22 @@ export default function ComparisonModal({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top Header in Deep Navy */}
-        <div className="bg-[#0A192F] text-white border-b border-[#060D18] px-5 py-4 sm:px-6 sm:py-5 flex items-center justify-between shrink-0">
-          <div>
+        <div className="bg-[#0A192F] text-white border-b border-[#060D18] px-3.5 py-3 sm:px-6 sm:py-5 flex items-center justify-between shrink-0">
+          <div className="min-w-0 pr-2">
             <div className="flex items-center gap-2">
-              <SlidersHorizontal className="w-4 h-4 text-[#C5A880]" />
-              <h3 className="text-base sm:text-lg font-serif text-white font-medium">
+              <SlidersHorizontal className="w-4 h-4 text-[#C5A880] shrink-0" />
+              <h3 className="text-sm sm:text-lg font-serif text-white font-medium truncate">
                 Architectural Estate Comparison Matrix
               </h3>
             </div>
-            <p className="text-xs text-[#A8B2C1] mt-0.5">
-              Comparing {activeProperties.length} prime sovereign {activeProperties.length === 1 ? "residence" : "residences"} side-by-side · Column headers stay locked on scroll
+            <p className="text-[10px] sm:text-xs text-[#A8B2C1] mt-0.5 truncate sm:whitespace-normal">
+              Comparing {activeProperties.length} prime sovereign {activeProperties.length === 1 ? "residence" : "residences"} · Swipe ↔ to explore
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
-            {activeProperties.length > 2 && (
-              <div className="flex items-center gap-1 bg-white/10 rounded-xl p-1 border border-[#C5A880]/30 mr-1">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            {activeProperties.length > 1 && (
+              <div className="flex items-center gap-0.5 sm:gap-1 bg-white/10 rounded-xl p-1 border border-[#C5A880]/30 mr-1">
                 <button
                   type="button"
                   onClick={() => scrollTable("left")}
@@ -147,9 +147,9 @@ export default function ComparisonModal({
                   title="Scroll to previous residence"
                   aria-label="Scroll left"
                 >
-                  <ChevronLeft className="w-4 h-4" />
+                  <ChevronLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </button>
-                <span className="text-[10px] text-[#C5A880] font-mono px-1 font-semibold uppercase tracking-wider hidden sm:inline">
+                <span className="text-[9px] sm:text-[10px] text-[#C5A880] font-mono px-1 font-semibold uppercase tracking-wider hidden sm:inline">
                   Navigate
                 </span>
                 <button
@@ -159,7 +159,7 @@ export default function ComparisonModal({
                   title="Scroll to next residence"
                   aria-label="Scroll right"
                 >
-                  <ChevronRight className="w-4 h-4" />
+                  <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </button>
               </div>
             )}
@@ -170,7 +170,7 @@ export default function ComparisonModal({
               className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 text-[#EADDC9] hover:text-white cursor-pointer transition-colors"
               title="Close comparison"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
           </div>
         </div>
@@ -185,32 +185,32 @@ export default function ComparisonModal({
             WebkitOverflowScrolling: "touch"
           }}
         >
-          <table className="w-full text-left text-xs border-collapse table-fixed">
+          <table className="w-full text-left text-xs border-collapse">
             <colgroup>
-              <col style={{ width: "180px", minWidth: "180px" }} />
+              <col className="w-[110px] sm:w-[170px]" style={{ minWidth: "110px" }} />
               {activeProperties.map((p) => (
-                <col key={p.id} style={{ width: "280px", minWidth: "280px" }} />
+                <col key={p.id} className="w-[215px] sm:w-[270px]" style={{ minWidth: "215px" }} />
               ))}
             </colgroup>
 
             {/* Property Header Cards */}
             <thead>
               <tr>
-                {/* Frozen Top-Left Cell */}
-                <th className="sticky top-0 left-0 z-30 p-4 align-top bg-[#FAF8F5] border-r-2 border-b border-[#E4DCD0] shadow-[4px_0_12px_-2px_rgba(0,0,0,0.08)]">
+                {/* Frozen Top-Left Cell - Compact on Mobile */}
+                <th className="sticky top-0 left-0 z-30 p-2.5 sm:p-4 align-top bg-[#FAF8F5] border-r-2 border-b border-[#E4DCD0] shadow-[4px_0_12px_-2px_rgba(0,0,0,0.08)]">
                   <div className="flex flex-col justify-between h-full">
                     <div>
-                      <span className="text-[10px] uppercase font-mono tracking-wider text-[#C5A880] font-bold block">
+                      <span className="text-[9px] sm:text-[10px] uppercase font-mono tracking-wider text-[#C5A880] font-bold block">
                         Estate Matrix
                       </span>
-                      <h4 className="text-sm font-serif text-[#0A192F] font-semibold mt-1">
+                      <h4 className="text-xs sm:text-sm font-serif text-[#0A192F] font-semibold mt-0.5">
                         Sovereign Portfolio
                       </h4>
-                      <p className="text-[11px] text-[#747D88] mt-1 leading-relaxed">
+                      <p className="text-[10px] sm:text-[11px] text-[#747D88] mt-1 leading-relaxed hidden sm:block">
                         Side-by-side architectural and yield analysis
                       </p>
                     </div>
-                    <div className="mt-8 pt-4 border-t border-[#E4DCD0] text-[10px] text-[#8C95A1] font-mono uppercase tracking-wider">
+                    <div className="mt-4 sm:mt-8 pt-2 sm:pt-4 border-t border-[#E4DCD0] text-[9px] sm:text-[10px] text-[#8C95A1] font-mono uppercase tracking-wider">
                       Specification
                     </div>
                   </div>
@@ -220,10 +220,10 @@ export default function ComparisonModal({
                 {activeProperties.map((prop) => (
                   <th 
                     key={prop.id} 
-                    className="sticky top-0 z-10 p-4 align-top bg-[#FAF8F5] border-b border-[#E4DCD0]"
+                    className="sticky top-0 z-10 p-2.5 sm:p-4 align-top bg-[#FAF8F5] border-b border-[#E4DCD0]"
                   >
                     {/* Image Card with Fixed Height, Fallback & Gradient */}
-                    <div className="relative rounded-xl overflow-hidden h-36 w-full bg-[#EAE3D9] mb-3 group shadow-xs border border-[#E4DCD0]">
+                    <div className="relative rounded-xl overflow-hidden h-28 sm:h-36 w-full bg-[#EAE3D9] mb-2 sm:mb-3 group shadow-xs border border-[#E4DCD0]">
                       <img
                         src={prop.images?.[0] || "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80"}
                         alt={prop.title}
@@ -237,11 +237,11 @@ export default function ComparisonModal({
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
 
-                      <div className="absolute bottom-2 left-2 flex items-center gap-1.5 pointer-events-none">
-                        <span className="px-2 py-0.5 rounded bg-[#0A192F]/85 backdrop-blur-xs text-[#EADDC9] font-mono text-[9px] uppercase tracking-wider font-semibold border border-[#C5A880]/30">
+                      <div className="absolute bottom-1.5 left-1.5 sm:bottom-2 sm:left-2 flex items-center gap-1 pointer-events-none">
+                        <span className="px-1.5 sm:px-2 py-0.5 rounded bg-[#0A192F]/85 backdrop-blur-xs text-[#EADDC9] font-mono text-[8px] sm:text-[9px] uppercase tracking-wider font-semibold border border-[#C5A880]/30">
                           {prop.status || "Exclusive"}
                         </span>
-                        <span className="px-1.5 py-0.5 rounded bg-black/60 backdrop-blur-xs text-white/90 text-[9px] font-medium">
+                        <span className="px-1 sm:px-1.5 py-0.5 rounded bg-black/60 backdrop-blur-xs text-white/90 text-[8px] sm:text-[9px] font-medium hidden xs:inline">
                           {prop.category || "Trophy"}
                         </span>
                       </div>
@@ -249,42 +249,43 @@ export default function ComparisonModal({
                       <button
                         type="button"
                         onClick={() => onRemoveFromCompare && onRemoveFromCompare(prop.id)}
-                        className="absolute top-2 right-2 p-1.5 rounded-full bg-black/60 hover:bg-rose-600 text-white cursor-pointer transition-colors shadow-sm"
+                        className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 p-1.5 rounded-full bg-black/60 hover:bg-rose-600 text-white cursor-pointer transition-colors shadow-sm"
                         title="Remove from comparison"
                       >
-                        <Trash2 className="w-3.5 h-3.5" />
+                        <Trash2 className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                       </button>
                     </div>
 
-                    {/* Location */}
-                    <div className="text-[10px] text-[#C5A880] uppercase font-semibold tracking-wider truncate h-4">
+                    {/* Location - Full text without truncation */}
+                    <div className="text-[9px] sm:text-[10px] text-[#C5A880] uppercase font-semibold tracking-wider leading-tight">
                       {prop.neighborhood}, {prop.city}
                     </div>
 
-                    {/* Title with Uniform Height */}
+                    {/* Title - FULL NAME ALWAYS VISIBLE ON EVERY DEVICE */}
                     <h4 
-                      className="text-sm font-serif text-[#0A192F] font-semibold mt-1 leading-snug line-clamp-2 h-10 flex items-start"
+                      className="text-xs sm:text-sm font-serif text-[#0A192F] font-semibold mt-0.5 leading-snug break-words min-h-[2.4rem] sm:min-h-[2.8rem] flex items-start"
                       title={prop.title}
                     >
                       {prop.title}
                     </h4>
 
                     {/* Price */}
-                    <div className="text-base font-serif font-bold text-[#0A192F] mt-1 h-6 flex items-center">
+                    <div className="text-sm sm:text-base font-serif font-bold text-[#0A192F] mt-0.5 flex items-center">
                       {formatRawPrice(prop.price)}
                     </div>
 
-                    {/* Action Buttons */}
-                    <div className="grid grid-cols-2 gap-2 mt-3">
+                    {/* Action Buttons - Perfectly Sized & Aligned */}
+                    <div className="grid grid-cols-2 gap-1.5 sm:gap-2 mt-2 sm:mt-3">
                       <button
                         type="button"
                         onClick={() => {
                           onClose();
                           if (onSelectProperty) onSelectProperty(prop);
                         }}
-                        className="py-1.5 px-2 rounded-lg bg-[#F3EFEA] hover:bg-[#EAE3D9] text-[#0A192F] border border-[#E4DCD0] text-[11px] font-semibold uppercase tracking-wider flex items-center justify-center gap-1 cursor-pointer transition-colors shadow-2xs"
+                        className="py-1.5 px-1 sm:px-2 rounded-lg bg-[#F3EFEA] hover:bg-[#EAE3D9] text-[#0A192F] border border-[#E4DCD0] text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider flex items-center justify-center gap-1 cursor-pointer transition-colors shadow-2xs whitespace-nowrap"
                       >
-                        <Eye className="w-3 h-3 text-[#C5A880]" /> Dossier
+                        <Eye className="w-3 h-3 text-[#C5A880] shrink-0" />
+                        <span>Dossier</span>
                       </button>
                       <button
                         type="button"
@@ -292,9 +293,10 @@ export default function ComparisonModal({
                           onClose();
                           if (onScheduleTour) onScheduleTour(prop);
                         }}
-                        className="py-1.5 px-2 rounded-lg bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-[11px] font-semibold uppercase tracking-wider flex items-center justify-center gap-1 shadow-xs cursor-pointer transition-colors"
+                        className="py-1.5 px-1 sm:px-2 rounded-lg bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider flex items-center justify-center gap-1 shadow-xs cursor-pointer transition-colors whitespace-nowrap"
                       >
-                        <Calendar className="w-3 h-3 text-[#C5A880]" /> Tour
+                        <Calendar className="w-3 h-3 text-[#C5A880] shrink-0" />
+                        <span>Tour</span>
                       </button>
                     </div>
                   </th>
@@ -310,11 +312,11 @@ export default function ComparisonModal({
                   key={idx} 
                   className="border-b border-[#E4DCD0]/70 hover:bg-[#F5EFE6]/40 transition-colors"
                 >
-                  <td className="sticky left-0 z-20 bg-[#FAF8F5] py-3.5 px-4 font-semibold text-[#545B65] text-xs border-r-2 border-[#E4DCD0] shadow-[4px_0_12px_-2px_rgba(0,0,0,0.08)] whitespace-nowrap">
+                  <td className="sticky left-0 z-20 bg-[#FAF8F5] py-2.5 sm:py-3.5 px-2.5 sm:px-4 font-semibold text-[#545B65] text-[10px] sm:text-xs border-r-2 border-[#E4DCD0] shadow-[4px_0_12px_-2px_rgba(0,0,0,0.08)] leading-tight">
                     {spec.label}
                   </td>
                   {activeProperties.map((p) => (
-                    <td key={p.id} className="py-3.5 px-4 text-xs whitespace-nowrap">
+                    <td key={p.id} className="py-2.5 sm:py-3.5 px-2.5 sm:px-4 text-[11px] sm:text-xs leading-normal">
                       {spec.render(p)}
                     </td>
                   ))}
@@ -323,11 +325,11 @@ export default function ComparisonModal({
 
               {/* Signature Amenities Header Row */}
               <tr className="bg-[#EFE8DF]/70 border-y border-[#E4DCD0]">
-                <td className="sticky left-0 z-20 bg-[#EFE8DF] py-2 px-4 text-[10px] font-mono font-bold uppercase tracking-wider text-[#0A192F] border-r-2 border-[#E4DCD0] shadow-[4px_0_12px_-2px_rgba(0,0,0,0.08)]">
+                <td className="sticky left-0 z-20 bg-[#EFE8DF] py-2 px-2.5 sm:px-4 text-[9px] sm:text-[10px] font-mono font-bold uppercase tracking-wider text-[#0A192F] border-r-2 border-[#E4DCD0] shadow-[4px_0_12px_-2px_rgba(0,0,0,0.08)]">
                   Signature Amenities
                 </td>
                 {activeProperties.map((p) => (
-                  <td key={p.id} className="py-2 px-4 text-[10px] font-mono text-[#747D88] uppercase tracking-wider">
+                  <td key={p.id} className="py-2 px-2.5 sm:px-4 text-[9px] sm:text-[10px] font-mono text-[#747D88] uppercase tracking-wider">
                     Included Features
                   </td>
                 ))}
@@ -339,7 +341,7 @@ export default function ComparisonModal({
                   key={idx} 
                   className="border-b border-[#E4DCD0]/50 hover:bg-[#F5EFE6]/40 transition-colors"
                 >
-                  <td className="sticky left-0 z-20 bg-[#FAF8F5] py-2.5 px-4 text-[#545B65] text-[11px] font-medium border-r-2 border-[#E4DCD0] shadow-[4px_0_12px_-2px_rgba(0,0,0,0.08)] whitespace-nowrap">
+                  <td className="sticky left-0 z-20 bg-[#FAF8F5] py-2 sm:py-2.5 px-2.5 sm:px-4 text-[#545B65] text-[10px] sm:text-[11px] font-medium border-r-2 border-[#E4DCD0] shadow-[4px_0_12px_-2px_rgba(0,0,0,0.08)] leading-tight">
                     {amenity}
                   </td>
                   {activeProperties.map((p) => {
@@ -347,14 +349,14 @@ export default function ComparisonModal({
                       a.toLowerCase().includes(amenity.toLowerCase().split(" ")[0])
                     );
                     return (
-                      <td key={p.id} className="py-2.5 px-4 text-xs">
+                      <td key={p.id} className="py-2 sm:py-2.5 px-2.5 sm:px-4 text-[10px] sm:text-xs">
                         {hasAmenity ? (
-                          <span className="inline-flex items-center gap-1.5 text-emerald-800 font-semibold text-xs">
+                          <span className="inline-flex items-center gap-1.5 text-emerald-800 font-semibold text-[10px] sm:text-xs">
                             <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[2.5]" />
                             Included
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1.5 text-[#A8B2C1] text-xs">
+                          <span className="inline-flex items-center gap-1.5 text-[#A8B2C1] text-[10px] sm:text-xs">
                             <Minus className="w-3.5 h-3.5 text-[#CCD4DE]" />
                             —
                           </span>
