@@ -3,13 +3,16 @@
 import React from "react";
 import { CurrencyProvider } from "./CurrencyContext";
 import { ToastProvider } from "./Toast";
+import { TransactionProvider } from "./TransactionContext";
 
 export default function Providers({ children }) {
   return (
     <CurrencyProvider>
-      <ToastProvider>
-        {children}
-      </ToastProvider>
+      <TransactionProvider>
+        <ToastProvider>
+          {children}
+        </ToastProvider>
+      </TransactionProvider>
     </CurrencyProvider>
   );
 }

@@ -12,11 +12,9 @@ import {
   Sparkles,
   ChevronDown
 } from "lucide-react";
-import { useToast } from "./Toast";
 
 export default function HeroSection({ onSearchSubmit, onSelectTab, onOpenStatModal }) {
   const router = useRouter();
-  const { addToast } = useToast();
   const [activeTab, setActiveTab] = useState("buy");
   const [location, setLocation] = useState("all");
   const [propertyType, setPropertyType] = useState("all");
@@ -72,28 +70,16 @@ export default function HeroSection({ onSearchSubmit, onSelectTab, onOpenStatMod
   const tabs = [
     { id: "buy", label: "Buy Collection", mobileLabel: "Buy" },
     { id: "rent", label: "Luxury Rentals", mobileLabel: "Rent" },
-    { id: "developments", label: "Developments", mobileLabel: "Develop" },
     { id: "management", label: "Asset Management", mobileLabel: "Manage" }
   ];
 
   const handleTabChange = (tabId) => {
     if (tabId === "management") {
-      addToast("Opening Institutional Asset & Property Management Suite", "info", "Asset Management");
       router.push("/management");
       return;
     }
     setActiveTab(tabId);
     setPriceRange("all");
-    if (tabId === "developments") {
-      setPropertyType("New Developments");
-      addToast("Switched to Visionary Developments Search", "info", "Developments Mode");
-    } else if (tabId === "rent") {
-      if (propertyType === "New Developments") setPropertyType("all");
-      addToast("Switched to Luxury Rentals Search", "info", "Rentals Mode");
-    } else {
-      if (propertyType === "New Developments") setPropertyType("all");
-      addToast("Switched to Flagship Portfolio Acquisition", "info", "Buy Mode");
-    }
     if (onSelectTab) onSelectTab(tabId);
   };
 
@@ -118,15 +104,6 @@ export default function HeroSection({ onSearchSubmit, onSelectTab, onOpenStatMod
     if (priceRange && priceRange !== "all") params.set("price", priceRange);
     params.set("tab", activeTab);
 
-    addToast(
-      activeTab === "rent"
-        ? `Filtering luxury rental collection for ${location === "all" ? "Global Portfolios" : location}`
-        : activeTab === "developments"
-        ? `Filtering new developments for ${location === "all" ? "Global Portfolios" : location}`
-        : `Filtering flagship collection for ${location === "all" ? "Global Portfolios" : location}`,
-      "success",
-      "Search Executed"
-    );
     router.push(`/collection?${params.toString()}`);
   };
 
@@ -199,14 +176,14 @@ export default function HeroSection({ onSearchSubmit, onSelectTab, onOpenStatMod
             ))}
           </div>
 
-          {/* Search Inputs Form with Spacious Balanced Proportions */}
-          <form onSubmit={handleSearch} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.18fr_1.18fr_1.1fr_auto] gap-3 sm:gap-3.5 text-left items-end">
+          {/* Search Inputs Form with Spacious Balanced Proportions & Equal Heights */}
+          <form onSubmit={handleSearch} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.2fr_1.2fr_1.1fr_auto] gap-3 sm:gap-3.5 text-left items-end">
             {/* Field 1: Destination Dropdown */}
             <div>
               <label className="block text-[11px] sm:text-xs uppercase tracking-[0.12em] text-[#545B65] mb-1.5 font-bold">
                 Destination
               </label>
-              <div className="flex items-center justify-between bg-white border border-[#E4DCD0] rounded-xl px-3 py-2.5 sm:py-3 focus-within:border-[#C5A880] focus-within:ring-2 focus-within:ring-[#C5A880]/20 transition-all shadow-2xs relative">
+              <div className="h-[46px] sm:h-[48px] flex items-center justify-between bg-white border border-[#E4DCD0] rounded-xl px-3 focus-within:border-[#C5A880] focus-within:ring-2 focus-within:ring-[#C5A880]/20 transition-all shadow-2xs relative">
                 <div className="flex items-center min-w-0 flex-1 mr-1">
                   <MapPin className="w-4 h-4 text-[#C5A880] mr-2 shrink-0" />
                   <select
@@ -238,7 +215,7 @@ export default function HeroSection({ onSearchSubmit, onSelectTab, onOpenStatMod
               <label className="block text-[11px] sm:text-xs uppercase tracking-[0.12em] text-[#545B65] mb-1.5 font-bold">
                 Architectural Style
               </label>
-              <div className="flex items-center justify-between bg-white border border-[#E4DCD0] rounded-xl px-3 py-2.5 sm:py-3 focus-within:border-[#C5A880] focus-within:ring-2 focus-within:ring-[#C5A880]/20 transition-all shadow-2xs relative">
+              <div className="h-[46px] sm:h-[48px] flex items-center justify-between bg-white border border-[#E4DCD0] rounded-xl px-3 focus-within:border-[#C5A880] focus-within:ring-2 focus-within:ring-[#C5A880]/20 transition-all shadow-2xs relative">
                 <div className="flex items-center min-w-0 flex-1 mr-1">
                   <Home className="w-4 h-4 text-[#C5A880] mr-2 shrink-0" />
                   <select
@@ -263,7 +240,7 @@ export default function HeroSection({ onSearchSubmit, onSelectTab, onOpenStatMod
               <label className="block text-[11px] sm:text-xs uppercase tracking-[0.12em] text-[#545B65] mb-1.5 font-bold">
                 {activeTab === "rent" ? "Monthly Lease Bracket" : "Valuation Bracket"}
               </label>
-              <div className="flex items-center justify-between bg-white border border-[#E4DCD0] rounded-xl px-3 py-2.5 sm:py-3 focus-within:border-[#C5A880] focus-within:ring-2 focus-within:ring-[#C5A880]/20 transition-all shadow-2xs relative">
+              <div className="h-[46px] sm:h-[48px] flex items-center justify-between bg-white border border-[#E4DCD0] rounded-xl px-3 focus-within:border-[#C5A880] focus-within:ring-2 focus-within:ring-[#C5A880]/20 transition-all shadow-2xs relative">
                 <div className="flex items-center min-w-0 flex-1 mr-1">
                   <DollarSign className="w-4 h-4 text-[#C5A880] mr-2 shrink-0" />
                   <select
@@ -293,15 +270,16 @@ export default function HeroSection({ onSearchSubmit, onSelectTab, onOpenStatMod
               </div>
             </div>
 
-            {/* Action Search Button */}
+            {/* Action Search Button - Perfectly Aligned Height & Baseline */}
             <div className="w-full">
+              <div className="hidden lg:block text-[11px] sm:text-xs mb-1.5 opacity-0 select-none pointer-events-none">&nbsp;</div>
               <button
                 type="submit"
-                className="w-full py-2.5 sm:py-3 px-6 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-xs font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 shadow-md hover:shadow-lg active:scale-98 cursor-pointer group whitespace-nowrap"
+                className="w-full h-[46px] sm:h-[48px] px-6 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-xs font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2 shadow-md hover:shadow-lg active:scale-98 cursor-pointer group whitespace-nowrap"
               >
                 <Search className="w-4 h-4 text-[#C5A880] transition-transform group-hover:scale-110" />
                 <span>
-                  {activeTab === "rent" ? "Search Rentals" : activeTab === "developments" ? "Explore Developments" : "Search Portfolio"}
+                  {activeTab === "rent" ? "Search Rentals" : "Search Portfolio"}
                 </span>
               </button>
             </div>

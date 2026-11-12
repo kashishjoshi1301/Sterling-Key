@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { useCurrency } from "./CurrencyContext";
 import { useToast } from "./Toast";
+import { useScrollLock } from "./useScrollLock";
 import AmbientSoundToggle from "./AmbientSoundToggle";
 import PortalModal from "./PortalModal";
 import ScheduleModal from "./ScheduleModal";
@@ -34,6 +35,9 @@ export default function Navbar({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { currency, setCurrency, unit, setUnit } = useCurrency();
   const { addToast } = useToast();
+
+  // Lock background scroll when mobile navigation drawer is open
+  useScrollLock(mobileMenuOpen, () => setMobileMenuOpen(false));
 
   const [internalPortalOpen, setInternalPortalOpen] = useState(false);
   const [internalScheduleOpen, setInternalScheduleOpen] = useState(false);
@@ -242,9 +246,15 @@ export default function Navbar({
 
       {/* Mobile & Tablet Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 top-[96px] z-50 bg-[#FAF8F5] border-t border-[#E4DCD0] p-6 flex flex-col justify-between xl:hidden animate-fade-in overflow-y-auto">
+        <div 
+          className="fixed inset-0 top-[96px] sm:top-[106px] z-50 bg-[#FAF8F5] border-t border-[#E4DCD0] px-5 sm:px-8 pt-7 sm:pt-9 pb-10 flex flex-col justify-between xl:hidden animate-fade-in overflow-y-auto overscroll-contain touch-pan-y"
+          style={{ touchAction: "pan-y" }}
+          onTouchMove={(e) => {
+            e.stopPropagation();
+          }}
+        >
           <div className="space-y-4">
-            <div className="text-xs uppercase font-mono tracking-widest text-[#C5A880] font-bold">
+            <div className="text-xs uppercase font-mono tracking-widest text-[#C5A880] font-bold pt-1 sm:pt-2">
               Portfolio Navigation
             </div>
 

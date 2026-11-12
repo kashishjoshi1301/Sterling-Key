@@ -17,10 +17,12 @@ import {
   FileText, 
   Rotate3D,
   ExternalLink,
-  CheckCircle2
+  CheckCircle2,
+  Check
 } from "lucide-react";
 import { useCurrency } from "./CurrencyContext";
 import { useToast } from "./Toast";
+import { useTransaction } from "./TransactionContext";
 import { formatLocation, downloadPropertyBrochure } from "../data/mockData";
 import { useScrollLock } from "./useScrollLock";
 
@@ -32,18 +34,30 @@ export default function PropertyModal({
 }) {
   const { formatRawPrice, formatArea } = useCurrency();
   const { addToast } = useToast();
+  const { isBought, isRented, buyProperty, rentProperty, releaseProperty } = useTransaction();
   const [activeTab, setActiveTab] = useState("overview");
   const [activeImgIndex, setActiveImgIndex] = useState(0);
+  const [isScrolled, setIsScrolled] = useState(false);
   const contentRef = useRef(null);
 
   useScrollLock(!!property, onClose);
 
-  // Always reset scroll to top when modal opens or tab changes
+  // Always reset scroll to top and expand photo when modal opens or tab changes
   useEffect(() => {
     if (contentRef.current) {
       contentRef.current.scrollTop = 0;
     }
+    setIsScrolled(false);
   }, [property?.id, activeTab]);
+
+  const handleScroll = (e) => {
+    const top = e.currentTarget.scrollTop;
+    if (top > 30 && !isScrolled) {
+      setIsScrolled(true);
+    } else if (top <= 10 && isScrolled) {
+      setIsScrolled(false);
+    }
+  };
 
   if (!property) return null;
 
@@ -105,24 +119,67 @@ export default function PropertyModal({
           </button>
         </div>
 
-        {/* Modal Gallery Hero */}
-        <div className="relative aspect-[16/9] sm:aspect-[21/9] w-full bg-[#0A192F] shrink-0 overflow-hidden">
+        {/* Modal Gallery Hero - Dynamically Collapses / Shrinks on Scroll so Content Gets Maximum Height */}
+        <div 
+          onClick={() => {
+            if (isScrolled && contentRef.current) {
+              contentRef.current.scrollTo({ top: 0, behavior: "smooth" });
+              setIsScrolled(false);
+            }
+          }}
+          className={`relative w-full bg-[#0A192F] shrink-0 overflow-hidden transition-all duration-500 ease-in-out select-none ${
+            isScrolled 
+              ? "h-[85px] xs:h-[95px] sm:h-[110px] md:h-[120px] cursor-pointer group/hero" 
+              : "h-[220px] xs:h-[260px] sm:h-[330px] md:h-[370px]"
+          }`}
+          title={isScrolled ? "Click to expand photography" : undefined}
+        >
           <img
             src={images[activeImgIndex]}
             alt={property.title}
-            className="w-full h-full object-cover transition-all duration-500"
+            className={`w-full h-full object-cover transition-all duration-500 ${
+              isScrolled ? "brightness-[0.88]" : ""
+            }`}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/40 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-black/45 pointer-events-none" />
 
           {/* Status & Exclusive Badges */}
-          <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-20 flex items-center gap-2">
-            <span className="px-2.5 py-1 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-[#0A192F]/90 text-[#FAF8F5] border border-[#C5A880]/50 backdrop-blur-md shadow-sm">
-              {property.status}
-            </span>
-            <span className="px-2.5 py-1 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-white/95 text-[#0A192F] border border-[#E4DCD0] shadow-sm">
+          <div className={`absolute left-3 sm:left-4 z-20 flex items-center gap-2 transition-all duration-300 ${
+            isScrolled ? "top-2.5 sm:top-3.5" : "top-3 sm:top-4"
+          }`}>
+            {isBought(property.id) ? (
+              <span className={`rounded-full font-bold uppercase tracking-wider bg-[#8B1E1E] text-white border border-red-400 shadow-md transition-all ${
+                isScrolled ? "px-2 py-0.5 text-[9px] sm:text-[10px]" : "px-2.5 py-1 sm:px-3 sm:py-1 text-[10px] sm:text-xs"
+              }`}>
+                SOLD OUT
+              </span>
+            ) : isRented(property.id) ? (
+              <span className={`rounded-full font-bold uppercase tracking-wider bg-[#475569] text-white border border-slate-400 shadow-md transition-all ${
+                isScrolled ? "px-2 py-0.5 text-[9px] sm:text-[10px]" : "px-2.5 py-1 sm:px-3 sm:py-1 text-[10px] sm:text-xs"
+              }`}>
+                CURRENTLY UNAVAILABLE
+              </span>
+            ) : (
+              <span className={`rounded-full font-bold uppercase tracking-wider bg-[#0A192F]/90 text-[#FAF8F5] border border-[#C5A880]/50 backdrop-blur-md shadow-sm transition-all ${
+                isScrolled ? "px-2 py-0.5 text-[9px] sm:text-[10px]" : "px-2.5 py-1 sm:px-3 sm:py-1 text-[10px] sm:text-xs"
+              }`}>
+                {property.status}
+              </span>
+            )}
+            <span className={`rounded-full font-bold uppercase tracking-wider bg-white/95 text-[#0A192F] border border-[#E4DCD0] shadow-sm transition-all ${
+              isScrolled ? "px-2 py-0.5 text-[9px] sm:text-[10px]" : "px-2.5 py-1 sm:px-3 sm:py-1 text-[10px] sm:text-xs"
+            }`}>
               {property.category}
             </span>
           </div>
+
+          {/* Click to Expand Photo Hint (appears when shrunk) */}
+          {isScrolled && (
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-md text-[10px] sm:text-xs text-[#FAF8F5] border border-white/20 shadow-md animate-fade-in transition-all">
+              <span className="text-[#C5A880] font-bold">↑</span>
+              <span>Click to Expand Photo</span>
+            </div>
+          )}
 
           {/* Carousel Arrows */}
           {images.length > 1 && (
@@ -132,24 +189,30 @@ export default function PropertyModal({
                   e.stopPropagation();
                   setActiveImgIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
                 }}
-                className="absolute left-2.5 sm:left-4 top-1/2 -translate-y-1/2 p-1.5 sm:p-2 rounded-full bg-white/80 hover:bg-white text-[#0A192F] shadow-lg backdrop-blur-md transition-all active:scale-95 cursor-pointer z-10"
+                className={`absolute left-2.5 sm:left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 hover:bg-white text-[#0A192F] shadow-lg backdrop-blur-md transition-all active:scale-95 cursor-pointer z-10 ${
+                  isScrolled ? "p-1" : "p-1.5 sm:p-2"
+                }`}
                 title="Previous Image"
               >
-                <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+                <ChevronLeft className={`${isScrolled ? "w-3.5 h-3.5 sm:w-4 sm:h-4" : "w-4 h-4 sm:w-5 sm:h-5"}`} />
               </button>
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   setActiveImgIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
                 }}
-                className="absolute right-2.5 sm:right-4 top-1/2 -translate-y-1/2 p-1.5 sm:p-2 rounded-full bg-white/80 hover:bg-white text-[#0A192F] shadow-lg backdrop-blur-md transition-all active:scale-95 cursor-pointer z-10"
+                className={`absolute right-2.5 sm:right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 hover:bg-white text-[#0A192F] shadow-lg backdrop-blur-md transition-all active:scale-95 cursor-pointer z-10 ${
+                  isScrolled ? "p-1" : "p-1.5 sm:p-2"
+                }`}
                 title="Next Image"
               >
-                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                <ChevronRight className={`${isScrolled ? "w-3.5 h-3.5 sm:w-4 sm:h-4" : "w-4 h-4 sm:w-5 sm:h-5"}`} />
               </button>
 
-              {/* Thumbnails Strip */}
-              <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/50 backdrop-blur-md z-10 max-w-[90%] overflow-x-auto no-scrollbar">
+              {/* Thumbnails Strip (Smoothly Fades Out When Shrunk) */}
+              <div className={`absolute bottom-2.5 left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/50 backdrop-blur-md z-10 max-w-[90%] overflow-x-auto no-scrollbar transition-all duration-300 ${
+                isScrolled ? "opacity-0 pointer-events-none scale-90" : "opacity-100 scale-100"
+              }`}>
                 {images.slice(0, 5).map((img, idx) => (
                   <button
                     key={idx}
@@ -209,7 +272,8 @@ export default function PropertyModal({
         {/* Modal Body with Generous Bottom Padding to Prevent Content Being Hidden Under Sticky Footer */}
         <div 
           ref={contentRef}
-          className="p-4 sm:p-7 pb-10 sm:pb-12 space-y-4 sm:space-y-6 overflow-y-auto flex-1 min-h-0 bg-[#FAF8F5] overscroll-contain touch-pan-y"
+          onScroll={handleScroll}
+          className="p-4 sm:p-7 pb-36 sm:pb-28 space-y-4 sm:space-y-6 overflow-y-auto flex-1 min-h-0 bg-[#FAF8F5] overscroll-contain touch-pan-y"
         >
           {/* Title, Address & Price Header */}
           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 border-b border-[#E4DCD0] pb-4">
@@ -255,6 +319,62 @@ export default function PropertyModal({
               {property.rentalPrice && (
                 <div className="text-[11px] sm:text-xs text-[#545B65] font-sans mt-0.5 font-medium">
                   Lease: {property.rentalPrice}
+                </div>
+              )}
+              {/* Acquisition Status & Action */}
+              {isBought(property.id) ? (
+                <div className="mt-2 flex items-center sm:justify-end gap-2">
+                  <span className="px-2.5 py-1 rounded-lg bg-[#8B1E1E] text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider shadow-xs">
+                    Sold Out
+                  </span>
+                  <button
+                    onClick={() => {
+                      releaseProperty(property.id);
+                      addToast(`${property.title} released back to inventory`, "info", "Market Reset");
+                    }}
+                    className="text-[11px] sm:text-xs text-[#8B1E1E] hover:text-[#501010] underline font-semibold cursor-pointer"
+                  >
+                    Release to Market
+                  </button>
+                </div>
+              ) : isRented(property.id) ? (
+                <div className="mt-2 flex items-center sm:justify-end gap-2">
+                  <span className="px-2.5 py-1 rounded-lg bg-[#475569] text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider shadow-xs">
+                    Currently Unavailable
+                  </span>
+                  <button
+                    onClick={() => {
+                      releaseProperty(property.id);
+                      addToast(`${property.title} lease concluded, restored to market`, "info", "Market Reset");
+                    }}
+                    className="text-[11px] sm:text-xs text-[#475569] hover:text-black underline font-semibold cursor-pointer"
+                  >
+                    Release Lease
+                  </button>
+                </div>
+              ) : (
+                <div className="mt-2 flex items-center sm:justify-end gap-2 flex-wrap">
+                  <button
+                    onClick={() => {
+                      buyProperty(property.id);
+                      addToast(`Asset acquired! ${property.title} is now SOLD OUT`, "success", "Acquisition Confirmed");
+                    }}
+                    className="px-3.5 py-1.5 rounded-lg bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-[11px] sm:text-xs font-bold uppercase tracking-wider shadow-xs cursor-pointer active:scale-95 transition-all flex items-center gap-1.5 border border-[#C5A880]/40"
+                  >
+                    <Check className="w-3.5 h-3.5 text-[#C5A880]" />
+                    <span>Acquire Residence</span>
+                  </button>
+                  {property.rentalPrice && (
+                    <button
+                      onClick={() => {
+                        rentProperty(property.id);
+                        addToast(`Lease secured! ${property.title} marked CURRENTLY UNAVAILABLE`, "success", "Lease Confirmed");
+                      }}
+                      className="px-3 py-1.5 rounded-lg bg-[#F3EFEA] hover:bg-[#EAE3D9] text-[#0A192F] text-[11px] sm:text-xs font-semibold uppercase tracking-wider border border-[#E4DCD0] shadow-2xs cursor-pointer active:scale-95 transition-all"
+                    >
+                      <span>Lease Residence</span>
+                    </button>
+                  )}
                 </div>
               )}
             </div>
@@ -343,14 +463,14 @@ export default function PropertyModal({
               {/* Interactive Floor Plan & CAD Vector Schematics (FULLY CLICKABLE) */}
               <div 
                 onClick={handleDownloadSchematics}
-                className="relative aspect-[16/9] sm:aspect-[16/8] rounded-xl sm:rounded-2xl overflow-hidden border border-[#E4DCD0] hover:border-[#C5A880] bg-[#0A192F] flex items-center justify-center p-4 sm:p-6 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer group active:scale-[0.99]"
+                className="relative rounded-xl sm:rounded-2xl overflow-hidden border border-[#E4DCD0] hover:border-[#C5A880] bg-[#0A192F] flex flex-col items-center justify-center p-5 sm:p-7 text-center shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer group active:scale-[0.99]"
               >
                 <img
                   src={property.floorPlan?.planImage || images[0]}
                   alt="Architectural Floor Plan"
-                  className="w-full h-full object-cover filter contrast-125 opacity-35 group-hover:scale-105 transition-transform duration-700"
+                  className="absolute inset-0 w-full h-full object-cover filter contrast-125 opacity-25 group-hover:scale-105 transition-transform duration-700 pointer-events-none"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0A192F] via-[#0A192F]/80 to-[#0A192F]/60 flex flex-col items-center justify-center p-4 sm:p-6 text-center backdrop-blur-xs">
+                <div className="relative z-10 flex flex-col items-center justify-center max-w-lg mx-auto">
                   <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#C5A880]/20 border border-[#C5A880]/50 flex items-center justify-center text-[#C5A880] mb-2 sm:mb-2.5 shadow-md group-hover:scale-110 group-hover:bg-[#C5A880] group-hover:text-[#0A192F] transition-all">
                     <FileText className="w-5 h-5 sm:w-6 sm:h-6" />
                   </div>
@@ -434,6 +554,16 @@ export default function PropertyModal({
 
             {/* Actions Row - Responsive with Full-Width Touch targets on mobile */}
             <div className="flex items-center gap-2 w-full sm:w-auto">
+              {isBought(property.id) && (
+                <span className="py-2.5 px-3 rounded-xl bg-red-50 border border-red-200 text-[#8B1E1E] font-bold text-[11px] sm:text-xs uppercase tracking-wider flex items-center gap-1 whitespace-nowrap">
+                  <Check className="w-3.5 h-3.5" /> Sold Out
+                </span>
+              )}
+              {isRented(property.id) && (
+                <span className="py-2.5 px-3 rounded-xl bg-slate-100 border border-slate-300 text-[#475569] font-bold text-[11px] sm:text-xs uppercase tracking-wider flex items-center gap-1 whitespace-nowrap">
+                  <Check className="w-3.5 h-3.5" /> Leased
+                </span>
+              )}
               <button
                 onClick={() => {
                   onClose();

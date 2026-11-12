@@ -7,18 +7,25 @@ import { PROPERTIES_DATA } from "../data/mockData";
 export default function ComparisonBar({
   compareIds = [],
   onOpenModal,
+  onOpenCompare,
   onRemoveId,
-  onClearAll
+  onRemove,
+  onClearAll,
+  onClear
 }) {
-  if (compareIds.length === 0) return null;
+  if (!compareIds || compareIds.length === 0) return null;
+
+  const handleOpen = onOpenModal || onOpenCompare;
+  const handleRemove = onRemoveId || onRemove;
+  const handleClear = onClearAll || onClear;
 
   const selectedProperties = PROPERTIES_DATA.filter((p) => compareIds.includes(p.id));
 
   return (
-    <div className="fixed bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-40 w-[92%] sm:w-auto sm:min-w-[420px] max-w-xl bg-[#0A192F]/95 backdrop-blur-2xl border border-[#C5A880]/40 rounded-2xl p-2.5 sm:p-3 shadow-2xl shadow-[#060D18]/80 flex items-center justify-between gap-3 animate-fade-in text-white">
-      <div className="flex items-center gap-2 overflow-x-auto no-scrollbar min-w-0">
-        <span className="text-[10px] uppercase font-mono tracking-wider text-[#C5A880] pl-1 shrink-0 hidden md:inline font-semibold">
-          Compare ({compareIds.length}/3):
+    <div className="fixed bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 z-40 w-[94%] sm:w-auto sm:min-w-[420px] max-w-xl bg-[#0A192F]/95 backdrop-blur-2xl border border-[#C5A880]/50 rounded-2xl p-2 sm:p-3 shadow-2xl shadow-[#060D18]/90 flex items-center justify-between gap-2.5 sm:gap-3 animate-fade-in text-white">
+      <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar min-w-0">
+        <span className="text-[10px] uppercase font-mono tracking-wider text-[#C5A880] pl-1 shrink-0 hidden md:inline font-bold">
+          Compare ({compareIds.length}/4):
         </span>
 
         {selectedProperties.map((p) => (
@@ -31,15 +38,19 @@ export default function ComparisonBar({
               alt={p.title}
               className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg object-cover"
             />
-            <span className="text-[11px] text-white font-medium max-w-[120px] sm:max-w-[170px] truncate" title={p.title}>
+            <span className="text-[11px] text-white font-medium max-w-[100px] xs:max-w-[130px] sm:max-w-[170px] truncate" title={p.title}>
               {p.title}
             </span>
             <button
-              onClick={() => onRemoveId(p.id)}
-              className="text-[#A8B2C1] hover:text-white p-0.5"
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                if (handleRemove) handleRemove(p.id);
+              }}
+              className="text-[#A8B2C1] hover:text-white p-0.5 cursor-pointer rounded hover:bg-white/10"
               aria-label="Remove from compare"
             >
-              <X className="w-3 h-3" />
+              <X className="w-3.5 h-3.5" />
             </button>
           </div>
         ))}
@@ -47,15 +58,23 @@ export default function ComparisonBar({
 
       <div className="flex items-center gap-2 shrink-0">
         <button
-          onClick={onClearAll}
-          className="text-[#A8B2C1] hover:text-white text-xs px-1.5 py-1 transition-colors"
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            if (handleClear) handleClear();
+          }}
+          className="text-[#A8B2C1] hover:text-white text-xs px-2 py-1 transition-colors cursor-pointer rounded hover:bg-white/10 font-medium"
         >
           Clear
         </button>
 
         <button
-          onClick={onOpenModal}
-          className="py-1.5 sm:py-2 px-3 sm:px-4 rounded-xl bg-[#C5A880] hover:bg-[#D8BD99] text-[#0A192F] font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 transition-all active:scale-95 whitespace-nowrap shadow-xs"
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            if (handleOpen) handleOpen();
+          }}
+          className="py-1.5 sm:py-2 px-3 sm:px-4 rounded-xl bg-[#C5A880] hover:bg-[#D8BD99] text-[#0A192F] font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 transition-all active:scale-95 whitespace-nowrap shadow-sm cursor-pointer"
         >
           <SlidersHorizontal className="w-3.5 h-3.5" />
           <span>Matrix</span>

@@ -1,7 +1,46 @@
-{"timestamp":"00:00:01.029","source":"Server","level":"LOG","message":""}
-{"timestamp":"00:00:27.636","source":"Browser","level":"WARN","message":"Autoplay policy delayed playback until user interaction: AbortError: The operation was aborted."}
-{"timestamp":"00:00:27.640","source":"Server","level":"WARN","message":"[browser] \"\\u001b[33mAutoplay policy delayed playback until user interaction:\\u001b[39m\" \"\\u001b[31mAbortError: The operation was aborted.\\u001b[39m\""}
-{"timestamp":"00:09:38.318","source":"Browser","level":"WARN","message":"Autoplay policy delayed playback until user interaction: AbortError: The operation was aborted."}
-{"timestamp":"00:09:38.319","source":"Server","level":"WARN","message":"[browser] \"\\u001b[33mAutoplay policy delayed playback until user interaction:\\u001b[39m\" \"\\u001b[31mAbortError: The operation was aborted.\\u001b[39m\""}
-{"timestamp":"00:13:13.766","source":"Browser","level":"WARN","message":"Autoplay policy delayed playback until user interaction: AbortError: The operation was aborted."}
-{"timestamp":"00:13:13.767","source":"Server","level":"WARN","message":"[browser] \"\\u001b[33mAutoplay policy delayed playback until user interaction:\\u001b[39m\" \"\\u001b[31mAbortError: The operation was aborted.\\u001b[39m\""}
+{"timestamp":"00:00:01.369","source":"Server","level":"LOG","message":""}
+{"timestamp":"00:00:11.956","source":"Browser","level":"WARN","message":"Autoplay policy delayed playback until user interaction: AbortError: The operation was aborted."}
+{"timestamp":"00:00:11.959","source":"Server","level":"WARN","message":"[browser] \"\\u001b[33mAutoplay policy delayed playback until user interaction:\\u001b[39m\" \"\\u001b[31mAbortError: The operation was aborted.\\u001b[39m\""}
+{"timestamp":"00:01:40.996","source":"Browser","level":"WARN","message":"Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior=\"smooth\"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior"}
+{"timestamp":"00:01:40.998","source":"Server","level":"WARN","message":"[browser] \"\\u001b[33mDetected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior=\\\"smooth\\\"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior\\u001b[39m\""}
+{"timestamp":"00:02:18.551","source":"Browser","level":"WARN","message":"Autoplay policy delayed playback until user interaction: AbortError: The operation was aborted."}
+{"timestamp":"00:02:18.553","source":"Server","level":"WARN","message":"[browser] \"\\u001b[33mAutoplay policy delayed playback until user interaction:\\u001b[39m\" \"\\u001b[31mAbortError: The operation was aborted.\\u001b[39m\""}
+{"timestamp":"00:02:28.593","source":"Browser","level":"WARN","message":"Autoplay policy delayed playback until user interaction: AbortError: The operation was aborted."}
+{"timestamp":"00:02:28.594","source":"Server","level":"WARN","message":"[browser] \"\\u001b[33mAutoplay policy delayed playback until user interaction:\\u001b[39m\" \"\\u001b[31mAbortError: The operation was aborted.\\u001b[39m\""}
+{"timestamp":"00:26:57.340","source":"Browser","level":"WARN","message":"Autoplay policy delayed playback until user interaction: AbortError: The operation was aborted."}
+{"timestamp":"00:26:57.343","source":"Server","level":"WARN","message":"[browser] \"\\u001b[33mAutoplay policy delayed playback until user interaction:\\u001b[39m\" \"\\u001b[31mAbortError: The operation was aborted.\\u001b[39m\""}
+{"timestamp":"00:27:03.719","source":"Browser","level":"WARN","message":"Autoplay policy delayed playback until user interaction: AbortError: The operation was aborted."}
+{"timestamp":"00:27:03.720","source":"Server","level":"WARN","message":"[browser] \"\\u001b[33mAutoplay policy delayed playback until user interaction:\\u001b[39m\" \"\\u001b[31mAbortError: The operation was aborted.\\u001b[39m\""}
+{"timestamp":"00:35:08.451","source":"Browser","level":"WARN","message":"Autoplay policy delayed playback until user interaction: AbortError: The operation was aborted."}
+{"timestamp":"00:35:08.452","source":"Server","level":"WARN","message":"[browser] \"\\u001b[33mAutoplay policy delayed playback until user interaction:\\u001b[39m\" \"\\u001b[31mAbortError: The operation was aborted.\\u001b[39m\""}
+{"timestamp":"00:44:50.914","source":"Browser","level":"WARN","message":"Autoplay policy delayed playback until user interaction: AbortError: The operation was aborted."}
+{"timestamp":"00:44:50.917","source":"Server","level":"WARN","message":"[browser] \"\\u001b[33mAutoplay policy delayed playback until user interaction:\\u001b[39m\" \"\\u001b[31mAbortError: The operation was aborted.\\u001b[39m\""}
+{"timestamp":"00:46:25.065","source":"Browser","level":"WARN","message":"Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior=\"smooth\"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior"}
+{"timestamp":"00:46:25.066","source":"Server","level":"WARN","message":"[browser] \"\\u001b[33mDetected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior=\\\"smooth\\\"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior\\u001b[39m\""}
+{"timestamp":"00:46:32.812","source":"Browser","level":"WARN","message":"Autoplay policy delayed playback until user interaction: AbortError: The operation was aborted."}
+{"timestamp":"00:46:32.812","source":"Server","level":"WARN","message":"[browser] \"\\u001b[33mAutoplay policy delayed playback until user interaction:\\u001b[39m\" \"\\u001b[31mAbortError: The operation was aborted.\\u001b[39m\""}
+{"timestamp":"00:50:58.840","source":"Browser","level":"WARN","message":"Autoplay policy delayed playback until user interaction: AbortError: The operation was aborted."}
+{"timestamp":"00:50:58.842","source":"Server","level":"WARN","message":"[browser] \"\\u001b[33mAutoplay policy delayed playback until user interaction:\\u001b[39m\" \"\\u001b[31mAbortError: The operation was aborted.\\u001b[39m\""}
+{"timestamp":"00:53:16.333","source":"Browser","level":"WARN","message":"Autoplay policy delayed playback until user interaction: AbortError: The operation was aborted."}
+{"timestamp":"00:53:16.335","source":"Server","level":"WARN","message":"[browser] \"\\u001b[33mAutoplay policy delayed playback until user interaction:\\u001b[39m\" \"\\u001b[31mAbortError: The operation was aborted.\\u001b[39m\""}
+{"timestamp":"00:53:21.785","source":"Browser","level":"WARN","message":"Autoplay policy delayed playback until user interaction: AbortError: The operation was aborted."}
+{"timestamp":"00:53:21.785","source":"Server","level":"WARN","message":"[browser] \"\\u001b[33mAutoplay policy delayed playback until user interaction:\\u001b[39m\" \"\\u001b[31mAbortError: The operation was aborted.\\u001b[39m\""}
+{"timestamp":"00:54:16.583","source":"Browser","level":"WARN","message":"Autoplay policy delayed playback until user interaction: AbortError: The operation was aborted."}
+{"timestamp":"00:54:16.584","source":"Server","level":"WARN","message":"[browser] \"\\u001b[33mAutoplay policy delayed playback until user interaction:\\u001b[39m\" \"\\u001b[31mAbortError: The operation was aborted.\\u001b[39m\""}
+{"timestamp":"00:59:49.065","source":"Browser","level":"WARN","message":"Autoplay policy delayed playback until user interaction: AbortError: The operation was aborted."}
+{"timestamp":"00:59:49.065","source":"Server","level":"WARN","message":"[browser] \"\\u001b[33mAutoplay policy delayed playback until user interaction:\\u001b[39m\" \"\\u001b[31mAbortError: The operation was aborted.\\u001b[39m\""}
+{"timestamp":"01:27:59.380","source":"Browser","level":"WARN","message":"Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior=\"smooth\"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior"}
+{"timestamp":"01:27:59.381","source":"Server","level":"WARN","message":"[browser] \"\\u001b[33mDetected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior=\\\"smooth\\\"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior\\u001b[39m\""}
+{"timestamp":"01:46:51.927","source":"Server","level":"ERROR","message":"⨯ TypeError: Cannot read properties of undefined (reading 'json')"}
+{"timestamp":"01:49:38.118","source":"Browser","level":"WARN","message":"Autoplay policy delayed playback until user interaction: AbortError: The operation was aborted."}
+{"timestamp":"01:49:38.120","source":"Server","level":"WARN","message":"[browser] \"\\u001b[33mAutoplay policy delayed playback until user interaction:\\u001b[39m\" \"\\u001b[31mAbortError: The operation was aborted.\\u001b[39m\""}
+{"timestamp":"01:58:54.570","source":"Server","level":"LOG","message":"  Reload env: .env.local"}
+{"timestamp":"01:59:45.524","source":"Server","level":"LOG","message":"\n========================================================"}
+{"timestamp":"01:59:45.524","source":"Server","level":"LOG","message":"📬 [STERLING KEY] NEW PRIVATE INTELLIGENCE DISPATCH"}
+{"timestamp":"01:59:45.524","source":"Server","level":"LOG","message":"📧 Recipient: kashish.joshi1301@gmail.com"}
+{"timestamp":"01:59:45.524","source":"Server","level":"LOG","message":"📄 Dossier ID: SK-DOSSIER-2026-7301"}
+{"timestamp":"01:59:45.524","source":"Server","level":"LOG","message":"💼 Access Tier: Sovereign Family Office & Private Capital"}
+{"timestamp":"01:59:45.524","source":"Server","level":"LOG","message":"🕒 Timestamp: 2026-11-12T07:51:31.933Z"}
+{"timestamp":"01:59:45.524","source":"Server","level":"LOG","message":"========================================================\n"}
+{"timestamp":"01:59:48.023","source":"Server","level":"LOG","message":"[ETHEREAL SUCCESS] Email generated and dispatched for kashish.joshi1301@gmail.com!"}
+{"timestamp":"01:59:48.023","source":"Server","level":"LOG","message":"🔗 Live Email Preview URL: https://ethereal.email/message/avVwBEs6EhPCVOs.avVwBryhcdNucr3xAAAAAZff6xvJpJ-HguSaffweVBk"}

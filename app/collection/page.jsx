@@ -15,6 +15,7 @@ import PortalModal from "@/components/PortalModal";
 import ConciergeChatWidget from "@/components/ConciergeChatWidget";
 import { useCurrency } from "@/components/CurrencyContext";
 import { useToast } from "@/components/Toast";
+import { useTransaction } from "@/components/TransactionContext";
 import { PROPERTIES_DATA, formatLocation } from "@/data/mockData";
 import { 
   Search, 
@@ -49,16 +50,17 @@ function CollectionContent() {
   const router = useRouter();
   const { formatRawPrice, formatArea } = useCurrency();
   const { addToast } = useToast();
+  const { isBought, isRented, buyProperty, rentProperty, releaseProperty } = useTransaction();
 
   // Read initial query params
   const initialDestination = searchParams.get("destination") || "all";
   const initialStyle = searchParams.get("style") || "all";
   const initialPrice = searchParams.get("price") || "all";
   const rawTab = searchParams.get("tab");
-  const initialTab = rawTab === "rent" ? "rent" : rawTab === "developments" ? "developments" : "buy";
+  const initialTab = rawTab === "rent" ? "rent" : "buy";
 
   // Filter States - ALL DROPDOWNS & TABS
-  const [activeTab, setActiveTab] = useState(initialTab); // 'buy' | 'rent' | 'developments'
+  const [activeTab, setActiveTab] = useState(initialTab); // 'buy' | 'rent'
   const [destination, setDestination] = useState(initialDestination);
   const [style, setStyle] = useState(initialStyle);
   const [priceBracket, setPriceBracket] = useState(initialPrice);
@@ -106,7 +108,7 @@ function CollectionContent() {
   // Sync state if URL params change
   useEffect(() => {
     const tabParam = searchParams.get("tab");
-    if (tabParam === "rent" || tabParam === "developments" || tabParam === "buy") {
+    if (tabParam === "rent" || tabParam === "buy") {
       setActiveTab(tabParam);
     }
     if (searchParams.get("destination")) setDestination(searchParams.get("destination"));
@@ -124,8 +126,6 @@ function CollectionContent() {
 
     if (newTab === "rent") {
       addToast("Browsing Sterling Key Luxury Rental Portfolios", "info", "Rentals Active");
-    } else if (newTab === "developments") {
-      addToast("Browsing Visionary High-Rise & Architectural Developments", "info", "Developments Active");
     } else {
       addToast("Browsing Flagship Acquisition Portfolio", "info", "Buy Portfolio Active");
     }
@@ -137,8 +137,6 @@ function CollectionContent() {
       // Mode Tab filter
       if (activeTab === "rent") {
         if (!prop.rentalPrice) return false;
-      } else if (activeTab === "developments") {
-        if (prop.category !== "New Developments") return false;
       }
 
       // 1. Destination
@@ -283,7 +281,7 @@ function CollectionContent() {
             Explore curated private estates, visionary penthouses, and institutional rental holdings across prime global havens.
           </p>
 
-          {/* Top Primary Segmented Control: BUY | RENT | DEVELOPMENTS */}
+          {/* Top Primary Segmented Control: BUY | RENT */}
           <div className="flex items-center justify-center mt-6 sm:mt-8">
             <div className="inline-flex p-1.5 rounded-2xl bg-[#0A192F]/5 border border-[#E4DCD0] shadow-2xs gap-1 sm:gap-2">
               <button
@@ -307,17 +305,6 @@ function CollectionContent() {
                 }`}
               >
                 Luxury Rentals <span className="opacity-70 font-mono text-[11px] sm:text-xs">({rentCount})</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleTabSwitch("developments")}
-                className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
-                  activeTab === "developments"
-                    ? "bg-[#0A192F] text-[#FAF8F5] shadow-md scale-[1.01]"
-                    : "text-[#545B65] hover:text-[#0A192F] hover:bg-white/80"
-                }`}
-              >
-                Developments <span className="opacity-70 font-mono text-[11px] sm:text-xs">({devCount})</span>
               </button>
             </div>
           </div>
@@ -427,7 +414,7 @@ function CollectionContent() {
           <div className="flex flex-wrap items-center justify-between gap-4 pt-5 border-t border-[#E4DCD0]">
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold text-[#0A192F] uppercase tracking-wider">
-                Showing {filteredProperties.length} of {activeTab === "rent" ? rentCount : activeTab === "developments" ? devCount : buyCount} {activeTab === "rent" ? "Rentals" : "Holdings"}
+                Showing {filteredProperties.length} of {activeTab === "rent" ? rentCount : buyCount} {activeTab === "rent" ? "Rentals" : "Holdings"}
               </span>
               {hasActiveFilters && (
                 <button
@@ -457,33 +444,35 @@ function CollectionContent() {
                 </select>
               </div>
 
-              {/* View Switcher */}
+              {/* View Switcher: Clear Grid & List Toggle with Icons + Text */}
               <div className="flex items-center border border-[#E4DCD0] rounded-xl overflow-hidden bg-[#FAF8F5] shadow-xs">
                 <button
                   type="button"
                   onClick={() => setViewMode("grid")}
-                  className={`p-2.5 sm:p-2 transition-all cursor-pointer ${
+                  className={`py-2 px-3 sm:px-3.5 transition-all cursor-pointer flex items-center gap-1.5 ${
                     viewMode === "grid" 
-                      ? "bg-[#0A192F] text-white shadow-xs" 
-                      : "text-[#545B65] hover:text-[#0A192F] hover:bg-[#F3EFEA]"
+                      ? "bg-[#0A192F] text-white shadow-xs font-bold" 
+                      : "text-[#545B65] hover:text-[#0A192F] hover:bg-[#F3EFEA] font-medium"
                   }`}
                   title="Grid View"
                   aria-label="Grid View"
                 >
                   <Grid className="w-4 h-4" />
+                  <span className="text-xs uppercase tracking-wider font-semibold">Grid</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setViewMode("list")}
-                  className={`p-2.5 sm:p-2 transition-all cursor-pointer ${
+                  className={`py-2 px-3 sm:px-3.5 transition-all cursor-pointer flex items-center gap-1.5 ${
                     viewMode === "list" 
-                      ? "bg-[#0A192F] text-white shadow-xs" 
-                      : "text-[#545B65] hover:text-[#0A192F] hover:bg-[#F3EFEA]"
+                      ? "bg-[#0A192F] text-white shadow-xs font-bold" 
+                      : "text-[#545B65] hover:text-[#0A192F] hover:bg-[#F3EFEA] font-medium"
                   }`}
                   title="List View"
                   aria-label="List View"
                 >
                   <List className="w-4 h-4" />
+                  <span className="text-xs uppercase tracking-wider font-semibold">List</span>
                 </button>
               </div>
             </div>
@@ -520,16 +509,30 @@ function CollectionContent() {
                 <div
                   key={prop.id}
                   onClick={() => openPropertyPreview(prop)}
-                  className="relative group rounded-3xl bg-white border border-[#E4DCD0] overflow-hidden shadow-xs hover:shadow-2xl hover:border-[#C5A880] transition-all duration-300 flex flex-row items-stretch cursor-pointer active:scale-[0.99] p-3.5 xs:p-4 sm:p-5 lg:p-6 gap-3.5 xs:gap-4 sm:gap-6 lg:gap-7 h-[260px] sm:h-[275px] lg:h-[290px]"
+                  className="relative group rounded-3xl bg-white border border-[#E4DCD0] overflow-hidden shadow-xs hover:shadow-2xl hover:border-[#C5A880] transition-all duration-300 flex flex-row items-stretch cursor-pointer active:scale-[0.99] p-3 xs:p-4 sm:p-5 lg:p-6 gap-3 xs:gap-4 sm:gap-6 lg:gap-7 h-[260px] sm:h-[275px] lg:h-[290px]"
                 >
-                  {/* Quick Favorite Heart Button - Dedicated Top-Right Card Placement */}
-                  <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20">
+                  {/* Quick Compare & Favorite Buttons - Dedicated Top-Right Card Placement */}
+                  <div className="absolute top-2.5 right-2.5 sm:top-4 sm:right-4 z-20 flex items-center gap-1.5">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleCompare(prop.id);
+                      }}
+                      className={`p-1.5 sm:p-2 rounded-full border transition-all cursor-pointer backdrop-blur-md shadow-xs active:scale-95 ${
+                        isCompared 
+                          ? "bg-[#C5A880] text-[#0A192F] border-[#C5A880]" 
+                          : "bg-[#FAF8F5] hover:bg-white text-[#747D88] hover:text-[#0A192F] border-[#E4DCD0] hover:border-[#C5A880]"
+                      }`}
+                      title={isCompared ? "Remove from Compare Matrix" : "Add to Compare Matrix"}
+                    >
+                      <Layers className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    </button>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         toggleSave(prop.id, prop.title);
                       }}
-                      className="p-2 sm:p-2.5 rounded-full bg-[#FAF8F5] hover:bg-white text-[#0A192F] border border-[#E4DCD0] hover:border-[#C5A880] transition-all backdrop-blur-md cursor-pointer shadow-xs hover:shadow-md active:scale-95 group/fav"
+                      className="p-1.5 sm:p-2 rounded-full bg-[#FAF8F5] hover:bg-white text-[#0A192F] border border-[#E4DCD0] hover:border-[#C5A880] transition-all backdrop-blur-md cursor-pointer shadow-xs hover:shadow-md active:scale-95 group/fav"
                       title="Save to Favorites"
                     >
                       <Heart className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-colors ${isFav ? "fill-[#C5A880] text-[#C5A880]" : "text-[#747D88] group-hover/fav:text-[#C5A880]"}`} />
@@ -539,7 +542,7 @@ function CollectionContent() {
                   {/* Left: Thumbnail Image with Uniform Full-Height Proportions */}
                   <div 
                     onClick={() => openPropertyPreview(prop)}
-                    className="relative w-32 xs:w-40 sm:w-64 md:w-80 lg:w-88 shrink-0 h-full rounded-xl sm:rounded-2xl overflow-hidden bg-[#FAF8F5] shadow-xs"
+                    className="relative w-28 xs:w-36 sm:w-64 md:w-80 lg:w-88 shrink-0 h-full rounded-xl sm:rounded-2xl overflow-hidden bg-[#FAF8F5] shadow-xs"
                   >
                     <img
                       src={prop.images[0]}
@@ -549,14 +552,24 @@ function CollectionContent() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent opacity-70" />
 
                     {/* Status / Lease Badge with Breathing Room */}
-                    <div className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 flex items-center gap-1 z-10">
-                      <span className="px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[9px] sm:text-xs font-bold uppercase tracking-wider bg-[#0A192F]/92 text-[#FAF8F5] border border-[#C5A880]/50 backdrop-blur-md shadow-sm">
-                        {activeTab === "rent" ? "FOR LEASE" : prop.status}
-                      </span>
+                    <div className="absolute top-2 left-2 sm:top-3 sm:left-3 flex items-center gap-1 z-10">
+                      {isBought(prop.id) ? (
+                        <span className="px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[9px] sm:text-xs font-bold uppercase tracking-wider bg-[#8B1E1E] text-white border border-red-400 shadow-sm">
+                          SOLD OUT
+                        </span>
+                      ) : isRented(prop.id) ? (
+                        <span className="px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[9px] sm:text-xs font-bold uppercase tracking-wider bg-[#475569] text-white border border-slate-400 shadow-sm">
+                          CURRENTLY UNAVAILABLE
+                        </span>
+                      ) : (
+                        <span className="px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[9px] sm:text-xs font-bold uppercase tracking-wider bg-[#0A192F]/92 text-[#FAF8F5] border border-[#C5A880]/50 backdrop-blur-md shadow-sm">
+                          {activeTab === "rent" ? "FOR LEASE" : prop.status}
+                        </span>
+                      )}
                     </div>
 
                     {/* Cap rate tag or Lease indicator on image bottom */}
-                    <div className="absolute bottom-2.5 left-2.5 right-2.5 sm:bottom-3 sm:left-3 sm:right-3 flex justify-between items-center text-[10px] sm:text-xs text-white font-mono z-10">
+                    <div className="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3 flex justify-between items-center text-[10px] sm:text-xs text-white font-mono z-10">
                       <span className="text-[#C5A880] font-bold">
                         {activeTab === "rent" ? "Luxury Lease" : `${prop.capRate || "5.8%"} Cap`}
                       </span>
@@ -567,7 +580,7 @@ function CollectionContent() {
                   {/* Right: Property Details & Actions with Uniform Equal-Height Structure */}
                   <div className="flex-1 min-w-0 flex flex-col justify-between h-full py-0.5 sm:py-1">
                     {/* Top Section: Location, Title, & Description */}
-                    <div className="pr-9 sm:pr-12">
+                    <div className="pr-7 sm:pr-12">
                       <div className="flex items-center text-[11px] sm:text-xs text-[#747D88] font-semibold mb-0.5 h-4 sm:h-5">
                         <MapPin className="w-3.5 h-3.5 mr-1 text-[#C5A880] shrink-0" />
                         <span className="whitespace-nowrap overflow-hidden">{formatLocation(prop)}</span>
@@ -593,10 +606,10 @@ function CollectionContent() {
                     </div>
 
                     {/* Middle Section: Price & Specs with Exact Spacing */}
-                    <div className="my-1.5 sm:my-2 pt-2 sm:pt-2.5 border-t border-[#E4DCD0]/70">
+                    <div className="my-1 sm:my-2 pt-1.5 sm:pt-2.5 border-t border-[#E4DCD0]/70">
                       {/* Price Row */}
                       <div className="flex flex-wrap items-baseline gap-1.5 sm:gap-2 mb-0.5 h-6 sm:h-7">
-                        <div suppressHydrationWarning className="text-base xs:text-lg sm:text-xl lg:text-2xl font-serif font-bold text-[#0A192F] tracking-tight">
+                        <div suppressHydrationWarning className="text-sm xs:text-base sm:text-xl lg:text-2xl font-serif font-bold text-[#0A192F] tracking-tight">
                           {activeTab === "rent" && prop.rentalPrice ? prop.rentalPrice : formatRawPrice(prop.price)}
                         </div>
                         {activeTab === "rent" ? (
@@ -622,18 +635,18 @@ function CollectionContent() {
                       </div>
                     </div>
 
-                    {/* Bottom Actions: Clear, Full-Text Buttons (Never Squeezed) */}
-                    <div className="flex items-center gap-2 sm:gap-3 pt-2 sm:pt-2.5 border-t border-[#E4DCD0]/70 w-full shrink-0">
+                    {/* Bottom Actions: Clear, Full-Text Buttons (Guaranteed 100% Visible & Never Hidden) */}
+                    <div className="flex items-center gap-1.5 sm:gap-3 pt-2 sm:pt-2.5 border-t border-[#E4DCD0]/70 w-full shrink-0">
                       <Link
                         href={`/properties/${prop.id}`}
                         onClick={(e) => {
                           e.stopPropagation();
                           trackViewedProperty(prop.id);
                         }}
-                        className="py-1.5 sm:py-2 px-3 sm:px-4 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 shadow-sm active:scale-95 whitespace-nowrap shrink-0"
+                        className="flex-1 sm:flex-initial py-1.5 sm:py-2 px-2.5 sm:px-4 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-[10px] xs:text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1 sm:gap-1.5 shadow-sm active:scale-95 whitespace-nowrap text-center shrink-0"
                       >
                         <span>Full Dossier</span>
-                        <ExternalLink className="w-3.5 h-3.5 text-[#C5A880] shrink-0" />
+                        <ExternalLink className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#C5A880] shrink-0" />
                       </Link>
 
                       <button
@@ -641,7 +654,7 @@ function CollectionContent() {
                           e.stopPropagation();
                           openPropertyPreview(prop);
                         }}
-                        className="py-1.5 sm:py-2 px-3 sm:px-4 rounded-xl bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#0A192F] text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all border border-[#E4DCD0] shadow-2xs active:scale-95 cursor-pointer whitespace-nowrap shrink-0"
+                        className="flex-1 sm:flex-initial py-1.5 sm:py-2 px-2.5 sm:px-4 rounded-xl bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#0A192F] text-[10px] xs:text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all border border-[#E4DCD0] shadow-2xs active:scale-95 cursor-pointer whitespace-nowrap text-center shrink-0"
                       >
                         <span>Preview</span>
                       </button>
@@ -709,9 +722,19 @@ function CollectionContent() {
 
                     {/* Top Badges */}
                     <div className="absolute top-4 left-4 flex items-center gap-2">
-                      <span className="px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#0A192F] text-[#FAF8F5] border border-[#C5A880]/40 shadow-sm">
-                        {activeTab === "rent" ? "FOR LEASE" : prop.status}
-                      </span>
+                      {isBought(prop.id) ? (
+                        <span className="px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#8B1E1E] text-white border border-red-400 shadow-sm">
+                          SOLD OUT
+                        </span>
+                      ) : isRented(prop.id) ? (
+                        <span className="px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#475569] text-white border border-slate-400 shadow-sm">
+                          CURRENTLY UNAVAILABLE
+                        </span>
+                      ) : (
+                        <span className="px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#0A192F] text-[#FAF8F5] border border-[#C5A880]/40 shadow-sm">
+                          {activeTab === "rent" ? "FOR LEASE" : prop.status}
+                        </span>
+                      )}
                       <span className="px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white/95 text-[#0A192F] border border-[#E4DCD0] shadow-sm">
                         {prop.category}
                       </span>
@@ -886,9 +909,19 @@ function CollectionContent() {
                         alt={prop.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
-                      <span className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-[#0A192F]/90 text-white border border-[#C5A880]/30 shadow-xs">
-                        {prop.status}
-                      </span>
+                      {isBought(prop.id) ? (
+                        <span className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-[#8B1E1E] text-white border border-red-400 shadow-xs">
+                          SOLD OUT
+                        </span>
+                      ) : isRented(prop.id) ? (
+                        <span className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-[#475569] text-white border border-slate-400 shadow-xs">
+                          CURRENTLY UNAVAILABLE
+                        </span>
+                      ) : (
+                        <span className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-[#0A192F]/90 text-white border border-[#C5A880]/30 shadow-xs">
+                          {prop.status}
+                        </span>
+                      )}
                     </div>
 
                     <div>
@@ -918,8 +951,11 @@ function CollectionContent() {
         <ComparisonBar
           compareIds={compareIds}
           onRemove={(id) => setCompareIds(compareIds.filter((item) => item !== id))}
+          onRemoveId={(id) => setCompareIds(compareIds.filter((item) => item !== id))}
           onClear={() => setCompareIds([])}
+          onClearAll={() => setCompareIds([])}
           onOpenCompare={() => setCompareModalOpen(true)}
+          onOpenModal={() => setCompareModalOpen(true)}
         />
       )}
 
@@ -947,10 +983,20 @@ function CollectionContent() {
         />
       )}
 
+      {/* Architectural Estate Comparison Matrix Modal */}
       {compareModalOpen && (
         <ComparisonModal
+          isOpen={compareModalOpen}
           compareIds={compareIds}
+          properties={PROPERTIES_DATA.filter((p) => compareIds.includes(p.id))}
           onClose={() => setCompareModalOpen(false)}
+          onRemoveFromCompare={(id) => {
+            const updated = compareIds.filter((item) => item !== id);
+            setCompareIds(updated);
+            if (updated.length === 0) setCompareModalOpen(false);
+          }}
+          onSelectProperty={(p) => openPropertyPreview(p)}
+          onScheduleTour={(p) => setTourProperty(p)}
         />
       )}
 

@@ -54,6 +54,7 @@
 /* Custom smooth minimalist scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: #FAF8F5;
@@ -161,13 +162,17 @@
   transform: translateX(200%);
 }
 
-/* Hide scrollbar for pills */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+/* Hide scrollbar completely (horizontal & vertical) */
+.no-scrollbar::-webkit-scrollbar,
+.no-scrollbar *::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
 }
 .no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
 }
 
 /* Background Scroll Lock for all modals */

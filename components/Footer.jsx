@@ -7,7 +7,7 @@ import DossierPreviewModal from "./DossierPreviewModal";
 import PortalModal from "./PortalModal";
 import ScheduleModal from "./ScheduleModal";
 import { useToast } from "./Toast";
-import { CheckCircle2, ShieldCheck, FileText, ArrowRight, Loader2, RefreshCw } from "lucide-react";
+import { CheckCircle2, ShieldCheck, FileText, ArrowRight, Loader2, RefreshCw, Mail, ExternalLink } from "lucide-react";
 
 export default function Footer({ onOpenPortal, onOpenSchedule }) {
   const { addToast } = useToast();
@@ -164,20 +164,42 @@ export default function Footer({ onOpenPortal, onOpenSchedule }) {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-3 pt-2">
+                  {subscribedData.previewUrl && (
+                    <a
+                      href={subscribedData.previewUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="py-2.5 px-4 rounded-xl bg-[#C5A880] hover:bg-[#D5BC98] text-[#0A192F] font-bold text-xs uppercase tracking-wider transition-all flex items-center gap-2 shadow-sm cursor-pointer active:scale-95"
+                    >
+                      <Mail className="w-4 h-4 text-[#0A192F]" />
+                      <span>View Delivered Email</span>
+                      <ExternalLink className="w-3.5 h-3.5 text-[#0A192F]" />
+                    </a>
+                  )}
+
                   <button
                     onClick={() => setShowDossierModal(true)}
-                    className="py-2.5 px-4 rounded-xl bg-[#C5A880] hover:bg-[#D5BC98] text-[#0A192F] font-bold text-xs uppercase tracking-wider transition-all flex items-center gap-2 shadow-sm cursor-pointer active:scale-95"
+                    className="py-2.5 px-4 rounded-xl bg-white hover:bg-[#F3EFEA] text-[#0A192F] font-bold text-xs uppercase tracking-wider transition-all flex items-center gap-2 shadow-sm cursor-pointer active:scale-95"
                   >
-                    <FileText className="w-4 h-4" />
+                    <FileText className="w-4 h-4 text-[#C5A880]" />
                     <span>View Dispatched Dossier</span>
                   </button>
 
+                  <a
+                    href={`mailto:${subscribedData.email}?subject=Welcome%20to%20Sterling%20Key%20Properties%20—%20Sovereign%20Portfolio%20Dossier&body=Dear%20Principal,%0D%0A%0D%0AYour%20registration%20has%20been%20confirmed%20with%20Sterling%20Key%20Properties.%0D%0A%0D%0ASovereign%20Vault%20Passcode:%20STERLING2026%0D%0AReference%20ID:%20${subscribedData.dossierId}%0D%0A%0D%0AFeatured%20Trophy%20Estates:%0D%0A1.%20The%20Bel-Air%20Promontory%20Estate%20($38,500,000)%0D%0A2.%20The%20Sky%20Penthouse%20at%20111%20West%2057th%20($49,000,000)%0D%0A3.%20Villa%20Solaria%20at%20Star%20Island%20($62,000,000)%0D%0A4.%20Eaton%20Square%20Regency%20Mansion%20(£45,000,000)%0D%0A%0D%0ASterling%20Key%20Properties%20%26%20Asset%20Management`}
+                    className="py-2.5 px-3.5 rounded-xl bg-transparent hover:bg-white/10 text-[#DDD4C6] hover:text-white border border-[#C5A880]/30 font-semibold text-xs tracking-wider transition-all flex items-center gap-1.5 cursor-pointer"
+                    title="Send a copy to your local mail app"
+                  >
+                    <Mail className="w-3.5 h-3.5 text-[#C5A880]" />
+                    <span>Send to My Mail App</span>
+                  </a>
+
                   <button
                     onClick={handleReset}
-                    className="py-2.5 px-3.5 rounded-xl bg-transparent hover:bg-white/10 text-[#DDD4C6] hover:text-white border border-[#C5A880]/30 font-semibold text-xs tracking-wider transition-all flex items-center gap-1.5 cursor-pointer"
+                    className="py-2.5 px-3 rounded-xl bg-transparent hover:bg-white/10 text-[#DDD4C6] hover:text-white border border-[#C5A880]/20 font-semibold text-xs tracking-wider transition-all flex items-center gap-1.5 cursor-pointer sm:ml-auto"
                   >
                     <RefreshCw className="w-3.5 h-3.5" />
-                    <span>Subscribe Another Email</span>
+                    <span>New Email</span>
                   </button>
                 </div>
               </div>

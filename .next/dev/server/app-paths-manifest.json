@@ -1,4 +1,8 @@
 {
+  "/api/newsletter/route": "app/api/newsletter/route.js",
+  "/management/page": "app/management/page.js",
   "/collection/page": "app/collection/page.js",
+  "/financials/page": "app/financials/page.js",
+  "/advisory/page": "app/advisory/page.js",
   "/page": "app/page.js"
 }

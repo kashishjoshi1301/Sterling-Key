@@ -32,6 +32,7 @@ import VirtualTourModal from "@/components/VirtualTourModal";
 import MortgageCalculator from "@/components/MortgageCalculator";
 import { useCurrency } from "@/components/CurrencyContext";
 import { useToast } from "@/components/Toast";
+import { useTransaction } from "@/components/TransactionContext";
 import { PROPERTIES_DATA, downloadPropertyBrochure } from "@/data/mockData";
 
 export default function PropertyDetailPage() {
@@ -39,6 +40,7 @@ export default function PropertyDetailPage() {
   const router = useRouter();
   const { formatRawPrice, formatArea } = useCurrency();
   const { addToast } = useToast();
+  const { isBought, isRented, buyProperty, rentProperty, releaseProperty } = useTransaction();
 
   const property = PROPERTIES_DATA.find((p) => p.id === params.id) || PROPERTIES_DATA[0];
   const [activeImgIndex, setActiveImgIndex] = useState(0);
@@ -123,9 +125,19 @@ export default function PropertyDetailPage() {
 
               {/* Badges */}
               <div className="absolute top-5 left-5 flex items-center gap-2.5">
-                <span className="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#0A192F] text-[#FAF8F5] border border-[#C5A880]/40 shadow-sm">
-                  {property.status}
-                </span>
+                {isBought(property.id) ? (
+                  <span className="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#8B1E1E] text-white border border-red-400 shadow-md">
+                    SOLD OUT
+                  </span>
+                ) : isRented(property.id) ? (
+                  <span className="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#475569] text-white border border-slate-400 shadow-md">
+                    CURRENTLY UNAVAILABLE
+                  </span>
+                ) : (
+                  <span className="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#0A192F] text-[#FAF8F5] border border-[#C5A880]/40 shadow-sm">
+                    {property.status}
+                  </span>
+                )}
                 <span className="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-white/95 text-[#0A192F] border border-[#E4DCD0] shadow-sm">
                   {property.category}
                 </span>
@@ -219,6 +231,73 @@ export default function PropertyDetailPage() {
                   <span className="font-bold text-[#C5A880]">{property.capRate || "5.8%"} Cap</span>
                 </div>
               </div>
+
+              {/* Interactive Acquisition Box */}
+              {isBought(property.id) ? (
+                <div className="p-4 rounded-2xl bg-red-50 border border-red-200 text-center shadow-xs">
+                  <div className="text-xs font-mono font-bold uppercase tracking-wider text-[#8B1E1E]">
+                    ● SOLD OUT — Asset Acquired
+                  </div>
+                  <p className="text-xs text-red-800 mt-1">
+                    This property has been acquired and marked as sold out across the portfolio.
+                  </p>
+                  <button
+                    onClick={() => {
+                      releaseProperty(property.id);
+                      addToast(`${property.title} released back to inventory`, "info", "Market Reset");
+                    }}
+                    className="mt-2.5 px-3.5 py-1.5 text-xs font-semibold text-[#8B1E1E] bg-white border border-red-300 rounded-lg hover:bg-red-50 cursor-pointer shadow-xs transition-all"
+                  >
+                    Release Back to Market
+                  </button>
+                </div>
+              ) : isRented(property.id) ? (
+                <div className="p-4 rounded-2xl bg-slate-100 border border-slate-300 text-center shadow-xs">
+                  <div className="text-xs font-mono font-bold uppercase tracking-wider text-[#475569]">
+                    ● CURRENTLY UNAVAILABLE — Leased
+                  </div>
+                  <p className="text-xs text-slate-700 mt-1">
+                    This property is actively leased and unavailable.
+                  </p>
+                  <button
+                    onClick={() => {
+                      releaseProperty(property.id);
+                      addToast(`${property.title} lease concluded, restored to market`, "info", "Market Reset");
+                    }}
+                    className="mt-2.5 px-3.5 py-1.5 text-xs font-semibold text-[#475569] bg-white border border-slate-300 rounded-lg hover:bg-slate-50 cursor-pointer shadow-xs transition-all"
+                  >
+                    Release Lease
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <button
+                    onClick={() => {
+                      buyProperty(property.id);
+                      addToast(`Asset acquired! ${property.title} is now SOLD OUT`, "success", "Acquisition Executed");
+                    }}
+                    className="py-3 px-4 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-xs font-bold uppercase tracking-wider transition-all shadow-sm flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 border border-[#C5A880]/40"
+                  >
+                    <Check className="w-4 h-4 text-[#C5A880]" />
+                    <span>Acquire Residence</span>
+                  </button>
+                  {property.rentalPrice ? (
+                    <button
+                      onClick={() => {
+                        rentProperty(property.id);
+                        addToast(`Lease secured! ${property.title} marked CURRENTLY UNAVAILABLE`, "success", "Lease Executed");
+                      }}
+                      className="py-3 px-4 rounded-xl bg-[#F3EFEA] hover:bg-[#EAE3D9] text-[#0A192F] text-xs font-bold uppercase tracking-wider transition-all shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 border border-[#E4DCD0]"
+                    >
+                      <span>Lease Residence</span>
+                    </button>
+                  ) : (
+                    <div className="py-3 px-4 rounded-xl bg-[#F3EFEA] text-[#747D88] text-[11px] font-semibold text-center flex items-center justify-center border border-[#E4DCD0]/60">
+                      Buy Only Asset
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Action Buttons */}
               <div className="space-y-3">

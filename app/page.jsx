@@ -18,6 +18,7 @@ import StatCardModal from "../components/StatCardModal";
 
 import { useToast } from "../components/Toast";
 import { useCurrency } from "../components/CurrencyContext";
+import { useTransaction } from "../components/TransactionContext";
 import { PROPERTIES_DATA, NEIGHBORHOODS_DATA, formatLocation } from "../data/mockData";
 import { 
   ArrowRight, 
@@ -40,6 +41,7 @@ import {
 export default function Home() {
   const { addToast } = useToast();
   const { formatRawPrice, formatArea } = useCurrency();
+  const { isBought, isRented } = useTransaction();
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [isScheduleOpen, setIsScheduleOpen] = useState(false);
   const [scheduleTargetProperty, setScheduleTargetProperty] = useState(null);
@@ -136,7 +138,7 @@ export default function Home() {
               href="/collection"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-xs font-semibold uppercase tracking-wider transition-all shadow-sm shrink-0"
             >
-              <span>Browse All 24+ Properties</span>
+              <span>Browse All Properties</span>
               <ArrowRight className="w-4 h-4 text-[#C5A880]" />
             </Link>
           </div>
@@ -162,9 +164,19 @@ export default function Home() {
                     <span className="px-3 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-[#0A192F]/90 backdrop-blur-md text-[#EADDC9] border border-[#C5A880]/40 shadow-sm">
                       {property.category}
                     </span>
-                    <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-white/90 backdrop-blur-md text-[#0A192F]">
-                      {property.status}
-                    </span>
+                    {isBought(property.id) ? (
+                      <span className="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#8B1E1E] text-white shadow-sm border border-red-400/40">
+                        SOLD OUT
+                      </span>
+                    ) : isRented(property.id) ? (
+                      <span className="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#475569] text-white shadow-sm border border-slate-400/40">
+                        CURRENTLY UNAVAILABLE
+                      </span>
+                    ) : (
+                      <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-white/90 backdrop-blur-md text-[#0A192F]">
+                        {property.status}
+                      </span>
+                    )}
                   </div>
 
                   {/* Top Right Save & Compare Buttons */}
@@ -232,7 +244,7 @@ export default function Home() {
                 Looking for Specific Architectural Styles or Price Brackets?
               </h3>
               <p className="text-xs sm:text-sm text-[#DDD4C6] mt-1">
-                Our full collection includes 24+ penthouses, waterfront villas, and historic estates across 12 countries.
+                Our full collection includes curated penthouses, waterfront villas, and historic estates across 12 countries.
               </p>
             </div>
             <Link
@@ -245,36 +257,42 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 2. The Sovereign Vault Teaser Card (Off-Market Pocket Listings) */}
+        {/* 2. The Sovereign Vault Teaser Card (Off-Market Pocket Listings) - Aligned with Normal Website Palette */}
         <section className="py-14 sm:py-18 max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 border-b border-[#E4DCD0]">
-          <div className="relative rounded-3xl overflow-hidden bg-[#060D18] border border-[#C5A880]/50 p-8 sm:p-14 text-white shadow-2xl">
+          <div className="relative rounded-3xl overflow-hidden bg-white border border-[#E4DCD0] p-8 sm:p-14 text-[#1A1D20] shadow-sm hover:shadow-md transition-shadow">
             {/* Subtle luxury glow effect */}
             <div className="absolute top-0 right-0 w-96 h-96 bg-[#C5A880]/10 rounded-full blur-3xl pointer-events-none" />
 
+            {/* Subtle Watermark Lock Graphic */}
+            <div className="absolute -right-6 -bottom-6 w-64 h-64 opacity-[0.035] pointer-events-none text-[#0A192F]">
+              <Lock className="w-full h-full" />
+            </div>
+
             <div className="relative z-10 max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0A192F] text-[#EADDC9] border border-[#C5A880]/40 text-xs font-mono uppercase tracking-widest mb-4">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FAF8F5] text-[#0A192F] border border-[#E4DCD0] text-xs font-mono uppercase tracking-widest mb-4 shadow-2xs">
                 <Lock className="w-3.5 h-3.5 text-[#C5A880]" />
                 <span>Strict Non-Disclosure Protocol · Off-Market Private Treaties</span>
               </div>
-              <h2 className="text-3xl sm:text-5xl font-serif font-bold text-[#FAF8F5] tracking-tight mb-4">
+              <h2 className="text-3xl sm:text-5xl font-serif font-bold text-[#0A192F] tracking-tight mb-4">
                 The Sovereign Vault
               </h2>
-              <p className="text-sm sm:text-base text-[#DDD4C6] leading-relaxed mb-6">
+              <p className="text-sm sm:text-base text-[#545B65] leading-relaxed mb-6">
                 Representing $348,000,000+ in discreet off-market pocket listings, diplomatic residences, and unlisted sovereign compounds protected outside public MLS registries. Access requires authorized family office keycode clearance.
               </p>
 
               <div className="flex flex-wrap items-center gap-4">
                 <Link
                   href="/vault"
-                  className="px-6 py-3.5 rounded-xl bg-[#FAF8F5] hover:bg-white text-[#0A192F] font-bold text-xs uppercase tracking-wider transition-all shadow-md flex items-center gap-2"
+                  className="px-6 py-3.5 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] font-bold text-xs uppercase tracking-wider transition-all shadow-sm flex items-center gap-2 border border-[#C5A880]/30 active:scale-95"
                 >
                   <Lock className="w-4 h-4 text-[#C5A880]" />
                   <span>Enter The Sovereign Vault Page</span>
-                  <ArrowRight className="w-4 h-4 text-[#0A192F]" />
+                  <ArrowRight className="w-4 h-4 text-[#C5A880]" />
                 </Link>
-                <span className="text-xs text-[#A8B2C1] font-mono">
-                  Demo Passcode: <span className="text-[#C5A880] font-bold">STERLING2026</span>
-                </span>
+                <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#FAF8F5] border border-[#E4DCD0] text-xs text-[#545B65] font-mono">
+                  <span>Demo Passcode:</span>
+                  <span className="text-[#C5A880] font-bold tracking-wider">STERLING2026</span>
+                </div>
               </div>
             </div>
           </div>
@@ -344,66 +362,70 @@ export default function Home() {
         </section>
 
         {/* 4. Institutional Services & Financial Suite Split Teaser */}
-        <section className="py-14 sm:py-20 max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 border-b border-[#E4DCD0]">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <section className="py-12 sm:py-16 lg:py-20 max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 border-b border-[#E4DCD0]">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
             {/* Left Card: Property Management */}
-            <div className="p-8 sm:p-10 rounded-3xl bg-white border border-[#E4DCD0] shadow-sm flex flex-col justify-between hover:border-[#C5A880] transition-all">
+            <div className="p-5 xs:p-6 sm:p-8 lg:p-10 rounded-3xl bg-white border border-[#E4DCD0] shadow-sm flex flex-col justify-between hover:border-[#C5A880] transition-all">
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF8F5] text-[#0A192F] border border-[#E4DCD0] text-xs font-mono uppercase tracking-wider font-semibold mb-4">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF8F5] text-[#0A192F] border border-[#E4DCD0] text-[11px] sm:text-xs font-mono uppercase tracking-wider font-semibold mb-3.5 sm:mb-4">
                   <ShieldCheck className="w-3.5 h-3.5 text-[#C5A880]" />
                   <span>Greystar-Grade SLA</span>
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-serif font-bold text-[#0A192F] mb-3">
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-serif font-bold text-[#0A192F] mb-2.5 sm:mb-3 leading-snug">
                   Institutional Asset & Property Management
                 </h3>
-                <p className="text-xs sm:text-sm text-[#545B65] leading-relaxed mb-6">
+                <p className="text-xs sm:text-sm text-[#545B65] leading-relaxed mb-5 sm:mb-6">
                   99.4% cross-portfolio occupancy commitment, 18-day average resident placement, and zero markup on maintenance contracts. Turnkey oversight designed to compound generational net operating income.
                 </p>
-                <div className="grid grid-cols-3 gap-3 p-4 rounded-2xl bg-[#FAF8F5] border border-[#E4DCD0] mb-6 text-center">
+                <div className="grid grid-cols-3 gap-1.5 sm:gap-3 p-3 sm:p-4 rounded-2xl bg-[#FAF8F5] border border-[#E4DCD0] mb-5 sm:mb-6 text-center">
                   <div>
-                    <span className="text-lg font-serif font-bold text-[#0A192F] block">99.4%</span>
-                    <span className="text-[10px] text-[#545B65] font-mono uppercase">Occupancy</span>
+                    <span className="text-base sm:text-xl font-serif font-bold text-[#0A192F] block">99.4%</span>
+                    <span className="text-[9px] sm:text-[10px] text-[#545B65] font-mono uppercase tracking-wider block mt-0.5">Occupancy</span>
                   </div>
                   <div className="border-x border-[#E4DCD0]">
-                    <span className="text-lg font-serif font-bold text-[#0A192F] block">18 Days</span>
-                    <span className="text-[10px] text-[#545B65] font-mono uppercase">Placement</span>
+                    <span className="text-base sm:text-xl font-serif font-bold text-[#0A192F] block">18 Days</span>
+                    <span className="text-[9px] sm:text-[10px] text-[#545B65] font-mono uppercase tracking-wider block mt-0.5">Placement</span>
                   </div>
                   <div>
-                    <span className="text-lg font-serif font-bold text-[#C5A880] block">0%</span>
-                    <span className="text-[10px] text-[#545B65] font-mono uppercase">Vendor Markup</span>
+                    <span className="text-base sm:text-xl font-serif font-bold text-[#C5A880] block">0%</span>
+                    <span className="text-[9px] sm:text-[10px] text-[#545B65] font-mono uppercase tracking-wider block mt-0.5">No Markup</span>
                   </div>
                 </div>
               </div>
 
               <Link
                 href="/management"
-                className="w-full py-3.5 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] font-semibold text-xs uppercase tracking-wider text-center transition-all flex items-center justify-center gap-2"
+                className="w-full py-3 sm:py-3.5 px-4 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] font-bold text-[11px] sm:text-xs uppercase tracking-wider text-center transition-all flex items-center justify-center gap-2 shadow-sm active:scale-98"
               >
-                <span>Dedicated Management Webpage</span>
-                <ArrowRight className="w-4 h-4 text-[#C5A880]" />
+                <span>Explore Management Suite</span>
+                <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#C5A880] shrink-0" />
               </Link>
             </div>
 
             {/* Right Card: Financial Intelligence & Yield Optimization */}
-            <div className="p-8 sm:p-10 rounded-3xl bg-white border border-[#E4DCD0] shadow-sm flex flex-col justify-between hover:border-[#C5A880] transition-all">
+            <div className="p-5 xs:p-6 sm:p-8 lg:p-10 rounded-3xl bg-white border border-[#E4DCD0] shadow-sm flex flex-col justify-between hover:border-[#C5A880] transition-all">
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF8F5] text-[#0A192F] border border-[#E4DCD0] text-xs font-mono uppercase tracking-wider font-semibold mb-4">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF8F5] text-[#0A192F] border border-[#E4DCD0] text-[11px] sm:text-xs font-mono uppercase tracking-wider font-semibold mb-3.5 sm:mb-4">
                   <TrendingUp className="w-3.5 h-3.5 text-[#C5A880]" />
                   <span>Quantitative Underwriting</span>
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-serif font-bold text-[#0A192F] mb-3">
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-serif font-bold text-[#0A192F] mb-2.5 sm:mb-3 leading-snug">
                   Yield Intelligence & Financial Suite
                 </h3>
-                <p className="text-xs sm:text-sm text-[#545B65] leading-relaxed mb-6">
+                <p className="text-xs sm:text-sm text-[#545B65] leading-relaxed mb-5 sm:mb-6">
                   Interactive 10-year cash flow projections, global cap rate heatmaps, automated estate valuation models, and tax-shielded 1031 like-kind exchange frameworks.
                 </p>
-                <div className="grid grid-cols-2 gap-3 p-4 rounded-2xl bg-[#FAF8F5] border border-[#E4DCD0] mb-6">
+                <div className="grid grid-cols-1 xs:grid-cols-2 gap-2.5 sm:gap-3 p-3.5 sm:p-4 rounded-2xl bg-[#FAF8F5] border border-[#E4DCD0] mb-5 sm:mb-6">
                   <div className="flex items-center gap-2.5">
-                    <Calculator className="w-4 h-4 text-[#C5A880]" />
+                    <div className="w-7 h-7 rounded-lg bg-white border border-[#E4DCD0] flex items-center justify-center shrink-0 shadow-2xs">
+                      <Calculator className="w-3.5 h-3.5 text-[#C5A880]" />
+                    </div>
                     <span className="text-xs font-semibold text-[#0A192F]">Jumbo Debt Modeling</span>
                   </div>
                   <div className="flex items-center gap-2.5">
-                    <TrendingUp className="w-4 h-4 text-[#C5A880]" />
+                    <div className="w-7 h-7 rounded-lg bg-white border border-[#E4DCD0] flex items-center justify-center shrink-0 shadow-2xs">
+                      <TrendingUp className="w-3.5 h-3.5 text-[#C5A880]" />
+                    </div>
                     <span className="text-xs font-semibold text-[#0A192F]">Cap Rate Heatmap</span>
                   </div>
                 </div>
@@ -411,41 +433,41 @@ export default function Home() {
 
               <Link
                 href="/financials"
-                className="w-full py-3.5 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] font-semibold text-xs uppercase tracking-wider text-center transition-all flex items-center justify-center gap-2"
+                className="w-full py-3 sm:py-3.5 px-4 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] font-bold text-[11px] sm:text-xs uppercase tracking-wider text-center transition-all flex items-center justify-center gap-2 shadow-sm active:scale-98"
               >
-                <span>Dedicated Financial Suite Webpage</span>
-                <ArrowRight className="w-4 h-4 text-[#C5A880]" />
+                <span>Explore Financial Suite</span>
+                <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#C5A880] shrink-0" />
               </Link>
             </div>
           </div>
         </section>
 
         {/* 5. Family Office Advisory Consultation Spotlight */}
-        <section className="py-14 sm:py-20 max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12">
-          <div className="p-8 sm:p-12 rounded-3xl bg-[#FAF8F5] border border-[#C5A880]/50 text-center space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-[#0A192F] text-[#C5A880] flex items-center justify-center mx-auto mb-2 shadow-sm">
-              <Briefcase className="w-6 h-6" />
+        <section className="py-12 sm:py-16 lg:py-20 max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12">
+          <div className="p-6 xs:p-8 sm:p-12 rounded-3xl bg-[#FAF8F5] border border-[#C5A880]/50 text-center space-y-4">
+            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-[#0A192F] text-[#C5A880] flex items-center justify-center mx-auto mb-2 shadow-sm">
+              <Briefcase className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
-            <span className="text-xs uppercase font-mono tracking-widest text-[#C5A880] font-bold block">
+            <span className="text-[11px] sm:text-xs uppercase font-mono tracking-widest text-[#C5A880] font-bold block">
               Family Office & Private Treaties
             </span>
-            <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#0A192F]">
+            <h2 className="text-xl sm:text-3xl lg:text-4xl font-serif font-bold text-[#0A192F]">
               Discreet Sovereign Representation
             </h2>
             <p className="text-xs sm:text-sm text-[#545B65] max-w-2xl mx-auto leading-relaxed">
               Sterling Key advises sovereign entities, family offices, and qualified institutional trustees on complex multi-jurisdictional real estate transactions.
             </p>
-            <div className="pt-2 flex flex-wrap items-center justify-center gap-4">
+            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
               <Link
                 href="/advisory"
-                className="px-6 py-3.5 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] font-semibold text-xs uppercase tracking-wider transition-all shadow-sm flex items-center gap-2"
+                className="w-full sm:w-auto px-6 py-3 sm:py-3.5 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] font-bold text-xs uppercase tracking-wider transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-98"
               >
-                <span>Open Dedicated Advisory Webpage</span>
+                <span>Explore Advisory Webpage</span>
                 <ArrowRight className="w-4 h-4 text-[#C5A880]" />
               </Link>
               <button
                 onClick={handleOpenGeneralSchedule}
-                className="px-6 py-3.5 rounded-xl bg-white border border-[#E4DCD0] hover:border-[#C5A880] text-[#0A192F] font-semibold text-xs uppercase tracking-wider transition-all shadow-2xs"
+                className="w-full sm:w-auto px-6 py-3 sm:py-3.5 rounded-xl bg-white border border-[#E4DCD0] hover:border-[#C5A880] text-[#0A192F] font-bold text-xs uppercase tracking-wider transition-all shadow-2xs cursor-pointer active:scale-98"
               >
                 Schedule Private Consultation
               </button>
@@ -504,8 +526,12 @@ export default function Home() {
         isOpen={isCompareModalOpen}
         onClose={() => setIsCompareModalOpen(false)}
         compareIds={compareIds}
-        properties={PROPERTIES_DATA}
+        properties={PROPERTIES_DATA.filter((p) => compareIds.includes(p.id))}
         onRemoveFromCompare={(id) => handleToggleCompare(id)}
+        onSelectProperty={(prop) => {
+          setIsCompareModalOpen(false);
+          setSelectedProperty(prop);
+        }}
         onScheduleTour={handleScheduleTour}
       />
 
@@ -522,7 +548,7 @@ export default function Home() {
       />
 
       {/* Floating Concierge Chatbot Widget */}
-      <ConciergeChatWidget />
+      <ConciergeChatWidget hasComparisonDock={compareIds.length > 0} />
     </div>
   );
 }

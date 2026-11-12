@@ -142,62 +142,73 @@ export default function ConciergeChatWidget({
   const activeProviderObj = PROVIDERS.find(p => p.id === selectedProvider) || PROVIDERS[0];
 
   return (
-    <div className={`fixed right-4 sm:right-6 z-40 transition-all duration-300 ${
-      hasComparisonDock ? "bottom-24 sm:bottom-8" : "bottom-6 sm:bottom-8"
-    }`}>
-      {/* Minimized Trigger Button */}
-      {!isOpen ? (
-        <button
-          onClick={() => setIsOpen(true)}
-          className="group flex items-center gap-3 p-3.5 sm:px-5 sm:py-3 rounded-full bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] border border-[#C5A880]/50 shadow-2xl transition-all duration-300 cursor-pointer active:scale-95"
-          title="Open AI Private Concierge"
-        >
-          <div className="relative">
-            <MessageSquare className="w-5 h-5 text-[#C5A880]" />
-            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-[#C5A880] animate-ping" />
-          </div>
-          <span className="text-xs sm:text-sm uppercase tracking-wider font-bold hidden sm:inline">
-            Private Concierge
-          </span>
-        </button>
-      ) : (
-        /* Expanded Chat Drawer */
-        <div className="w-[360px] sm:w-[430px] h-[580px] bg-[#FAF8F5] border border-[#E4DCD0] rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-fade-in text-[#1A1D20]">
-          {/* Header in Deep Navy */}
-          <div className="p-4 bg-[#0A192F] text-white border-b border-[#060D18] flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-[#C5A880] border border-[#C5A880]/30">
-                <Sparkles className="w-4 h-4" />
-              </div>
-              <div>
-                <div className="text-sm font-serif text-white font-bold flex items-center gap-2">
-                  Sterling AI Concierge
-                  <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                </div>
-                <div className="text-[10px] text-[#C5A880] font-mono tracking-wider truncate max-w-[210px]" title={providerLabel}>
-                  {providerLabel}
-                </div>
-              </div>
-            </div>
+    <>
+      {/* Mobile Backdrop when Chat Drawer is Open */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 backdrop-blur-xs z-40 sm:hidden animate-fade-in"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
 
-            <div className="flex items-center gap-1.5">
-              <button
-                onClick={() => setShowKeyModal(!showKeyModal)}
-                className={`p-2 rounded-full transition-colors cursor-pointer ${
-                  showKeyModal ? "text-[#C5A880] bg-white/15" : "text-[#A8B2C1] hover:text-[#C5A880] hover:bg-white/10"
-                }`}
-                title="Configure Free LLM Engine"
-              >
-                <Settings2 className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="p-2 rounded-full text-[#A8B2C1] hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
-              >
-                <X className="w-4 h-4" />
-              </button>
+      <div className={`fixed z-50 transition-all duration-300 ${
+        !isOpen
+          ? `right-4 sm:right-6 ${hasComparisonDock ? "bottom-20 sm:bottom-24" : "bottom-6 sm:bottom-8"}`
+          : `inset-x-3 sm:inset-x-auto sm:right-6 ${hasComparisonDock ? "bottom-20 sm:bottom-24" : "bottom-3 sm:bottom-8"} flex justify-center sm:justify-end pointer-events-none`
+      }`}>
+        {/* Minimized Trigger Button */}
+        {!isOpen ? (
+          <button
+            onClick={() => setIsOpen(true)}
+            className="group flex items-center gap-3 p-3.5 sm:px-5 sm:py-3 rounded-full bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] border border-[#C5A880]/50 shadow-2xl transition-all duration-300 cursor-pointer active:scale-95"
+            title="Open AI Private Concierge"
+          >
+            <div className="relative">
+              <MessageSquare className="w-5 h-5 text-[#C5A880]" />
+              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-[#C5A880] animate-ping" />
             </div>
-          </div>
+            <span className="text-xs sm:text-sm uppercase tracking-wider font-bold hidden sm:inline">
+              Private Concierge
+            </span>
+          </button>
+        ) : (
+          /* Expanded Chat Drawer - Symmetrically Centered & Aligned on Mobile */
+          <div className="w-full sm:w-[430px] max-w-[440px] h-[520px] max-h-[82dvh] sm:h-[580px] sm:max-h-[85vh] bg-[#FAF8F5] border border-[#E4DCD0] rounded-2xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-fade-in text-[#1A1D20] pointer-events-auto">
+            {/* Header in Deep Navy */}
+            <div className="p-3.5 sm:p-4 bg-[#0A192F] text-white border-b border-[#060D18] flex items-center justify-between shrink-0">
+              <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/10 flex items-center justify-center text-[#C5A880] border border-[#C5A880]/30 shrink-0">
+                  <Sparkles className="w-4 h-4" />
+                </div>
+                <div className="min-w-0">
+                  <div className="text-xs sm:text-sm font-serif text-white font-bold flex items-center gap-1.5 sm:gap-2">
+                    <span>Sterling AI Concierge</span>
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
+                  </div>
+                  <div className="text-[10px] text-[#C5A880] font-mono tracking-wider truncate" title={providerLabel}>
+                    {providerLabel}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
+                <button
+                  onClick={() => setShowKeyModal(!showKeyModal)}
+                  className={`p-1.5 sm:p-2 rounded-full transition-colors cursor-pointer ${
+                    showKeyModal ? "text-[#C5A880] bg-white/15" : "text-[#A8B2C1] hover:text-[#C5A880] hover:bg-white/10"
+                  }`}
+                  title="Configure Free LLM Engine"
+                >
+                  <Settings2 className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="p-1.5 sm:p-2 rounded-full text-[#A8B2C1] hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
 
           {/* Free LLM Configuration Modal Strip */}
           {showKeyModal && (
@@ -357,5 +368,6 @@ export default function ConciergeChatWidget({
         </div>
       )}
     </div>
+    </>
   );
 }
