@@ -1,8 +1,7 @@
 {
-  "/api/newsletter/route": "app/api/newsletter/route.js",
+  "/destinations/page": "app/destinations/page.js",
   "/management/page": "app/management/page.js",
+  "/vault/page": "app/vault/page.js",
   "/collection/page": "app/collection/page.js",
-  "/financials/page": "app/financials/page.js",
-  "/advisory/page": "app/advisory/page.js",
-  "/page": "app/page.js"
+  "/financials/page": "app/financials/page.js"
 }

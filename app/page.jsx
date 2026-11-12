@@ -12,7 +12,6 @@ import ScheduleModal from "../components/ScheduleModal";
 import SavedDrawer from "../components/SavedDrawer";
 import ComparisonModal from "../components/ComparisonModal";
 import ComparisonBar from "../components/ComparisonBar";
-import VirtualTourModal from "../components/VirtualTourModal";
 import ConciergeChatWidget from "../components/ConciergeChatWidget";
 import StatCardModal from "../components/StatCardModal";
 
@@ -52,9 +51,6 @@ export default function Home() {
   // Comparison State
   const [compareIds, setCompareIds] = useState([]);
   const [isCompareModalOpen, setIsCompareModalOpen] = useState(false);
-
-  // Virtual 360 Tour State
-  const [virtualTourTitle, setVirtualTourTitle] = useState(null);
 
   // Stat Card Modal State
   const [statCardType, setStatCardType] = useState(null);
@@ -533,12 +529,6 @@ export default function Home() {
           setSelectedProperty(prop);
         }}
         onScheduleTour={handleScheduleTour}
-      />
-
-      <VirtualTourModal
-        isOpen={!!virtualTourTitle}
-        onClose={() => setVirtualTourTitle(null)}
-        propertyTitle={virtualTourTitle}
       />
 
       <StatCardModal

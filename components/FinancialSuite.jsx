@@ -13,7 +13,7 @@ import {
 import { useCurrency } from "./CurrencyContext";
 import { useToast } from "./Toast";
 
-export default function FinancialSuite({ onOpenSchedule }) {
+export default function FinancialSuite({ onOpenSchedule, isStandalone = false }) {
   const { formatRawPrice } = useCurrency();
   const { addToast } = useToast();
   const [activeTab, setActiveTab] = useState("valuation"); // "valuation" | "mortgage"
@@ -66,10 +66,13 @@ export default function FinancialSuite({ onOpenSchedule }) {
   const totalMonthlyPayment = Math.round(monthlyPI + monthlyPropertyTax + monthlyInsurance);
 
   return (
-    <section id="financials" className="py-16 sm:py-24 bg-[#FAF8F5] border-b border-[#E4DCD0] relative">
+    <section 
+      id="financials" 
+      className={`${isStandalone ? "pt-2 sm:pt-4 pb-12 sm:pb-20" : "py-16 sm:py-24"} bg-[#FAF8F5] border-b border-[#E4DCD0] relative`}
+    >
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
+        <div className={`text-center max-w-3xl mx-auto ${isStandalone ? "mb-6 sm:mb-8" : "mb-10 sm:mb-14"}`}>
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-semibold uppercase tracking-[0.24em] bg-white border border-[#E4DCD0] text-[#0A192F] mb-3 shadow-2xs">
             <Calculator className="w-3.5 h-3.5 text-[#C5A880]" /> Advisory Intelligence Suite
           </div>

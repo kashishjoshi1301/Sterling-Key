@@ -4,12 +4,15 @@ import React from "react";
 import { AGENTS_DATA, PRESS_ACCOLADES } from "../data/mockData";
 import { Phone, Mail, Award, Quote } from "lucide-react";
 
-export default function AdvisorySection({ onOpenSchedule }) {
+export default function AdvisorySection({ onOpenSchedule, isStandalone = false }) {
   return (
-    <section id="advisory" className="py-16 sm:py-20 bg-[#FAF8F5] text-[#1A1D20] relative border-b border-[#E4DCD0]">
+    <section 
+      id="advisory" 
+      className={`${isStandalone ? "pt-2 sm:pt-4 pb-12 sm:pb-20" : "py-16 sm:py-20"} bg-[#FAF8F5] text-[#1A1D20] relative border-b border-[#E4DCD0]`}
+    >
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+        <div className={`text-center max-w-3xl mx-auto ${isStandalone ? "mb-6 sm:mb-8" : "mb-12 sm:mb-16"}`}>
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-[0.24em] bg-white border border-[#E4DCD0] text-[#0A192F] mb-3 shadow-2xs">
             <Award className="w-3.5 h-3.5 text-[#C5A880]" /> The Agency Influence
           </div>

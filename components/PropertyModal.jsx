@@ -15,7 +15,6 @@ import {
   Layers, 
   TrendingUp, 
   FileText, 
-  Rotate3D,
   ExternalLink,
   CheckCircle2,
   Check
@@ -25,12 +24,12 @@ import { useToast } from "./Toast";
 import { useTransaction } from "./TransactionContext";
 import { formatLocation, downloadPropertyBrochure } from "../data/mockData";
 import { useScrollLock } from "./useScrollLock";
+import AcquisitionModal from "./AcquisitionModal";
 
 export default function PropertyModal({ 
   property, 
   onClose, 
-  onScheduleTour,
-  onLaunchVirtualTour
+  onScheduleTour
 }) {
   const { formatRawPrice, formatArea } = useCurrency();
   const { addToast } = useToast();
@@ -38,6 +37,8 @@ export default function PropertyModal({
   const [activeTab, setActiveTab] = useState("overview");
   const [activeImgIndex, setActiveImgIndex] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [acquisitionModalOpen, setAcquisitionModalOpen] = useState(false);
+  const [acquisitionMode, setAcquisitionMode] = useState("buy");
   const contentRef = useRef(null);
 
   useScrollLock(!!property, onClose);
@@ -86,7 +87,7 @@ export default function PropertyModal({
 
   return (
     <div 
-      className="fixed inset-0 z-50 bg-[#0A192F]/60 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 md:p-6 animate-fade-in overscroll-contain touch-none"
+      className="fixed inset-0 z-[60] bg-[#0A192F]/60 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 md:p-6 animate-fade-in overscroll-contain touch-none"
       onClick={onClose}
       onTouchMove={(e) => {
         if (e.target === e.currentTarget) {
@@ -119,7 +120,7 @@ export default function PropertyModal({
           </button>
         </div>
 
-        {/* Modal Gallery Hero - Dynamically Collapses / Shrinks on Scroll so Content Gets Maximum Height */}
+        {/* Modal Gallery Hero - Pristine High-Resolution Photography */}
         <div 
           onClick={() => {
             if (isScrolled && contentRef.current) {
@@ -187,48 +188,48 @@ export default function PropertyModal({
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  setActiveImgIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+                  setActiveImgIndex((prev) => (prev - 1 + images.length) % images.length);
                 }}
-                className={`absolute left-2.5 sm:left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 hover:bg-white text-[#0A192F] shadow-lg backdrop-blur-md transition-all active:scale-95 cursor-pointer z-10 ${
-                  isScrolled ? "p-1" : "p-1.5 sm:p-2"
-                }`}
-                title="Previous Image"
+                className="absolute left-2.5 sm:left-4 top-1/2 -translate-y-1/2 z-20 p-2 sm:p-2.5 rounded-full bg-[#0A192F]/80 hover:bg-[#0A192F] text-white border border-white/20 shadow-md cursor-pointer transition-all active:scale-90"
+                title="Previous Photo"
               >
-                <ChevronLeft className={`${isScrolled ? "w-3.5 h-3.5 sm:w-4 sm:h-4" : "w-4 h-4 sm:w-5 sm:h-5"}`} />
+                <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  setActiveImgIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+                  setActiveImgIndex((prev) => (prev + 1) % images.length);
                 }}
-                className={`absolute right-2.5 sm:right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 hover:bg-white text-[#0A192F] shadow-lg backdrop-blur-md transition-all active:scale-95 cursor-pointer z-10 ${
-                  isScrolled ? "p-1" : "p-1.5 sm:p-2"
-                }`}
-                title="Next Image"
+                className="absolute right-2.5 sm:right-4 top-1/2 -translate-y-1/2 z-20 p-2 sm:p-2.5 rounded-full bg-[#0A192F]/80 hover:bg-[#0A192F] text-white border border-white/20 shadow-md cursor-pointer transition-all active:scale-90"
+                title="Next Photo"
               >
-                <ChevronRight className={`${isScrolled ? "w-3.5 h-3.5 sm:w-4 sm:h-4" : "w-4 h-4 sm:w-5 sm:h-5"}`} />
+                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
-
-              {/* Thumbnails Strip (Smoothly Fades Out When Shrunk) */}
-              <div className={`absolute bottom-2.5 left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/50 backdrop-blur-md z-10 max-w-[90%] overflow-x-auto no-scrollbar transition-all duration-300 ${
-                isScrolled ? "opacity-0 pointer-events-none scale-90" : "opacity-100 scale-100"
-              }`}>
-                {images.slice(0, 5).map((img, idx) => (
-                  <button
-                    key={idx}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setActiveImgIndex(idx);
-                    }}
-                    className={`w-9 h-6 sm:w-11 sm:h-7 rounded-md overflow-hidden border transition-all shrink-0 cursor-pointer ${
-                      activeImgIndex === idx ? "border-[#C5A880] scale-105 shadow-sm" : "border-transparent opacity-60 hover:opacity-100"
-                    }`}
-                  >
-                    <img src={img} alt="" className="w-full h-full object-cover" />
-                  </button>
-                ))}
-              </div>
             </>
+          )}
+
+          {/* Thumbnails Row */}
+          {images.length > 1 && (
+            <div className={`absolute left-3 right-3 z-20 flex items-center justify-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar transition-all duration-300 ${
+              isScrolled ? "bottom-1.5 opacity-0 pointer-events-none" : "bottom-3 opacity-100"
+            }`}>
+              {images.map((img, idx) => (
+                <button
+                  key={idx}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveImgIndex(idx);
+                  }}
+                  className={`w-10 h-7 sm:w-14 sm:h-9 rounded-md sm:rounded-lg overflow-hidden border-2 transition-all cursor-pointer shrink-0 shadow-sm ${
+                    activeImgIndex === idx 
+                      ? "border-[#C5A880] scale-105 opacity-100" 
+                      : "border-white/40 opacity-70 hover:opacity-100"
+                  }`}
+                >
+                  <img src={img} alt="" className="w-full h-full object-cover" />
+                </button>
+              ))}
+            </div>
           )}
         </div>
 
@@ -291,8 +292,8 @@ export default function PropertyModal({
                 </p>
               )}
 
-              {/* Mobile Dossier Link */}
-              <div className="mt-2.5 sm:hidden flex items-center gap-2">
+              {/* Quick Actions Bar */}
+              <div className="mt-2.5 flex items-center gap-2 flex-wrap">
                 <Link
                   href={`/properties/${property.id}`}
                   className="inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-white text-[#0A192F] border border-[#E4DCD0] text-[11px] font-bold uppercase tracking-wider shadow-xs hover:border-[#C5A880]"
@@ -300,15 +301,16 @@ export default function PropertyModal({
                   <span>Full Dossier Page</span>
                   <ExternalLink className="w-3 h-3 text-[#C5A880]" />
                 </Link>
-                {onLaunchVirtualTour && (
-                  <button
-                    onClick={() => onLaunchVirtualTour(property.title)}
-                    className="inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-[#0A192F] text-[#FAF8F5] text-[11px] font-bold uppercase tracking-wider shadow-xs"
-                  >
-                    <Rotate3D className="w-3 h-3 text-[#C5A880]" />
-                    <span>360° Tour</span>
-                  </button>
-                )}
+                <button
+                  onClick={() => {
+                    downloadPropertyBrochure(property);
+                    addToast(`Brochure and specs for ${property.title} downloaded`, "success", "Brochure Ready");
+                  }}
+                  className="inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#0A192F] text-[11px] font-bold uppercase tracking-wider shadow-xs border border-[#E4DCD0] cursor-pointer"
+                >
+                  <Download className="w-3 h-3 text-[#C5A880]" />
+                  <span>Download Spec Sheet</span>
+                </button>
               </div>
             </div>
 
@@ -323,10 +325,19 @@ export default function PropertyModal({
               )}
               {/* Acquisition Status & Action */}
               {isBought(property.id) ? (
-                <div className="mt-2 flex items-center sm:justify-end gap-2">
+                <div className="mt-2 flex items-center sm:justify-end gap-2 flex-wrap">
                   <span className="px-2.5 py-1 rounded-lg bg-[#8B1E1E] text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider shadow-xs">
                     Sold Out
                   </span>
+                  <button
+                    onClick={() => {
+                      setAcquisitionMode("buy");
+                      setAcquisitionModalOpen(true);
+                    }}
+                    className="px-2.5 py-1 rounded-lg bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#0A192F] border border-[#E4DCD0] text-[10px] sm:text-xs font-semibold uppercase tracking-wider cursor-pointer transition-all shadow-2xs"
+                  >
+                    View Treaty Dossier
+                  </button>
                   <button
                     onClick={() => {
                       releaseProperty(property.id);
@@ -338,10 +349,19 @@ export default function PropertyModal({
                   </button>
                 </div>
               ) : isRented(property.id) ? (
-                <div className="mt-2 flex items-center sm:justify-end gap-2">
+                <div className="mt-2 flex items-center sm:justify-end gap-2 flex-wrap">
                   <span className="px-2.5 py-1 rounded-lg bg-[#475569] text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider shadow-xs">
                     Currently Unavailable
                   </span>
+                  <button
+                    onClick={() => {
+                      setAcquisitionMode("rent");
+                      setAcquisitionModalOpen(true);
+                    }}
+                    className="px-2.5 py-1 rounded-lg bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#0A192F] border border-[#E4DCD0] text-[10px] sm:text-xs font-semibold uppercase tracking-wider cursor-pointer transition-all shadow-2xs"
+                  >
+                    View Lease Mandate
+                  </button>
                   <button
                     onClick={() => {
                       releaseProperty(property.id);
@@ -356,8 +376,8 @@ export default function PropertyModal({
                 <div className="mt-2 flex items-center sm:justify-end gap-2 flex-wrap">
                   <button
                     onClick={() => {
-                      buyProperty(property.id);
-                      addToast(`Asset acquired! ${property.title} is now SOLD OUT`, "success", "Acquisition Confirmed");
+                      setAcquisitionMode("buy");
+                      setAcquisitionModalOpen(true);
                     }}
                     className="px-3.5 py-1.5 rounded-lg bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-[11px] sm:text-xs font-bold uppercase tracking-wider shadow-xs cursor-pointer active:scale-95 transition-all flex items-center gap-1.5 border border-[#C5A880]/40"
                   >
@@ -367,8 +387,8 @@ export default function PropertyModal({
                   {property.rentalPrice && (
                     <button
                       onClick={() => {
-                        rentProperty(property.id);
-                        addToast(`Lease secured! ${property.title} marked CURRENTLY UNAVAILABLE`, "success", "Lease Confirmed");
+                        setAcquisitionMode("rent");
+                        setAcquisitionModalOpen(true);
                       }}
                       className="px-3 py-1.5 rounded-lg bg-[#F3EFEA] hover:bg-[#EAE3D9] text-[#0A192F] text-[11px] sm:text-xs font-semibold uppercase tracking-wider border border-[#E4DCD0] shadow-2xs cursor-pointer active:scale-95 transition-all"
                     >
@@ -597,6 +617,14 @@ export default function PropertyModal({
           </div>
         </div>
       </div>
+
+      {/* Multi-Step Institutional Acquisition & Lease Treaty Modal */}
+      <AcquisitionModal
+        isOpen={acquisitionModalOpen}
+        onClose={() => setAcquisitionModalOpen(false)}
+        property={property}
+        initialMode={acquisitionMode}
+      />
     </div>
   );
 }

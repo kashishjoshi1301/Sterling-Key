@@ -11,12 +11,15 @@ import {
   Sparkles
 } from "lucide-react";
 
-export default function PropertyManagementSection({ onOpenPortal, onOpenSchedule }) {
+export default function PropertyManagementSection({ onOpenPortal, onOpenSchedule, isStandalone = false }) {
   return (
-    <section id="property-management" className="py-16 sm:py-24 bg-[#FAF8F5] text-[#1A1D20] relative border-b border-[#E4DCD0]">
+    <section 
+      id="property-management" 
+      className={`${isStandalone ? "pt-2 sm:pt-4 pb-12 sm:pb-20" : "py-16 sm:py-24"} bg-[#FAF8F5] text-[#1A1D20] relative border-b border-[#E4DCD0]`}
+    >
       <div className="max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-12 relative z-10">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+        <div className={`text-center max-w-3xl mx-auto ${isStandalone ? "mb-6 sm:mb-8" : "mb-12 sm:mb-16"}`}>
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-semibold uppercase tracking-[0.24em] bg-white border border-[#E4DCD0] text-[#0A192F] mb-3 shadow-2xs">
             <Key className="w-3.5 h-3.5 text-[#C5A880]" /> Greystar-Caliber Asset Care
           </div>

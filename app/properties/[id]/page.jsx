@@ -15,7 +15,6 @@ import {
   Layers, 
   TrendingUp, 
   FileText, 
-  Rotate3D,
   ArrowLeft,
   Check,
   ShieldCheck,
@@ -28,8 +27,8 @@ import ScheduleModal from "@/components/ScheduleModal";
 import PortalModal from "@/components/PortalModal";
 import SavedDrawer from "@/components/SavedDrawer";
 import DossierPreviewModal from "@/components/DossierPreviewModal";
-import VirtualTourModal from "@/components/VirtualTourModal";
 import MortgageCalculator from "@/components/MortgageCalculator";
+import AcquisitionModal from "@/components/AcquisitionModal";
 import { useCurrency } from "@/components/CurrencyContext";
 import { useToast } from "@/components/Toast";
 import { useTransaction } from "@/components/TransactionContext";
@@ -46,10 +45,11 @@ export default function PropertyDetailPage() {
   const [activeImgIndex, setActiveImgIndex] = useState(0);
   const [activeTab, setActiveTab] = useState("overview");
   const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
-  const [virtualTourOpen, setVirtualTourOpen] = useState(false);
   const [portalOpen, setPortalOpen] = useState(false);
   const [savedDrawerOpen, setSavedDrawerOpen] = useState(false);
   const [showBrochureModal, setShowBrochureModal] = useState(false);
+  const [acquisitionModalOpen, setAcquisitionModalOpen] = useState(false);
+  const [acquisitionMode, setAcquisitionMode] = useState("buy");
   const [isSaved, setIsSaved] = useState(false);
 
   const handleShare = () => {
@@ -77,9 +77,9 @@ export default function PropertyDetailPage() {
         savedCount={isSaved ? 1 : 0}
       />
 
-      <main className="flex-1 max-w-[1500px] w-full mx-auto px-4 sm:px-8 py-8 sm:py-12">
+      <main className="flex-1 max-w-[1500px] w-full mx-auto px-4 sm:px-8 pt-3 pb-10 sm:pt-5 sm:pb-12">
         {/* Navigation Breadcrumb */}
-        <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#E4DCD0]">
+        <div className="flex items-center justify-between mb-4 pb-3 border-b border-[#E4DCD0]">
           <Link
             href="/collection"
             className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#545B65] hover:text-[#0A192F] transition-colors"
@@ -141,17 +141,6 @@ export default function PropertyDetailPage() {
                 <span className="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-white/95 text-[#0A192F] border border-[#E4DCD0] shadow-sm">
                   {property.category}
                 </span>
-              </div>
-
-              {/* 360 Tour Launcher */}
-              <div className="absolute top-5 right-5">
-                <button
-                  onClick={() => setVirtualTourOpen(true)}
-                  className="py-2 px-4 rounded-full bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all shadow-md"
-                >
-                  <Rotate3D className="w-4 h-4 text-[#C5A880]" />
-                  <span>Launch 360° Tour</span>
-                </button>
               </div>
 
               {/* Prev / Next controls */}
@@ -234,47 +223,69 @@ export default function PropertyDetailPage() {
 
               {/* Interactive Acquisition Box */}
               {isBought(property.id) ? (
-                <div className="p-4 rounded-2xl bg-red-50 border border-red-200 text-center shadow-xs">
+                <div className="p-4 rounded-2xl bg-red-50 border border-red-200 text-center shadow-xs space-y-2">
                   <div className="text-xs font-mono font-bold uppercase tracking-wider text-[#8B1E1E]">
-                    ● SOLD OUT — Asset Acquired
+                    ● SOLD OUT — Asset Acquired Under Treaty
                   </div>
-                  <p className="text-xs text-red-800 mt-1">
-                    This property has been acquired and marked as sold out across the portfolio.
+                  <p className="text-xs text-red-800">
+                    This property has been acquired and placed under binding escrow exclusivity across the portfolio.
                   </p>
-                  <button
-                    onClick={() => {
-                      releaseProperty(property.id);
-                      addToast(`${property.title} released back to inventory`, "info", "Market Reset");
-                    }}
-                    className="mt-2.5 px-3.5 py-1.5 text-xs font-semibold text-[#8B1E1E] bg-white border border-red-300 rounded-lg hover:bg-red-50 cursor-pointer shadow-xs transition-all"
-                  >
-                    Release Back to Market
-                  </button>
+                  <div className="flex items-center justify-center gap-2 pt-1">
+                    <button
+                      onClick={() => {
+                        setAcquisitionMode("buy");
+                        setAcquisitionModalOpen(true);
+                      }}
+                      className="px-3.5 py-1.5 text-xs font-semibold text-[#0A192F] bg-white border border-[#E4DCD0] rounded-lg hover:bg-[#FAF8F5] cursor-pointer shadow-xs transition-all"
+                    >
+                      View Treaty Dossier
+                    </button>
+                    <button
+                      onClick={() => {
+                        releaseProperty(property.id);
+                        addToast(`${property.title} released back to inventory`, "info", "Market Reset");
+                      }}
+                      className="px-3.5 py-1.5 text-xs font-semibold text-[#8B1E1E] bg-white border border-red-300 rounded-lg hover:bg-red-50 cursor-pointer shadow-xs transition-all"
+                    >
+                      Release to Market
+                    </button>
+                  </div>
                 </div>
               ) : isRented(property.id) ? (
-                <div className="p-4 rounded-2xl bg-slate-100 border border-slate-300 text-center shadow-xs">
+                <div className="p-4 rounded-2xl bg-slate-100 border border-slate-300 text-center shadow-xs space-y-2">
                   <div className="text-xs font-mono font-bold uppercase tracking-wider text-[#475569]">
                     ● CURRENTLY UNAVAILABLE — Leased
                   </div>
-                  <p className="text-xs text-slate-700 mt-1">
-                    This property is actively leased and unavailable.
+                  <p className="text-xs text-slate-700">
+                    This property is actively held under a private diplomatic lease mandate.
                   </p>
-                  <button
-                    onClick={() => {
-                      releaseProperty(property.id);
-                      addToast(`${property.title} lease concluded, restored to market`, "info", "Market Reset");
-                    }}
-                    className="mt-2.5 px-3.5 py-1.5 text-xs font-semibold text-[#475569] bg-white border border-slate-300 rounded-lg hover:bg-slate-50 cursor-pointer shadow-xs transition-all"
-                  >
-                    Release Lease
-                  </button>
+                  <div className="flex items-center justify-center gap-2 pt-1">
+                    <button
+                      onClick={() => {
+                        setAcquisitionMode("rent");
+                        setAcquisitionModalOpen(true);
+                      }}
+                      className="px-3.5 py-1.5 text-xs font-semibold text-[#0A192F] bg-white border border-[#E4DCD0] rounded-lg hover:bg-[#FAF8F5] cursor-pointer shadow-xs transition-all"
+                    >
+                      View Lease Mandate
+                    </button>
+                    <button
+                      onClick={() => {
+                        releaseProperty(property.id);
+                        addToast(`${property.title} lease concluded, restored to market`, "info", "Market Reset");
+                      }}
+                      className="px-3.5 py-1.5 text-xs font-semibold text-[#475569] bg-white border border-slate-300 rounded-lg hover:bg-slate-50 cursor-pointer shadow-xs transition-all"
+                    >
+                      Release Lease
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   <button
                     onClick={() => {
-                      buyProperty(property.id);
-                      addToast(`Asset acquired! ${property.title} is now SOLD OUT`, "success", "Acquisition Executed");
+                      setAcquisitionMode("buy");
+                      setAcquisitionModalOpen(true);
                     }}
                     className="py-3 px-4 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-xs font-bold uppercase tracking-wider transition-all shadow-sm flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 border border-[#C5A880]/40"
                   >
@@ -284,8 +295,8 @@ export default function PropertyDetailPage() {
                   {property.rentalPrice ? (
                     <button
                       onClick={() => {
-                        rentProperty(property.id);
-                        addToast(`Lease secured! ${property.title} marked CURRENTLY UNAVAILABLE`, "success", "Lease Executed");
+                        setAcquisitionMode("rent");
+                        setAcquisitionModalOpen(true);
                       }}
                       className="py-3 px-4 rounded-xl bg-[#F3EFEA] hover:bg-[#EAE3D9] text-[#0A192F] text-xs font-bold uppercase tracking-wider transition-all shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 border border-[#E4DCD0]"
                     >
@@ -546,13 +557,6 @@ export default function PropertyDetailPage() {
         />
       )}
 
-      {virtualTourOpen && (
-        <VirtualTourModal
-          title={property.title}
-          onClose={() => setVirtualTourOpen(false)}
-        />
-      )}
-
       {showBrochureModal && (
         <DossierPreviewModal
           dossier={{
@@ -576,6 +580,14 @@ export default function PropertyDetailPage() {
           onClose={() => setShowBrochureModal(false)}
         />
       )}
+
+      {/* Multi-Step Institutional Acquisition & Lease Treaty Modal */}
+      <AcquisitionModal
+        isOpen={acquisitionModalOpen}
+        onClose={() => setAcquisitionModalOpen(false)}
+        property={property}
+        initialMode={acquisitionMode}
+      />
     </div>
   );
 }

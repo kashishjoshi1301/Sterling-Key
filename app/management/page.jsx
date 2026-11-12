@@ -22,8 +22,8 @@ export default function ManagementPage() {
         onOpenSchedule={() => setScheduleModalOpen(true)}
       />
 
-      <main className="flex-1 w-full py-10 sm:py-16">
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 mb-6">
+      <main className="flex-1 w-full pt-3 pb-12 sm:pt-5 sm:pb-16">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 mb-3 sm:mb-4">
           <Link
             href="/"
             className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#545B65] hover:text-[#0A192F] transition-colors"
@@ -34,7 +34,7 @@ export default function ManagementPage() {
         </div>
 
         {/* Dedicated Property Management Section */}
-        <PropertyManagementSection onOpenSchedule={() => setScheduleModalOpen(true)} />
+        <PropertyManagementSection onOpenSchedule={() => setScheduleModalOpen(true)} isStandalone={true} />
       </main>
 
       <Footer

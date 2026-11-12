@@ -35,7 +35,27 @@ export default function ConciergeChatWidget({
   ]);
   const [inputVal, setInputVal] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const messagesEndRef = useRef(null);
+
+  // Detect when any modal is active (via body overflow lock) so we never overlap modal action buttons
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    const checkModalState = () => {
+      const locked = 
+        document.body.classList.contains("overflow-locked") ||
+        document.documentElement.classList.contains("overflow-locked") ||
+        document.body.style.overflow === "hidden";
+      setIsModalOpen(locked);
+    };
+
+    checkModalState();
+    const observer = new MutationObserver(checkModalState);
+    observer.observe(document.body, { attributes: true, attributeFilter: ["class", "style"] });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class", "style"] });
+
+    return () => observer.disconnect();
+  }, []);
 
   const quickPrompts = [
     "Miami Waterfront Cap Rate",
@@ -141,6 +161,11 @@ export default function ConciergeChatWidget({
 
   const activeProviderObj = PROVIDERS.find(p => p.id === selectedProvider) || PROVIDERS[0];
 
+  // Completely hide floating concierge button when any modal (e.g. PropertyModal) is open
+  if (isModalOpen && !isOpen) {
+    return null;
+  }
+
   return (
     <>
       {/* Mobile Backdrop when Chat Drawer is Open */}
@@ -151,7 +176,7 @@ export default function ConciergeChatWidget({
         />
       )}
 
-      <div className={`fixed z-50 transition-all duration-300 ${
+      <div className={`fixed z-40 transition-all duration-300 ${
         !isOpen
           ? `right-4 sm:right-6 ${hasComparisonDock ? "bottom-20 sm:bottom-24" : "bottom-6 sm:bottom-8"}`
           : `inset-x-3 sm:inset-x-auto sm:right-6 ${hasComparisonDock ? "bottom-20 sm:bottom-24" : "bottom-3 sm:bottom-8"} flex justify-center sm:justify-end pointer-events-none`

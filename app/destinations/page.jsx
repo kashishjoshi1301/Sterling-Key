@@ -100,9 +100,9 @@ export default function DestinationsPage() {
         onOpenSaved={() => setSavedDrawerOpen(true)}
       />
 
-      <main className="flex-1 w-full py-8 sm:py-14">
+      <main className="flex-1 w-full pt-3 pb-10 sm:pt-5 sm:pb-14">
         {/* Navigation Breadcrumb */}
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 mb-6">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 mb-3 sm:mb-4">
           <Link
             href="/"
             className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#545B65] hover:text-[#0A192F] transition-colors"
@@ -113,7 +113,7 @@ export default function DestinationsPage() {
         </div>
 
         {/* Page Hero Header */}
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 mb-10 sm:mb-14">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-8 mb-6 sm:mb-8">
           <div className="p-8 sm:p-12 rounded-3xl bg-[#0A192F] text-white border border-[#C5A880]/40 shadow-xl relative overflow-hidden">
             <div className="relative z-10 max-w-3xl">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C5A880]/20 text-[#EADDC9] border border-[#C5A880]/30 text-xs font-mono uppercase tracking-widest mb-4">

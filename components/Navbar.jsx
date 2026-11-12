@@ -99,35 +99,39 @@ export default function Navbar({
     <>
       {/* Top Deep Navy Ticker Bar - Strictly Single-Line & Fully Responsive */}
       <div className="bg-[#0A192F] border-b border-[#060D18] py-1.5 sm:py-2 text-xs text-[#EAE3D9] font-sans tracking-wide w-full overflow-hidden">
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-3 w-full overflow-hidden">
-          {/* Left Ticker Teaser */}
-          <div className="flex items-center gap-2 sm:gap-3 overflow-hidden min-w-0 flex-1">
-            <span className="inline-flex items-center px-2 py-0.5 rounded text-[9px] sm:text-[10px] font-semibold tracking-[0.14em] uppercase bg-[#C5A880]/20 text-[#EADDC9] border border-[#C5A880]/30 shrink-0">
+        <div className="max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-8 flex items-center justify-between gap-2 sm:gap-3 w-full">
+          {/* Left Ticker Teaser - Clean Ellipsis Truncation (Never Cuts Words Mid-Letter) */}
+          <div className="flex items-center gap-1.5 sm:gap-2.5 overflow-hidden min-w-0 flex-1">
+            <span className="inline-flex items-center px-1.5 sm:px-2 py-0.5 rounded text-[8px] sm:text-[10px] font-semibold tracking-[0.12em] uppercase bg-[#C5A880]/20 text-[#EADDC9] border border-[#C5A880]/30 shrink-0">
               Private Market
             </span>
-            <p className="text-[#DDD4C6] text-xs font-medium min-w-0 whitespace-nowrap overflow-hidden">
+            <p className="text-[#DDD4C6] text-[11px] sm:text-xs font-medium min-w-0 truncate">
               <span className="hidden xl:inline">
                 Exclusive: The Bel-Air Promontory Estate · Managing $4.8B+ in Institutional Assets
               </span>
               <span className="hidden md:inline xl:hidden">
                 Exclusive: The Bel-Air Promontory Estate · $4.8B+ in Assets
               </span>
-              <span className="md:hidden">
+              <span className="hidden sm:inline md:hidden">
                 Exclusive: The Bel-Air Promontory Estate
+              </span>
+              <span className="sm:hidden truncate">
+                The Bel-Air Promontory Estate
               </span>
             </p>
           </div>
 
-          {/* Right Preferences & Contact Desk */}
-          <div className="hidden sm:flex items-center gap-3.5 lg:gap-5 text-xs text-[#DDD4C6] shrink-0">
+          {/* Right Preferences & Contact Desk - Fully Accessible on Mobile & Desktop */}
+          <div className="flex items-center gap-2 sm:gap-3.5 lg:gap-5 text-[11px] sm:text-xs text-[#DDD4C6] shrink-0">
             {/* Currency & Unit Switcher */}
-            <div className="flex items-center gap-2 border-r border-white/15 pr-3.5">
+            <div className="flex items-center gap-1.5 sm:gap-2 border-r border-white/15 pr-2 sm:pr-3.5">
               <div className="flex items-center gap-1">
-                <Globe className="w-3.5 h-3.5 text-[#C5A880]" />
+                <Globe className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#C5A880] shrink-0" />
                 <select
                   value={currency}
                   onChange={(e) => handleCurrencyChange(e.target.value)}
-                  className="bg-transparent text-xs text-[#FAF8F5] font-semibold focus:outline-none cursor-pointer [&>option]:bg-[#0A192F] [&>option]:text-white"
+                  className="bg-transparent text-[11px] sm:text-xs text-[#FAF8F5] font-semibold focus:outline-none cursor-pointer [&>option]:bg-[#0A192F] [&>option]:text-white"
+                  aria-label="Select Currency"
                 >
                   <option value="USD">USD ($)</option>
                   <option value="GBP">GBP (£)</option>
@@ -138,8 +142,8 @@ export default function Navbar({
 
               <button
                 onClick={handleUnitToggle}
-                className="px-1.5 py-0.5 rounded text-[9px] uppercase font-mono tracking-wider bg-white/10 hover:bg-white/20 text-[#FAF8F5] border border-white/20 transition-colors font-bold"
-                title="Toggle Area Units"
+                className="px-1.5 py-0.5 rounded text-[8px] sm:text-[9px] uppercase font-mono tracking-wider bg-white/10 hover:bg-white/20 text-[#FAF8F5] border border-white/20 transition-colors font-bold cursor-pointer"
+                title="Toggle Area Units (SF / M²)"
               >
                 {unit === "sqft" ? "SF" : "M²"}
               </button>
@@ -156,7 +160,7 @@ export default function Navbar({
             <span className="hidden xl:inline text-white/20">|</span>
 
             {/* Direct Phone */}
-            <a href="tel:+18005557837" className="hover:text-white transition-colors flex items-center gap-1.5 font-medium whitespace-nowrap">
+            <a href="tel:+18005557837" className="hidden sm:flex hover:text-white transition-colors items-center gap-1.5 font-medium whitespace-nowrap">
               <PhoneCall className="w-3.5 h-3.5 text-[#C5A880]" /> +1 (800) 555-7837
             </a>
           </div>
@@ -254,6 +258,52 @@ export default function Navbar({
           }}
         >
           <div className="space-y-4">
+            {/* Mobile Header Controls & Advisory Desk Panel */}
+            <div className="p-3.5 rounded-2xl bg-white border border-[#E4DCD0] shadow-2xs space-y-2.5">
+              <div className="text-[10px] uppercase font-mono tracking-widest text-[#C5A880] font-bold flex items-center justify-between">
+                <span>Advisory Desk & Preferences</span>
+                <span className="flex items-center gap-1 text-[#0A192F] text-[10px] font-semibold">
+                  <ShieldCheck className="w-3 h-3 text-[#C5A880]" /> Greystar Certified
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 pt-1 border-t border-[#E4DCD0]/70">
+                <div className="flex items-center justify-between bg-[#FAF8F5] border border-[#E4DCD0] rounded-xl px-2.5 py-1.5">
+                  <span className="text-[11px] text-[#545B65] font-semibold flex items-center gap-1">
+                    <Globe className="w-3 h-3 text-[#C5A880]" /> Currency
+                  </span>
+                  <select
+                    value={currency}
+                    onChange={(e) => handleCurrencyChange(e.target.value)}
+                    className="bg-transparent text-[11px] font-bold text-[#0A192F] focus:outline-none cursor-pointer"
+                  >
+                    <option value="USD">USD ($)</option>
+                    <option value="GBP">GBP (£)</option>
+                    <option value="EUR">EUR (€)</option>
+                    <option value="AED">AED (د.إ)</option>
+                  </select>
+                </div>
+
+                <div className="flex items-center justify-between bg-[#FAF8F5] border border-[#E4DCD0] rounded-xl px-2.5 py-1.5">
+                  <span className="text-[11px] text-[#545B65] font-semibold">Units</span>
+                  <button
+                    onClick={handleUnitToggle}
+                    className="text-[11px] uppercase font-mono font-bold text-[#0A192F] hover:text-[#C5A880] cursor-pointer"
+                  >
+                    {unit === "sqft" ? "SF (Imperial)" : "M² (Metric)"}
+                  </button>
+                </div>
+              </div>
+
+              <a
+                href="tel:+18005557837"
+                className="w-full flex items-center justify-center gap-2 py-2 rounded-xl bg-[#FAF8F5] hover:bg-[#F3EFEA] border border-[#E4DCD0] text-xs font-mono font-bold text-[#0A192F] transition-colors"
+              >
+                <PhoneCall className="w-3.5 h-3.5 text-[#C5A880]" />
+                <span>Private Advisory: +1 (800) 555-7837</span>
+              </a>
+            </div>
+
             <div className="text-xs uppercase font-mono tracking-widest text-[#C5A880] font-bold pt-1 sm:pt-2">
               Portfolio Navigation
             </div>

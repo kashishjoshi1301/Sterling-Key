@@ -7,7 +7,6 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PropertyModal from "@/components/PropertyModal";
 import ScheduleModal from "@/components/ScheduleModal";
-import VirtualTourModal from "@/components/VirtualTourModal";
 import ComparisonModal from "@/components/ComparisonModal";
 import ComparisonBar from "@/components/ComparisonBar";
 import SavedDrawer from "@/components/SavedDrawer";
@@ -27,7 +26,6 @@ import {
   List, 
   Heart, 
   Share2, 
-  Rotate3D, 
   Layers, 
   ArrowUpDown, 
   X, 
@@ -71,7 +69,6 @@ function CollectionContent() {
   // Modals & Drawers
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [tourProperty, setTourProperty] = useState(null);
-  const [virtualTourTitle, setVirtualTourTitle] = useState(null);
   const [compareIds, setCompareIds] = useState([]);
   const [compareModalOpen, setCompareModalOpen] = useState(false);
   const [savedIds, setSavedIds] = useState([]);
@@ -267,9 +264,9 @@ function CollectionContent() {
         onOpenSaved={() => setSavedDrawerOpen(true)}
       />
 
-      <main className="flex-1 max-w-[1600px] w-full mx-auto px-4 sm:px-8 lg:px-12 py-8 sm:py-14">
+      <main className="flex-1 max-w-[1600px] w-full mx-auto px-4 sm:px-8 lg:px-12 pt-3 pb-10 sm:pt-5 sm:pb-14">
         {/* Page Header */}
-        <div className="mb-8 sm:mb-12 text-center max-w-3xl mx-auto">
+        <div className="mb-5 sm:mb-8 text-center max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0A192F] text-[#FAF8F5] text-xs font-mono uppercase tracking-widest mb-3.5 shadow-sm">
             <Building className="w-3.5 h-3.5 text-[#C5A880]" />
             <span>Curated Sovereign Portfolio</span>
@@ -411,7 +408,7 @@ function CollectionContent() {
           </div>
 
           {/* Action Row: Reset, Count & View Mode Switcher */}
-          <div className="flex flex-wrap items-center justify-between gap-4 pt-5 border-t border-[#E4DCD0]">
+          <div className="flex flex-wrap items-center justify-between gap-3 sm:gap-4 pt-5 border-t border-[#E4DCD0]">
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold text-[#0A192F] uppercase tracking-wider">
                 Showing {filteredProperties.length} of {activeTab === "rent" ? rentCount : buyCount} {activeTab === "rent" ? "Rentals" : "Holdings"}
@@ -428,14 +425,14 @@ function CollectionContent() {
               )}
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center justify-between sm:justify-end gap-2 sm:gap-4 w-full sm:w-auto">
               {/* Sort By Dropdown */}
-              <div className="flex items-center gap-2">
-                <span className="text-xs uppercase font-bold text-[#545B65]">Sort:</span>
+              <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                <span className="text-[11px] sm:text-xs uppercase font-bold text-[#545B65] shrink-0">Sort:</span>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="bg-[#FAF8F5] border border-[#E4DCD0] rounded-xl px-3 py-1.5 text-xs font-semibold text-[#0A192F] focus:outline-none cursor-pointer"
+                  className="bg-[#FAF8F5] border border-[#E4DCD0] rounded-xl px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs font-semibold text-[#0A192F] focus:outline-none cursor-pointer max-w-[135px] xs:max-w-[160px] sm:max-w-none truncate"
                 >
                   <option value="curated">Curated Priority</option>
                   <option value="price-desc">Price: High to Low</option>
@@ -444,12 +441,12 @@ function CollectionContent() {
                 </select>
               </div>
 
-              {/* View Switcher: Clear Grid & List Toggle with Icons + Text */}
-              <div className="flex items-center border border-[#E4DCD0] rounded-xl overflow-hidden bg-[#FAF8F5] shadow-xs">
+              {/* View Switcher: Clear Grid & List Toggle with Icons + Text (Fitted for Mobile) */}
+              <div className="flex items-center border border-[#E4DCD0] rounded-xl overflow-hidden bg-[#FAF8F5] shadow-xs shrink-0">
                 <button
                   type="button"
                   onClick={() => setViewMode("grid")}
-                  className={`py-2 px-3 sm:px-3.5 transition-all cursor-pointer flex items-center gap-1.5 ${
+                  className={`py-1.5 px-2.5 xs:px-3 sm:px-3.5 transition-all cursor-pointer flex items-center gap-1.5 ${
                     viewMode === "grid" 
                       ? "bg-[#0A192F] text-white shadow-xs font-bold" 
                       : "text-[#545B65] hover:text-[#0A192F] hover:bg-[#F3EFEA] font-medium"
@@ -457,13 +454,13 @@ function CollectionContent() {
                   title="Grid View"
                   aria-label="Grid View"
                 >
-                  <Grid className="w-4 h-4" />
-                  <span className="text-xs uppercase tracking-wider font-semibold">Grid</span>
+                  <Grid className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+                  <span className="hidden xs:inline text-[11px] sm:text-xs uppercase tracking-wider font-semibold">Grid</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setViewMode("list")}
-                  className={`py-2 px-3 sm:px-3.5 transition-all cursor-pointer flex items-center gap-1.5 ${
+                  className={`py-1.5 px-2.5 xs:px-3 sm:px-3.5 transition-all cursor-pointer flex items-center gap-1.5 ${
                     viewMode === "list" 
                       ? "bg-[#0A192F] text-white shadow-xs font-bold" 
                       : "text-[#545B65] hover:text-[#0A192F] hover:bg-[#F3EFEA] font-medium"
@@ -471,8 +468,8 @@ function CollectionContent() {
                   title="List View"
                   aria-label="List View"
                 >
-                  <List className="w-4 h-4" />
-                  <span className="text-xs uppercase tracking-wider font-semibold">List</span>
+                  <List className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+                  <span className="hidden xs:inline text-[11px] sm:text-xs uppercase tracking-wider font-semibold">List</span>
                 </button>
               </div>
             </div>
@@ -579,11 +576,11 @@ function CollectionContent() {
 
                   {/* Right: Property Details & Actions with Uniform Equal-Height Structure */}
                   <div className="flex-1 min-w-0 flex flex-col justify-between h-full py-0.5 sm:py-1">
-                    {/* Top Section: Location, Title, & Description */}
-                    <div className="pr-7 sm:pr-12">
+                    {/* Top Section: Location, Title, & Description - Generous Right Padding to Prevent Overlap with Compare/Save Icons */}
+                    <div className="pr-16 xs:pr-20 sm:pr-24">
                       <div className="flex items-center text-[11px] sm:text-xs text-[#747D88] font-semibold mb-0.5 h-4 sm:h-5">
                         <MapPin className="w-3.5 h-3.5 mr-1 text-[#C5A880] shrink-0" />
-                        <span className="whitespace-nowrap overflow-hidden">{formatLocation(prop)}</span>
+                        <span className="truncate">{formatLocation(prop)}</span>
                       </div>
 
                       <Link 
@@ -594,13 +591,13 @@ function CollectionContent() {
                         }}
                         className="h-[2.5rem] sm:h-[2.85rem] flex items-center"
                       >
-                        <h3 className="text-sm xs:text-base sm:text-lg font-serif text-[#0A192F] font-bold hover:text-[#C5A880] transition-colors leading-snug">
+                        <h3 className="text-sm xs:text-base sm:text-lg font-serif text-[#0A192F] font-bold hover:text-[#C5A880] transition-colors leading-snug line-clamp-2">
                           {prop.title}
                         </h3>
                       </Link>
 
-                      {/* Complete Architectural Statement (Zero '...' Cutoff) */}
-                      <p className="text-xs sm:text-sm text-[#545B65] leading-snug sm:leading-relaxed h-[2.3rem] sm:h-[2.7rem] overflow-hidden mt-0.5 font-sans">
+                      {/* Clean 2-Line Architectural Description (Never Horizontally Sliced) */}
+                      <p className="text-xs sm:text-sm text-[#545B65] leading-snug sm:leading-relaxed line-clamp-2 mt-0.5 font-sans min-h-[2.2rem] sm:min-h-[2.6rem]">
                         {prop.tagline || prop.description}
                       </p>
                     </div>
@@ -635,17 +632,17 @@ function CollectionContent() {
                       </div>
                     </div>
 
-                    {/* Bottom Actions: Clear, Full-Text Buttons (Guaranteed 100% Visible & Never Hidden) */}
-                    <div className="flex items-center gap-1.5 sm:gap-3 pt-2 sm:pt-2.5 border-t border-[#E4DCD0]/70 w-full shrink-0">
+                    {/* Bottom Actions: Responsive 2-Col Grid on Mobile (Guaranteed to Stay Inside Card) */}
+                    <div className="grid grid-cols-2 gap-1.5 sm:flex sm:items-center sm:gap-2.5 pt-1.5 sm:pt-2.5 border-t border-[#E4DCD0]/70 w-full">
                       <Link
                         href={`/properties/${prop.id}`}
                         onClick={(e) => {
                           e.stopPropagation();
                           trackViewedProperty(prop.id);
                         }}
-                        className="flex-1 sm:flex-initial py-1.5 sm:py-2 px-2.5 sm:px-4 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-[10px] xs:text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1 sm:gap-1.5 shadow-sm active:scale-95 whitespace-nowrap text-center shrink-0"
+                        className="w-full sm:w-auto py-1.5 sm:py-2 px-2 sm:px-4 rounded-xl bg-[#0A192F] hover:bg-[#142E54] text-[#FAF8F5] text-[10px] xs:text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1 sm:gap-1.5 shadow-sm active:scale-95 text-center min-w-0"
                       >
-                        <span>Full Dossier</span>
+                        <span className="truncate"><span className="hidden sm:inline">Full </span>Dossier</span>
                         <ExternalLink className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#C5A880] shrink-0" />
                       </Link>
 
@@ -654,9 +651,9 @@ function CollectionContent() {
                           e.stopPropagation();
                           openPropertyPreview(prop);
                         }}
-                        className="flex-1 sm:flex-initial py-1.5 sm:py-2 px-2.5 sm:px-4 rounded-xl bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#0A192F] text-[10px] xs:text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all border border-[#E4DCD0] shadow-2xs active:scale-95 cursor-pointer whitespace-nowrap text-center shrink-0"
+                        className="w-full sm:w-auto py-1.5 sm:py-2 px-2 sm:px-4 rounded-xl bg-[#FAF8F5] hover:bg-[#F3EFEA] text-[#0A192F] text-[10px] xs:text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all border border-[#E4DCD0] shadow-2xs active:scale-95 cursor-pointer text-center min-w-0"
                       >
-                        <span>Preview</span>
+                        <span className="truncate">Preview</span>
                       </button>
 
                       {/* Compare and Tour Icons on Large Screens without crowding primary buttons */}
@@ -965,7 +962,6 @@ function CollectionContent() {
           property={selectedProperty}
           onClose={() => setSelectedProperty(null)}
           onScheduleTour={(p) => setTourProperty(p)}
-          onLaunchVirtualTour={(title) => setVirtualTourTitle(title)}
         />
       )}
 
@@ -973,13 +969,6 @@ function CollectionContent() {
         <ScheduleModal
           property={tourProperty}
           onClose={() => setTourProperty(null)}
-        />
-      )}
-
-      {virtualTourTitle && (
-        <VirtualTourModal
-          title={virtualTourTitle}
-          onClose={() => setVirtualTourTitle(null)}
         />
       )}
 
